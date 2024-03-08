@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Locais de Atendimento</title>
+</head>
+<body>
+    <h1>Lista de Locais de Atendimento</h1>
+    <ul>
+        {% for local in locais_atendimento %}
+            <li><a href="{% url 'detalhes_local_atendimento' local.id %}">{{ local.nome }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
