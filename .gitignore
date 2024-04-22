@@ -1,1 +1,13 @@
+# Arquivos de configuração locais
+*.sqlite3
+*.pyc
+*.pyo
+*.pyc
+*.pyo
+__pycache__/
+
+# Ambiente virtual
 myenv/
+
+# Arquivos de log
+*.log
