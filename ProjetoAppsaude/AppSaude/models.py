@@ -55,14 +55,23 @@ class Telefone(models.Model):
 
     def __str__(self):
         return self.numero
+#Clase endereço para local de atendimento
+class Endereco(models.Model):
+    rua = models.CharField(max_length=255)
+    numero = models.CharField(max_length=20)
+    cidade = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100)
+    cep = models.CharField(max_length=10)
 
-
+    def __str__(self):
+        return f"{self.rua}, {self.numero}, {self.cidade}, {self.estado}, {self.cep}"
 # Define o modelo LocalAtendimento, que representa um local de atendimento.
 class LocalAtendimento(models.Model):
     nome = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=10, decimal_places=8)
     longitude = models.DecimalField(max_digits=11, decimal_places=8)
-    endereco = models.CharField(max_length=512)
+    # chave estrangeira que 
+    endereco = models.OneToOneField(Endereco, on_delete=models.CASCADE)
     descricao = models.TextField()
     CATEGORIAS_CHOICES = (
         ('clinica', 'Clínica'),
@@ -91,6 +100,9 @@ class LocalAtendimento(models.Model):
     site = models.URLField()
     imagens = models.ManyToManyField(Imagem, related_name='locais')
     validado = models.BooleanField(default=True)
+    valor_medio = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+     # Adiciona um campo para armazenar os planos de saúde aceitos neste local
+    planos_saude = ArrayField(models.CharField(max_length=100), blank=True)
     
     def __str__(self):
         return self.nome
@@ -108,8 +120,10 @@ class HorarioFuncionamento(models.Model):
     )
     local = models.ForeignKey(LocalAtendimento, related_name='horarios_funcionamento', on_delete=models.CASCADE)
     dia_semana = models.CharField(max_length=10, choices=DIA_CHOICES)
-    horario_abertura = models.TimeField()
-    horario_fechamento = models.TimeField()
+    horario_abertura1 = models.TimeField()
+    horario_fechamento1 = models.TimeField()
+    horario_abertura2 = models.TimeField()
+    horario_fechamento2 = models.TimeField()
 
     class Meta:
         # Garante que um mesmo local não pode ter dois horários diferentes para o mesmo dia
