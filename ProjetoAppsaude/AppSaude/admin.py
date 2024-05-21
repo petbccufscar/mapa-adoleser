@@ -9,7 +9,6 @@ from .models import Usuario, ProfissionalSaude, LocalAtendimento, AvaliacaoLocal
 admin.site.register(Usuario)
 admin.site.register(ProfissionalSaude)
 admin.site.register(LocalAtendimento)
-admin.site.register(Endereco)
 admin.site.register(AvaliacaoLocal)
 admin.site.register(ProblemaSite)
 admin.site.register(ProblemaLocalAtendimento)
