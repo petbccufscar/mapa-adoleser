@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalhes do Local de Atendimento</title>
+</head>
+<body>
+    <h1>{{ local.nome }}</h1>
+    <p>Latitude: {{ local.latitude }}</p>
+    <p>Longitude: {{ local.longitude }}</p>
+    <!-- Adicione mais informações conforme necessário -->
+    <p><a href="{% url 'avaliacoes_locais' local.id %}">Avaliações</a></p>
+</body>
+</html>
