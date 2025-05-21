@@ -3,6 +3,7 @@ import 'app_colors.dart';
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
+  fontFamily: 'Lexend',
   colorScheme: const ColorScheme.dark(
     primary: AppColors.purple,
     onPrimary: Colors.white,

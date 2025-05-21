@@ -3,5 +3,5 @@ import 'dark_theme.dart';
 
 class AppTheme {
   static final light = lightTheme;
-  static final dark = darkTheme;
+  static final dark = lightTheme;
 }

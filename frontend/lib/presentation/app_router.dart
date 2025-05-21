@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
-import '../pages/home_page.dart';
-import '../pages/search_page.dart';
-import '../pages/profile_page.dart';
+
+import 'pages/home/home_page.dart';
+import 'pages/search/search_page.dart';
+import 'pages/profile/profile_page.dart';
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,

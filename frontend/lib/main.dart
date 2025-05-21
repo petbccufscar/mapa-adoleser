@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mapa_adoleser/theme/app_theme.dart';
 
 import 'package:provider/provider.dart';
 import 'providers/theme_provider.dart';
 
-import 'routes/app_router.dart';
+import 'presentation/app_router.dart';
+import 'core/theme/app_theme.dart';
 
 void main() {
   runApp(
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp.router(
       title: 'Mapa Adoleser',
+      debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
