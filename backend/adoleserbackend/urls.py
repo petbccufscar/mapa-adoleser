@@ -1,13 +1,18 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from .views import (
     UserRegistrationView,
     LogoutView,
     UserProfileView,
-    CustomTokenObtainPairView
+    CustomTokenObtainPairView,
+    LocationViewSet
 )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
+
+router = DefaultRouter()  # chama os cruds para url de locations
+router.register(r'locations', LocationViewSet, basename='location')
 
 urlpatterns = [
     path('register/', UserRegistrationView.as_view(), name='user_register'),
@@ -15,4 +20,6 @@ urlpatterns = [
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),    # Refresh token
     path('logout/', LogoutView.as_view(), name='user_logout'),
     path('profile/', UserProfileView.as_view(), name='user_profile'),
+
+    path('', include(router.urls)) # api/locations/...
 ]
