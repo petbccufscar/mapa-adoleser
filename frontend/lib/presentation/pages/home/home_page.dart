@@ -12,27 +12,6 @@ class HomePage extends StatelessWidget {
   // import 'package:go_router/go_router.dart';
   // context.go('/sobre'); // CORRETO com go_router
 
-  //Mensagem para teste do botão
-  void _showMyDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext ctx) {
-        return AlertDialog(
-          title: const Text('Caixa de diálogo'),
-          content: const Text('Você apertou o botão!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(ctx).pop(); // fecha o dialog
-              },
-              child: const Text('Fechar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context);
@@ -66,8 +45,6 @@ class HomePage extends StatelessWidget {
                 return null;
               },
             ),
-            //Botão para teste
-            SimpleButton(text: 'Enviar', enabled: false, onPressed: () => _showMyDialog(context))
           ],
         ),
       ),
