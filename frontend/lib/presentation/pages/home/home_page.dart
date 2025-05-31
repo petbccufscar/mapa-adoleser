@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/responsive_menu.dart';
 import '../../widgets/text_field.dart';
+import '../../widgets/button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,6 +11,27 @@ class HomePage extends StatelessWidget {
   // PARA TROCAR DE PÁGINA:
   // import 'package:go_router/go_router.dart';
   // context.go('/sobre'); // CORRETO com go_router
+
+  //Mensagem para teste do botão
+  void _showMyDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: const Text('Caixa de diálogo'),
+          content: const Text('Você apertou o botão!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop(); // fecha o dialog
+              },
+              child: const Text('Fechar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +66,8 @@ class HomePage extends StatelessWidget {
                 return null;
               },
             ),
+            //Botão para teste
+            SimpleButton(text: 'Enviar', enabled: false, onPressed: () => _showMyDialog(context))
           ],
         ),
       ),

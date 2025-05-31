@@ -43,5 +43,18 @@ ThemeData lightTheme = ThemeData(
     bodyLarge: TextStyle(color: AppColors.textPrimary),
     bodyMedium: TextStyle(color: AppColors.textSecondary),
   ),
-  useMaterial3: true
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.pink,
+        foregroundColor: AppColors.textLight,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    ),
+
+
+
+    useMaterial3: true
 );
