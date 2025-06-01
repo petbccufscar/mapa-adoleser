@@ -12,11 +12,11 @@ class _CarrosselState extends State<Carrossel> {
   int _currentIndex = 0;
 
   final List<String> imagePaths = [
-    'assets/images/banner1.png',
-    'assets/images/banner2.png',
-    'assets/images/banner3.png',
-    'assets/images/banner4.png',
-    'assets/images/banner5.png',
+    'assets/images/img1.png',
+    'assets/images/img2.png',
+    'assets/images/img3.png',
+    'assets/images/img4.png',
+    'assets/images/img5.png',
   ];
 
   @override
