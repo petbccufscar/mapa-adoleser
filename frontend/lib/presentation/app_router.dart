@@ -4,6 +4,9 @@ import 'pages/home/home_page.dart';
 import 'pages/search/search_page.dart';
 import 'pages/profile/profile_page.dart';
 
+/// Gerencia as rotas de navegação da aplicação.
+/// Define as páginas disponíveis e como navegar entre elas.
+
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
   routes: [

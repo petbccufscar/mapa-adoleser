@@ -3,10 +3,32 @@ import 'package:provider/provider.dart';
 
 import 'package:go_router/go_router.dart';
 
-class ResponsiveMenu extends StatelessWidget implements PreferredSizeWidget {
-  final List<String> menuItems;
+/// Widget de menu que se adapta ao tamanho da tela (mobile, tablet, desktop).
+/// Utilizado para navegação em múltiplas resoluções.
 
-  const ResponsiveMenu({super.key, required this.menuItems});
+class ResponsiveMenu extends StatelessWidget implements PreferredSizeWidget {
+  const ResponsiveMenu({super.key});
+
+  List<Widget>? getActions(BuildContext context, bool isDesktop) {
+    if (isDesktop) {
+      return [
+        TextButton(
+            onPressed: () => context.go('/pesquisa'),
+            child: Text(
+              'Pesquisa',
+              style: Theme.of(context).textTheme.bodyLarge,
+            )),
+        TextButton(
+            onPressed: () => context.go('/perfil'),
+            child: Text(
+              'Perfil',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ))
+      ];
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,19 +36,7 @@ class ResponsiveMenu extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       title: const Text('MAPA ADOLESER'),
-      actions: isDesktop
-          ? menuItems.map((item) {
-        return TextButton(
-          onPressed: () {
-            // context.go('/$item');
-          },
-          child: Text(
-            item,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        );
-      }).toList()
-          : null,
+      actions: getActions(context, isDesktop)
     );
   }
 

@@ -6,6 +6,10 @@ import 'providers/theme_provider.dart';
 import 'presentation/app_router.dart';
 import 'core/theme/app_theme.dart';
 
+/// Ponto de entrada da aplicação.
+/// Inicializa o app, configura os temas e define a tela inicial.
+/// Também pode configurar injeção de dependências, rotas e outras inicializações.
+
 void main() {
   runApp(
       ChangeNotifierProvider(

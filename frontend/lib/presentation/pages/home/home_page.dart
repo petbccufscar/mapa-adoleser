@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import '../../widgets/responsive_menu.dart';
 import '../../widgets/text_field.dart';
 
+/// Página inicial da aplicação, exibida ao iniciar.
+/// Integra componentes visuais e gerencia o layout da home.
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -16,34 +19,15 @@ class HomePage extends StatelessWidget {
     // final themeProvider = Provider.of<ThemeProvider>(context);
     // final isDark = themeProvider.themeMode == ThemeMode.dark;
 
-    final TextEditingController controller = TextEditingController();;
-
-    final menuItems = ['sobre', 'pesquisa'];
-
     return Scaffold(
-      appBar: ResponsiveMenu(menuItems: menuItems),
+      appBar: const ResponsiveMenu(),
       body: Center(
         child: Column(
           children: [
             Text(
               'Home!',
               style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            CustomTextField(
-              label: "Nome",
-              hint: "Digite seu email",
-              controller: controller,
-              keyboardType: TextInputType.text,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Campo obrigatório";
-                }
-                if (!value.contains("@")) {
-                  return "Email inválido";
-                }
-                return null;
-              },
-            ),
+            )
           ],
         ),
       ),
