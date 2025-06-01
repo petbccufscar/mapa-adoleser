@@ -32,7 +32,8 @@ dependencies:
     sdk: flutter
 
   provider: ^6.0.0
-  go_router: ^13.0.0
+  carousel_slider: ^5.0.0
+  go_router: ^15.1.2
   material_symbols_icons: ^4.2815.0
 
   # The following adds the Cupertino Icons font to your application.
@@ -48,13 +49,15 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

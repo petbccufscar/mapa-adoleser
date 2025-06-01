@@ -3,32 +3,31 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/responsive_menu.dart';
 import '../../widgets/text_field.dart';
+import '../../widgets/carrossel.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // PARA TROCAR DE PÁGINA:
-  // import 'package:go_router/go_router.dart';
-  // context.go('/sobre'); // CORRETO com go_router
-
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context);
-    // final isDark = themeProvider.themeMode == ThemeMode.dark;
-
-    final TextEditingController controller = TextEditingController();;
-
+    final TextEditingController controller = TextEditingController();
     final menuItems = ['sobre', 'pesquisa'];
 
     return Scaffold(
       appBar: ResponsiveMenu(menuItems: menuItems),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
+            // Carrossel no topo
+            const Carrossel(),
+
+            const SizedBox(height: 20),
+
             Text(
               'Home!',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
+
             CustomTextField(
               label: "Nome",
               hint: "Digite seu email",
