@@ -47,7 +47,7 @@ ThemeData lightTheme = ThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.pink,
         foregroundColor: AppColors.textLight,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
