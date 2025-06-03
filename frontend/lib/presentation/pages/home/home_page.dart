@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../widgets/responsive_menu.dart';
-import '../../widgets/text_field.dart';
-import '../../widgets/button.dart';
 
 /// Página inicial da aplicação, exibida ao iniciar.
 /// Integra componentes visuais e gerencia o layout da home.

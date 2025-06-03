@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -35,9 +34,8 @@ class ResponsiveMenu extends StatelessWidget implements PreferredSizeWidget {
     bool isDesktop = MediaQuery.of(context).size.width >= 800;
 
     return AppBar(
-      title: const Text('MAPA ADOLESER'),
-      actions: getActions(context, isDesktop)
-    );
+        title: const Text('MAPA ADOLESER'),
+        actions: getActions(context, isDesktop));
   }
 
   @override
