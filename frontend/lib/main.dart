@@ -11,12 +11,8 @@ import 'core/theme/app_theme.dart';
 /// Também pode configurar injeção de dependências, rotas e outras inicializações.
 
 void main() {
-  runApp(
-      ChangeNotifierProvider(
-          create: (_) => ThemeProvider(),
-          child: const MyApp()
-      )
-  );
+  runApp(ChangeNotifierProvider(
+      create: (_) => ThemeProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

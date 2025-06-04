@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/responsive_menu.dart';
+import 'package:mapa_adoleser/presentation/widgets/bottom_navigation_bar.dart';
+import '../../widgets/app_bar.dart';
 
 /// Página inicial da aplicação, exibida ao iniciar.
 /// Integra componentes visuais e gerencia o layout da home.
@@ -8,25 +9,20 @@ import '../../widgets/responsive_menu.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // PARA TROCAR DE PÁGINA:
-  // import 'package:go_router/go_router.dart';
-  // context.go('/sobre'); // CORRETO com go_router
-
   @override
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context);
     // final isDark = themeProvider.themeMode == ThemeMode.dark;
 
+    bool isDesktop = MediaQuery.of(context).size.width >= 800;
+
     return Scaffold(
-      appBar: const ResponsiveMenu(),
+      appBar: isDesktop ? const CustomAppBar() : null,
+      bottomNavigationBar: isDesktop ? null : const CustomBottomNavigationBar(),
       body: Center(
-        child: Column(
-          children: [
-            Text(
-              'Home!',
-              style: Theme.of(context).textTheme.bodyLarge,
-            )
-          ],
+        child: Text(
+          'Home!',
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
       ),
     );

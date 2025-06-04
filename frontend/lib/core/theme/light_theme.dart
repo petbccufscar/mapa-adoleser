@@ -8,13 +8,14 @@ ThemeData lightTheme = ThemeData(
     fontFamily: 'Lexend',
     colorScheme: const ColorScheme.light(
       primary: AppColors.purple,
-      onPrimary: AppColors.textPrimary,
-      secondary: AppColors.buttonSecondary,
-      onSecondary: Colors.purple,
-      surface: AppColors.backgroundWhite,
+      onPrimary: AppColors.textLight,
+      secondary: AppColors.purple,
+      onSecondary: AppColors.textLight,
+      surface: AppColors.backgroundSmoke,
+      surfaceBright: AppColors.backgroundWhite,
       onSurface: AppColors.textPrimary,
       error: AppColors.warning,
-      onError: Colors.green,
+      onError: AppColors.textPrimary,
     ),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
@@ -53,8 +54,8 @@ ThemeData lightTheme = ThemeData(
           fontSize: 14,
           fontWeight: FontWeight.w500),
       bodyLarge: TextStyle(color: AppColors.textPrimary),
-      bodyMedium: TextStyle(
-          color: AppColors.textSecondary, fontWeight: FontWeight.w400),
+      bodyMedium:
+          TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w400),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
