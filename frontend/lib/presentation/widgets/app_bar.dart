@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mapa_adoleser/core/theme/app_colors.dart';
 
 /// Widget de menu que se adapta ao tamanho da tela (mobile, tablet, desktop).
 /// Utilizado para navegação em múltiplas resoluções.
@@ -26,6 +25,10 @@ class _MenuLinkState extends State<MenuLink> {
 
   @override
   Widget build(BuildContext context) {
+    bool _isCurrentRoute =
+        GoRouter.of(context).routeInformationProvider.value.uri.toString() ==
+            widget.path;
+
     return MouseRegion(
       cursor: SystemMouseCursors.click, // Muda o cursor para "mãozinha"
       onEnter: (_) => setState(() => _isHovering = true), // Ativa sublinhado
@@ -40,8 +43,9 @@ class _MenuLinkState extends State<MenuLink> {
           child: Text(
             widget.text,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  decoration: _isHovering ? TextDecoration.underline : null,
-                ),
+                decoration: _isHovering ? TextDecoration.underline : null,
+                fontWeight: _isCurrentRoute ? FontWeight.w600 : null,
+                color: _isCurrentRoute ? AppColors.purple : null),
           ),
         ),
       ),
@@ -55,15 +59,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Image.asset('assets/images/ADOLESER.png'),
-      titleSpacing: 32.0,
+      title: Image.asset('images/ADOLESER.png', width: 130),
+      titleSpacing: MediaQuery.of(context).size.width * 0.10,
       elevation: 2.0,
       actions: const [
         MenuLink(text: "Início", path: '/'),
+        SizedBox(width: 10),
         MenuLink(text: "Pesquisar", path: '/pesquisa'),
-        MenuLink(text: "Favoritos", path: '/favoritos')
+        SizedBox(width: 10),
+        MenuLink(text: "Sobre", path: '/sobre'),
+        SizedBox(width: 10),
+        MenuLink(text: "Ajuda", path: '/ajuda')
       ],
-      actionsPadding: const EdgeInsets.symmetric(horizontal: 32.0),
+      actionsPadding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.10),
     );
   }
 
