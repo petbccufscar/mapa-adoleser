@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mapa_adoleser/presentation/widgets/app_bar.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_app_bar.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
