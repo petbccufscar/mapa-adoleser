@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/auth_provider.dart';
 
 /// Widget de menu que se adapta ao tamanho da tela (mobile, tablet, desktop).
 /// Utilizado para navegação em múltiplas resoluções.
@@ -58,18 +62,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
+
     return AppBar(
       title: Image.asset('images/ADOLESER.png', width: 130),
       titleSpacing: MediaQuery.of(context).size.width * 0.10,
       elevation: 2.0,
-      actions: const [
-        MenuLink(text: "Início", path: '/'),
-        SizedBox(width: 10),
-        MenuLink(text: "Pesquisar", path: '/pesquisa'),
-        SizedBox(width: 10),
-        MenuLink(text: "Sobre", path: '/sobre'),
-        SizedBox(width: 10),
-        MenuLink(text: "Ajuda", path: '/ajuda')
+      actions: [
+        const MenuLink(text: "Início", path: '/'),
+        const SizedBox(width: 10),
+        const MenuLink(text: "Pesquisar", path: '/pesquisa'),
+        const SizedBox(width: 10),
+        const MenuLink(text: "Sobre", path: '/sobre'),
+        const SizedBox(width: 10),
+        const MenuLink(text: "Ajuda", path: '/ajuda'),
+        if (!auth.isLoggedIn) const SizedBox(width: 10),
+        if (!auth.isLoggedIn) const Text('•'),
+        if (!auth.isLoggedIn) const SizedBox(width: 12),
+        if (!auth.isLoggedIn)
+          CustomButton(text: 'Entrar', onPressed: () => context.go('/login'))
       ],
       actionsPadding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.10),
