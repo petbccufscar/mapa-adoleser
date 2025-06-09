@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from rest_framework import generics, status, views
+from rest_framework import generics, status, views, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer
-from .models import User
+from .serializers import UserRegistrationSerializer, UserSerializer,\
+    UserProfileUpdateSerializer, LocationSerializer
+from .models import User, Location
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -55,3 +56,10 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
             return UserProfileUpdateSerializer
         return UserSerializer
 
+
+class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
+    queryset = Location.objects.all()  # Define o conjunto de dados base
+    serializer_class = LocationSerializer # Especifica o serializer que esta view usará
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly] # Exemplo de permissão
+    # IsAuthenticatedOrReadOnly: Qualquer um pode ler, mas apenas usuários autenticados podem escrever.
+    # Outras opções: permissions.AllowAny, permissions.IsAuthenticated, etc.

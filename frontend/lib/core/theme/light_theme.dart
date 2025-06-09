@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 
 /// Configura o tema claro da aplicação, com base em `ThemeData`, para ambientes com alta luminosidade.
@@ -54,12 +55,14 @@ ThemeData lightTheme = ThemeData(
           fontSize: 14,
           fontWeight: FontWeight.w500),
       bodyLarge: TextStyle(color: AppColors.textPrimary),
-      bodyMedium:
-          TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w400),
+      bodyMedium: TextStyle(
+          color: AppColors.textSecondary, fontWeight: FontWeight.w400),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.pink,
+        elevation: 0,
+        visualDensity: VisualDensity.comfortable,
+        backgroundColor: AppColors.purple,
         foregroundColor: AppColors.textLight,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         shape: RoundedRectangleBorder(
