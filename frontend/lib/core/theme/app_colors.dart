@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Define as cores principais utilizadas no aplicativo, centralizando o controle de cores para fácil manutenção.
+
 class AppColors {
   // Primary
   static const pink = Color(0xFFFE35B7);

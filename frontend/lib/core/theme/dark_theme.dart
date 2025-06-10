@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
+/// Configura o tema escuro da aplicação, com base em `ThemeData`, adequado para ambientes com baixa luminosidade.
+
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   fontFamily: 'Lexend',

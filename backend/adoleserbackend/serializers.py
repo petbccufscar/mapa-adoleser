@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
-from .models import User
+from .models import User, Location
 
 UserModel = get_user_model()
 
@@ -66,3 +66,16 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         if UserModel.objects.filter(email__iexact=value).exclude(pk=user.pk).exists():
             raise serializers.ValidationError("This email is already in use by another account.")
         return value
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ['id', 'name', 'description', 'nota']
+
+    def validate_nota(self, value):
+        if value < 0 or value > 10:
+            raise serializers.ValidationError("The grade needs to be between 0 and 10.")
+        return value
+
+
