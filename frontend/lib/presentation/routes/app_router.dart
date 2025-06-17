@@ -45,7 +45,7 @@ GoRouter createRouter(AuthProvider auth) {
           path: '/sobre',
           builder: (context, state) => const AboutPage()),
       GoRoute(
-          //name: 'Login',
+          name: 'Login',
           path: '/login',
           builder: (context, state) => const LoginPage())
     ],
