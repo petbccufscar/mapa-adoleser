@@ -64,29 +64,66 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
 
-    return AppBar(
-      title: Image.asset('images/ADOLESER.png', width: 130),
-      titleSpacing: MediaQuery.of(context).size.width * 0.10,
-      elevation: 2.0,
-      actions: [
-        const MenuLink(text: "Início", path: '/'),
-        const SizedBox(width: 10),
-        const MenuLink(text: "Pesquisar", path: '/pesquisa'),
-        const SizedBox(width: 10),
-        const MenuLink(text: "Sobre", path: '/sobre'),
-        const SizedBox(width: 10),
-        const MenuLink(text: "Ajuda", path: '/ajuda'),
-        if (!auth.isLoggedIn) const SizedBox(width: 10),
-        if (!auth.isLoggedIn) const Text('•'),
-        if (!auth.isLoggedIn) const SizedBox(width: 12),
-        if (!auth.isLoggedIn)
-          CustomButton(text: 'Entrar', onPressed: () => context.go('/login'))
-      ],
-      actionsPadding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.10),
+    return PreferredSize(
+      preferredSize: Size.infinite,
+      child: Column(
+        children: [
+          Container(
+              color: AppColors.backgroundWhite,
+              padding: EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: MediaQuery.of(context).size.width * 0.10),
+              child: Row(
+                children: [
+                  Image.asset('images/ADOLESER.png', width: 160),
+                  const Spacer(),
+                  const MenuLink(text: "Início", path: '/'),
+                  const SizedBox(width: 10),
+                  const MenuLink(text: "Pesquisar", path: '/pesquisa'),
+                  const SizedBox(width: 10),
+                  const MenuLink(text: "Sobre", path: '/sobre'),
+                  const SizedBox(width: 10),
+                  const MenuLink(text: "Ajuda", path: '/ajuda'),
+                  if (!auth.isLoggedIn) const SizedBox(width: 10),
+                  if (!auth.isLoggedIn) const Text('•'),
+                  if (!auth.isLoggedIn) const SizedBox(width: 12),
+                  if (!auth.isLoggedIn)
+                    CustomButton(
+                        text: 'Entrar', onPressed: () => context.go('/login'))
+                ],
+              )),
+          if (auth.isLoggedIn)
+            Container(
+                color: AppColors.purple,
+                padding: EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: MediaQuery.of(context).size.width * 0.10),
+                child: Row(
+                  children: [
+                    Text(
+                      'Olá, ${auth.user!.name}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: AppColors.textLight),
+                    ),
+                    const Spacer(),
+                    const MenuLink(text: "Favoritos", path: '/favoritos'),
+                    const SizedBox(width: 10),
+                    const MenuLink(text: "Perfil", path: '/perfil'),
+                    CustomButton(
+                      text: 'Sair',
+                      onPressed: () async {
+                        await context.read<AuthProvider>().logout();
+                      },
+                    )
+                  ],
+                ))
+        ],
+      ),
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 70);
 }

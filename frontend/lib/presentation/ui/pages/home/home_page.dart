@@ -17,23 +17,16 @@ class HomePage extends StatelessWidget {
 
     final auth = context.watch<AuthProvider>();
 
-    return Scaffold(
-      appBar: const CustomAppBar(),
+    return const Scaffold(
+      appBar: CustomAppBar(),
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Home!',
               style: TextStyle(fontSize: 24),
             ),
-            // CustomButton(
-            //   text: 'Sair',
-            //   onPressed: () async {
-            //     await context.read<AuthProvider>().logout();
-            //   },
-            // ),
-            //Text('Bem-vindo, ${auth.user?.name ?? 'usuário'}!')
           ],
         ),
       ),
