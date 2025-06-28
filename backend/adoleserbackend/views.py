@@ -4,9 +4,12 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.generics import GenericAPIView
+
 from .serializers import UserRegistrationSerializer, UserSerializer,\
-    UserProfileUpdateSerializer, LocationSerializer
+    UserProfileUpdateSerializer, LocationSerializer, PasswordResetRequestSerializer, PasswordResetSerializer
 from .models import User, Location
+from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -63,3 +66,30 @@ class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automa
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] # Exemplo de permissão
     # IsAuthenticatedOrReadOnly: Qualquer um pode ler, mas apenas usuários autenticados podem escrever.
     # Outras opções: permissions.AllowAny, permissions.IsAuthenticated, etc.
+
+class PasswordResetRequestView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = PasswordResetRequestSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"message": "Se o email existir, você receberá um código de recuperação."},
+            status=status.HTTP_200_OK
+        )
+
+
+class PasswordResetConfirmView(GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = PasswordResetSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"message": "Senha redefinida com sucesso."},
+            status=status.HTTP_200_OK
+        )
