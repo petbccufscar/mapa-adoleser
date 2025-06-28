@@ -5,7 +5,9 @@ from .views import (
     LogoutView,
     UserProfileView,
     CustomTokenObtainPairView,
-    LocationViewSet
+    LocationViewSet,
+    LocationReviewViewSet
+    #ActivityReviewViewSet
 )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -13,6 +15,9 @@ from rest_framework_simplejwt.views import (
 
 router = DefaultRouter()  # chama os cruds para url de locations
 router.register(r'locations', LocationViewSet, basename='location')
+router.register(r'location-reviews',LocationReviewViewSet, basename='locationreview')
+## descomentar, qnd for implementada o model activity
+#router.register(r'activity-reviews',ActivityReviewViewSet, basename='activityreview')
 
 urlpatterns = [
     path('register/', UserRegistrationView.as_view(), name='user_register'),
@@ -21,5 +26,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='user_logout'),
     path('profile/', UserProfileView.as_view(), name='user_profile'),
 
-    path('', include(router.urls)) # api/locations/...
+    path('', include(router.urls)) # api/locations/ e api/locations-reviews/ e...
 ]
