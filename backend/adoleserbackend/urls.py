@@ -6,6 +6,8 @@ from .views import (
     UserProfileView,
     CustomTokenObtainPairView,
     LocationViewSet,
+    PasswordResetRequestView,
+    PasswordResetConfirmView
     LocationReviewViewSet
     #ActivityReviewViewSet
 )
@@ -25,6 +27,10 @@ urlpatterns = [
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),    # Refresh token
     path('logout/', LogoutView.as_view(), name='user_logout'),
     path('profile/', UserProfileView.as_view(), name='user_profile'),
+    
+    # Recuperação de senha
+    path('password-reset/request/', PasswordResetRequestView.as_view(), name='password_reset_request'),
+    path('password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
     path('', include(router.urls)) # api/locations/ e api/locations-reviews/ e...
 ]
