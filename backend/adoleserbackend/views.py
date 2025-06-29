@@ -5,8 +5,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserRegistrationSerializer, UserSerializer,\
-    UserProfileUpdateSerializer, LocationSerializer
-from .models import User, Location
+    UserProfileUpdateSerializer, LocationSerializer, LocationReviewSerializer #, ActivityReviewSerializer
+from .models import User, Location, LocationReview #, ActivityReview
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -62,4 +62,22 @@ class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automa
     serializer_class = LocationSerializer # Especifica o serializer que esta view usará
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] # Exemplo de permissão
     # IsAuthenticatedOrReadOnly: Qualquer um pode ler, mas apenas usuários autenticados podem escrever.
-    # Outras opções: permissions.AllowAny, permissions.IsAuthenticated, etc.
+
+class LocationReviewViewSet(viewsets.ModelViewSet):
+    queryset = LocationReview.objects.all()
+    serializer_class = LocationReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    #salva automaticamente o usuário logado como o autor na review
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+# descomentar qnd model Activity for implementado
+# class ActivityReviewViewSet(viewsets.ModelViewSet):
+#     queryset = ActivityReview.objects.all()
+#     serializer_class = ActivityReviewSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    # # salva automaticamente o usuário logado como o autor na review
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)

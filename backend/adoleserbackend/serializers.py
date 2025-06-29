@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
-from .models import User, Location
+from .models import User, Location, LocationReview #, ActivityReview
 
 UserModel = get_user_model()
 
@@ -79,3 +79,27 @@ class LocationSerializer(serializers.ModelSerializer):
         return value
 
 
+class LocationReviewSerializer(serializers.ModelSerializer):
+    #campo user não é enviado por POST, é pego diretamente pelo back (pela funcao implementada na view)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    class Meta:
+        model = LocationReview
+        fields = ['id', 'name', 'description', 'nota', 'user', 'location']
+
+    def validate_nota(self, value):
+        if not 0 <= value <= 10:
+            raise serializers.ValidationError("The grade needs to be between 0 and 10.")
+        return value
+
+# descomentar quando model activity for implementado
+# class ActivityReviewSerializer(serializers.ModelSerializer):
+# #campo user não é enviado por POST, é pego diretamente pelo back (pela funcao implementada na view)
+   # user = serializers.PrimaryKeyRelatedField(read_only=True)
+#     class Meta:
+#         model = ActivityReview
+#         fields = ['id', 'name', 'description', 'nota', 'user', 'activity']
+
+    # def validate_nota(self, value):
+    #     if not 0 <= value <= 10:
+    #         raise serializers.ValidationError("The grade needs to be between 0 and 10.")
+    #     return value
