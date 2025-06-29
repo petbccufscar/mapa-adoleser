@@ -8,6 +8,8 @@ from .views import (
     LocationViewSet,
     PasswordResetRequestView,
     PasswordResetConfirmView
+    LocationReviewViewSet
+    #ActivityReviewViewSet
 )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -15,6 +17,9 @@ from rest_framework_simplejwt.views import (
 
 router = DefaultRouter()  # chama os cruds para url de locations
 router.register(r'locations', LocationViewSet, basename='location')
+router.register(r'location-reviews',LocationReviewViewSet, basename='locationreview')
+## descomentar, qnd for implementada o model activity
+#router.register(r'activity-reviews',ActivityReviewViewSet, basename='activityreview')
 
 urlpatterns = [
     path('register/', UserRegistrationView.as_view(), name='user_register'),
@@ -27,5 +32,5 @@ urlpatterns = [
     path('password-reset/request/', PasswordResetRequestView.as_view(), name='password_reset_request'),
     path('password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
-    path('', include(router.urls)) # api/locations/...
+    path('', include(router.urls)) # api/locations/ e api/locations-reviews/ e...
 ]

@@ -8,8 +8,10 @@ from rest_framework.generics import GenericAPIView
 
 from .serializers import UserRegistrationSerializer, UserSerializer,\
     UserProfileUpdateSerializer, LocationSerializer, PasswordResetRequestSerializer, PasswordResetSerializer
-from .models import User, Location
+from .models import User, Location  LocationReview #, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
+    UserProfileUpdateSerializer, LocationSerializer, LocationReviewSerializer #, ActivityReviewSerializer
+
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -93,3 +95,22 @@ class PasswordResetConfirmView(GenericAPIView):
             {"message": "Senha redefinida com sucesso."},
             status=status.HTTP_200_OK
         )
+
+class LocationReviewViewSet(viewsets.ModelViewSet):
+    queryset = LocationReview.objects.all()
+    serializer_class = LocationReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    #salva automaticamente o usuário logado como o autor na review
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+# descomentar qnd model Activity for implementado
+# class ActivityReviewViewSet(viewsets.ModelViewSet):
+#     queryset = ActivityReview.objects.all()
+#     serializer_class = ActivityReviewSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    # # salva automaticamente o usuário logado como o autor na review
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
