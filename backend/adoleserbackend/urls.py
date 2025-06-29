@@ -7,8 +7,8 @@ from .views import (
     CustomTokenObtainPairView,
     LocationViewSet,
     PasswordResetRequestView,
-    PasswordResetConfirmView
-    LocationReviewViewSet
+    PasswordResetConfirmView,
+    LocationReviewViewSet,
     #ActivityReviewViewSet
 )
 from rest_framework_simplejwt.views import (

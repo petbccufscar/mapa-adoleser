@@ -6,12 +6,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
 
-from .serializers import UserRegistrationSerializer, UserSerializer,\
-    UserProfileUpdateSerializer, LocationSerializer, PasswordResetRequestSerializer, PasswordResetSerializer
-from .models import User, Location  LocationReview #, ActivityReview
-from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
-    UserProfileUpdateSerializer, LocationSerializer, LocationReviewSerializer #, ActivityReviewSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, LocationReviewSerializer, PasswordResetRequestSerializer, PasswordResetSerializer #, ActivityReviewSerializer
 
+from .models import User, Location,  LocationReview #, ActivityReview
+from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
