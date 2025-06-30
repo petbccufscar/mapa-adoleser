@@ -61,8 +61,7 @@ class Review(models.Model):
     description = models.TextField(max_length=1023)
     nota = models.IntegerField(validators=[
         MinValueValidator(0), MaxValueValidator(10)], default=5)
-    user = models.ForeignKey(User,
-        on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
