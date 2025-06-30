@@ -6,9 +6,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
 
-from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, LocationReviewSerializer, PasswordResetRequestSerializer, PasswordResetSerializer #, ActivityReviewSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
 
-from .models import User, Location,  LocationReview #, ActivityReview
+from .models import User, Location,  LocationReview, Activity, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -67,6 +67,14 @@ class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automa
     # IsAuthenticatedOrReadOnly: Qualquer um pode ler, mas apenas usuários autenticados podem escrever.
     # Outras opções: permissions.AllowAny, permissions.IsAuthenticated, etc.
 
+class ActivityViewSet(viewsets.ModelViewSet):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)  # Define o usuário logado como autor da atividade
+
 class PasswordResetRequestView(GenericAPIView):
     permission_classes = [AllowAny]
     serializer_class = PasswordResetRequestSerializer
@@ -104,11 +112,11 @@ class LocationReviewViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 # descomentar qnd model Activity for implementado
-# class ActivityReviewViewSet(viewsets.ModelViewSet):
-#     queryset = ActivityReview.objects.all()
-#     serializer_class = ActivityReviewSerializer
-#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+class ActivityReviewViewSet(viewsets.ModelViewSet):
+    queryset = ActivityReview.objects.all()
+    serializer_class = ActivityReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     # # salva automaticamente o usuário logado como o autor na review
-    # def perform_create(self, serializer):
-    #     serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
