@@ -23,31 +23,38 @@ GoRouter createRouter(AuthProvider auth) {
       GoRoute(
           //name: 'Home',
           path: '/',
-          builder: (context, state) => const HomePage()),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: HomePage())),
       GoRoute(
           //name: 'Pesquisa',
           path: '/pesquisa',
-          builder: (context, state) => const SearchPage()),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: SearchPage())),
       GoRoute(
           //name: 'Perfil',
           path: '/perfil',
-          builder: (context, state) => const ProfilePage()),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: ProfilePage())),
       GoRoute(
           //name: 'Favoritos',
           path: '/favoritos',
-          builder: (context, state) => const FavoritesPage()),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: FavoritesPage())),
       GoRoute(
           //name: 'Ajuda',
           path: '/ajuda',
-          builder: (context, state) => const HelpPage()),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: HelpPage())),
       GoRoute(
           //name: 'Sobre',
           path: '/sobre',
-          builder: (context, state) => const AboutPage()),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: AboutPage())),
       GoRoute(
           //name: 'Login',
           path: '/login',
-          builder: (context, state) => const LoginPage())
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: LoginPage()))
     ],
   );
 }

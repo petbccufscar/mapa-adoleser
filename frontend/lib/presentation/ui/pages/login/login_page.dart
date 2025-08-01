@@ -1,14 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/back_to_button.dart';
+import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_app_bar.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/validators.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../widgets/custom_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -50,64 +49,82 @@ class _LoginPageState extends State<LoginPage> {
     final auth = context.watch<AuthProvider>();
 
     return Scaffold(
-        body: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CustomBackButton(),
-                CustomTextField(
-                    label: 'E-mail',
-                    hint: 'Digite seu e-mail',
-                    controller: _emailController,
-                    validator: Validators.isEmail),
-                const SizedBox(height: 12),
-                CustomTextField(
-                    label: 'Senha',
-                    hint: 'Digite sua senha',
-                    controller: _passwordController,
-                    obscureText: true,
-                    validator: Validators.isNotEmpty),
-                const SizedBox(height: 10),
-                GestureDetector(
-                    onTap: () {
-                      log('CLICK: texto do esqueceu a senha');
-                      // Navegar, abrir link, etc.
-                    },
-                    child: Text('Esqueceu a senha?',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(decoration: TextDecoration.underline))),
-                const SizedBox(height: 12),
-                if (auth.error != null)
-                  Text(
-                    auth.error!,
-                    style: const TextStyle(color: Colors.red),
+        appBar: CustomAppBar(isLoggedIn: auth.isLoggedIn),
+        body: ResponsivePageWrapper(
+            child: Center(
+                child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 450),
+          child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Entre com sua conta",
+                      style: Theme.of(context).textTheme.headlineMedium),
+                  const SizedBox(height: 20),
+                  CustomTextField(
+                      label: 'E-mail',
+                      hint: 'Digite seu e-mail',
+                      controller: _emailController,
+                      validator: Validators.isEmail),
+                  const SizedBox(height: 12),
+                  CustomTextField(
+                      label: 'Senha',
+                      hint: 'Digite sua senha',
+                      controller: _passwordController,
+                      obscureText: true,
+                      validator: Validators.isNotEmpty),
+                  const SizedBox(height: 12),
+                  ActionText(
+                    text: "Esqueceu a senha?",
+                    action: () => {context.go("/sobre")},
+                    underlined: true,
+                    boldOnHover: true,
                   ),
-                const SizedBox(height: 12),
-                CustomButton(
-                    text: "Entrar", onPressed: auth.isLoading ? null : _submit)
-                // CustomDropdownField(
-                //   hint: "Categoria",
-                //   label: 'Selecione uma categoria',
-                //   value: selectedOption,
-                //   items: options
-                //       .map((op) => DropdownMenuItem(
-                //             value: op,
-                //             child: Text(op),
-                //           ))
-                //       .toList(),
-                //   onChanged: (value) => {},
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'Selecione uma categoria';
-                //     }
-                //
-                //     return null;
-                //   },
-                // ),
-              ],
-            )));
+                  const SizedBox(height: 12),
+                  if (auth.error != null)
+                    Text(
+                      auth.error!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  const SizedBox(height: 12),
+                  CustomButton(
+                      text: "Entrar",
+                      onPressed: auth.isLoading ? null : _submit),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Text("Ainda não tem uma conta?"),
+                      ActionText(
+                        text: "Crie uma!",
+                        action: () => {context.go("/ajuda")},
+                        underlined: true,
+                        boldOnHover: true,
+                      ),
+                    ],
+                  )
+
+                  // CustomDropdownField(
+                  //   hint: "Categoria",
+                  //   label: 'Selecione uma categoria',
+                  //   value: selectedOption,
+                  //   items: options
+                  //       .map((op) => DropdownMenuItem(
+                  //             value: op,
+                  //             child: Text(op),
+                  //           ))
+                  //       .toList(),
+                  //   onChanged: (value) => {},
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Selecione uma categoria';
+                  //     }
+                  //
+                  //     return null;
+                  //   },
+                  // ),
+                ],
+              )),
+        ))));
   }
 }
