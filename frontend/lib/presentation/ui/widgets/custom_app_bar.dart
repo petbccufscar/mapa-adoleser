@@ -1,92 +1,135 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
+import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
+import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../../providers/auth_provider.dart';
 
 /// Widget de menu que se adapta ao tamanho da tela (mobile, tablet, desktop).
 /// Utilizado para navegação em múltiplas resoluções.
 
-/// Links do menu
-class MenuLink extends StatefulWidget {
-  final String text; // Texto exibido no botão
-  final String path; // Caminho de navegação ao clicar
-
-  const MenuLink({
-    super.key,
-    required this.text,
-    required this.path,
-  });
-
-  @override
-  State<MenuLink> createState() => _MenuLinkState();
-}
-
-class _MenuLinkState extends State<MenuLink> {
-  bool _isHovering = false; // Controla se o mouse está sobre o botão
-
-  @override
-  Widget build(BuildContext context) {
-    bool _isCurrentRoute =
-        GoRouter.of(context).routeInformationProvider.value.uri.toString() ==
-            widget.path;
-
-    return MouseRegion(
-      cursor: SystemMouseCursors.click, // Muda o cursor para "mãozinha"
-      onEnter: (_) => setState(() => _isHovering = true), // Ativa sublinhado
-      onExit: (_) => setState(() => _isHovering = false), // Remove sublinhado
-      child: InkWell(
-        onTap: () => context.go(widget.path), // Navega para a rota ao clicar
-        hoverColor: Colors.transparent, // Remove cor de hover
-        splashColor: Colors.transparent, // Remove cor de splash
-        highlightColor: Colors.transparent, // Remove cor de destaque
-        child: Container(
-          padding: const EdgeInsets.all(2), // Espaçamento interno
-          child: Text(
-            widget.text,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                decoration: _isHovering ? TextDecoration.underline : null,
-                fontWeight: _isCurrentRoute ? FontWeight.w600 : null,
-                color: _isCurrentRoute ? AppColors.purple : null),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  final bool isLoggedIn;
+
+  const CustomAppBar({super.key, required this.isLoggedIn});
+
+  @override
+  Size get preferredSize => Size.fromHeight(
+        isLoggedIn
+            ? AppDimensions.loggedInAppBarHeight
+            : AppDimensions.loggedOutAppBarHeight,
+      );
 
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final currentRoute =
+        GoRouter.of(context).routeInformationProvider.value.uri.toString();
 
-    return AppBar(
-      title: Image.asset('images/ADOLESER.png', width: 130),
-      titleSpacing: MediaQuery.of(context).size.width * 0.10,
-      elevation: 2.0,
-      actions: [
-        const MenuLink(text: "Início", path: '/'),
-        const SizedBox(width: 10),
-        const MenuLink(text: "Pesquisar", path: '/pesquisa'),
-        const SizedBox(width: 10),
-        const MenuLink(text: "Sobre", path: '/sobre'),
-        const SizedBox(width: 10),
-        const MenuLink(text: "Ajuda", path: '/ajuda'),
-        if (!auth.isLoggedIn) const SizedBox(width: 10),
-        if (!auth.isLoggedIn) const Text('•'),
-        if (!auth.isLoggedIn) const SizedBox(width: 12),
-        if (!auth.isLoggedIn)
-          CustomButton(text: 'Entrar', onPressed: () => context.go('/login'))
+    return Column(
+      children: [
+        Container(
+            height: AppDimensions.loggedOutAppBarHeight,
+            color: AppColors.backgroundSmoke,
+            padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: ResponsiveUtils.horizontalPadding(context)),
+            child: Row(
+              children: [
+                Image.asset('images/ADOLESER.png', width: 160),
+                const Spacer(),
+                ActionText(
+                    text: "Início",
+                    action: () => {context.go("/")},
+                    bold: currentRoute == "/",
+                    boldOnHover: true,
+                    color: currentRoute == "/" ? AppColors.purple : null,
+                    colorOnHover: AppColors.purple),
+                const SizedBox(width: 15),
+                ActionText(
+                    text: "Pesquisar",
+                    action: () => {context.go("/pesquisa")},
+                    bold: currentRoute == "/pesquisa",
+                    boldOnHover: true,
+                    color:
+                        currentRoute == "/pesquisa" ? AppColors.purple : null,
+                    colorOnHover: AppColors.purple),
+                const SizedBox(width: 15),
+                ActionText(
+                    text: "Sobre",
+                    action: () => {context.go("/sobre")},
+                    bold: currentRoute == "/sobre",
+                    boldOnHover: true,
+                    color: currentRoute == "/sobre" ? AppColors.purple : null,
+                    colorOnHover: AppColors.purple),
+                const SizedBox(width: 15),
+                ActionText(
+                    text: "Ajuda",
+                    action: () => {context.go("/ajuda")},
+                    bold: currentRoute == "/ajuda",
+                    boldOnHover: true,
+                    color: currentRoute == "/ajuda" ? AppColors.purple : null,
+                    colorOnHover: AppColors.purple),
+                if (!auth.isLoggedIn && currentRoute != "/login")
+                  const SizedBox(width: 10),
+                if (!auth.isLoggedIn && currentRoute != "/login")
+                  const Text('•'),
+                if (!auth.isLoggedIn && currentRoute != "/login")
+                  const SizedBox(width: 12),
+                if (!auth.isLoggedIn && currentRoute != "/login")
+                  CustomButton(
+                      text: 'Entrar', onPressed: () => context.go('/login'))
+              ],
+            )),
+        if (auth.isLoggedIn)
+          Container(
+              height: AppDimensions.appBarSecondaryHeight,
+              color: AppColors.pink,
+              padding: EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: ResponsiveUtils.horizontalPadding(context)),
+              child: Row(
+                children: [
+                  Text(
+                    'Olá, ${auth.user!.name}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: AppColors.textLight),
+                  ),
+                  const Spacer(),
+                  ActionText(
+                      text: "Favoritos",
+                      action: () => {context.go("/favoritos")},
+                      bold: currentRoute == "/favoritos",
+                      boldOnHover: true,
+                      color: currentRoute == "/favoritos"
+                          ? AppColors.textSecondary
+                          : AppColors.textLight),
+                  const SizedBox(width: 15),
+                  ActionText(
+                      text: "Perfil",
+                      action: () => {context.go("/perfil")},
+                      bold: currentRoute == "/perfil",
+                      boldOnHover: true,
+                      color: currentRoute == "/perfil"
+                          ? AppColors.textSecondary
+                          : AppColors.textLight),
+                  const SizedBox(width: 15),
+                  ActionText(
+                    text: "Sair",
+                    action: () async =>
+                        {await context.read<AuthProvider>().logout()},
+                    boldOnHover: true,
+                    color: AppColors.textLight,
+                    colorOnHover: AppColors.textPrimary,
+                  ),
+                ],
+              ))
       ],
-      actionsPadding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.10),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

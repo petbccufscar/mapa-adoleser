@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_app_bar.dart';
+import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../providers/auth_provider.dart';
-import '../../widgets/custom_app_bar.dart';
 
 /// Página inicial da aplicação, exibida ao iniciar.
 /// Integra componentes visuais e gerencia o layout da home.
@@ -18,22 +17,17 @@ class HomePage extends StatelessWidget {
     final auth = context.watch<AuthProvider>();
 
     return Scaffold(
-      appBar: const CustomAppBar(),
-      body: Center(
+      appBar: CustomAppBar(
+        isLoggedIn: auth.isLoggedIn,
+      ),
+      body: const Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Home!',
               style: TextStyle(fontSize: 24),
             ),
-            // CustomButton(
-            //   text: 'Sair',
-            //   onPressed: () async {
-            //     await context.read<AuthProvider>().logout();
-            //   },
-            // ),
-            //Text('Bem-vindo, ${auth.user?.name ?? 'usuário'}!')
           ],
         ),
       ),

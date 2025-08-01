@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_app_bar.dart';
+import 'package:mapa_adoleser/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    final auth = context.watch<AuthProvider>();
+
+    return Scaffold(
+      appBar: CustomAppBar(isLoggedIn: auth.isLoggedIn),
+      body: const Center(
         child: Text(
           'Perfil!',
           style: TextStyle(fontSize: 24),

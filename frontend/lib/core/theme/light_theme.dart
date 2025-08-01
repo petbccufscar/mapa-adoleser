@@ -12,7 +12,7 @@ ThemeData lightTheme = ThemeData(
       onPrimary: AppColors.textLight,
       secondary: AppColors.purple,
       onSecondary: AppColors.textLight,
-      surface: AppColors.backgroundSmoke,
+      surface: AppColors.backgroundWhite,
       surfaceBright: AppColors.backgroundWhite,
       onSurface: AppColors.textPrimary,
       error: AppColors.warning,
@@ -50,6 +50,18 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
     textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 32,
+          fontWeight: FontWeight.w700),
+      headlineMedium: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 24,
+          fontWeight: FontWeight.w700),
+      headlineSmall: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 20,
+          fontWeight: FontWeight.w700),
       labelMedium: TextStyle(
           color: AppColors.textPrimary,
           fontSize: 14,
