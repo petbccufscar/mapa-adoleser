@@ -22,7 +22,7 @@ class ActionText extends StatefulWidget {
       this.bold = false,
       this.boldOnHover = false,
       this.color = AppColors.textSecondary,
-      this.colorOnHover = AppColors.textSecondary,
+      this.colorOnHover,
       this.mouse = SystemMouseCursors.click});
 
   @override
@@ -31,6 +31,8 @@ class ActionText extends StatefulWidget {
 
 class _ActionTextState extends State<ActionText> {
   bool _isHovering = false; // Controla se o mouse está sobre o botão
+
+  Color get _effectiveColorOnHover => widget.colorOnHover ?? widget.color!;
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +45,19 @@ class _ActionTextState extends State<ActionText> {
         hoverColor: Colors.transparent, // Remove cor de hover
         splashColor: Colors.transparent, // Remove cor de splash
         highlightColor: Colors.transparent, // Remove cor de destaque
-        child: Container(
-          padding: const EdgeInsets.all(2), // Espaçamento interno
-          child: Text(
-            widget.text,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                decoration:
-                    widget.underlined || widget.underlinedOnHover && _isHovering
-                        ? TextDecoration.underline
-                        : null,
-                fontWeight: widget.bold || widget.boldOnHover && _isHovering
-                    ? FontWeight.w600
-                    : null,
-                color: _isHovering ? widget.colorOnHover : widget.color),
-          ),
+        child: Text(
+          widget.text,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              decorationColor:
+                  _isHovering ? _effectiveColorOnHover : widget.color,
+              decoration:
+                  widget.underlined || widget.underlinedOnHover && _isHovering
+                      ? TextDecoration.underline
+                      : null,
+              fontWeight: widget.bold || widget.boldOnHover && _isHovering
+                  ? FontWeight.w600
+                  : null,
+              color: _isHovering ? _effectiveColorOnHover : widget.color),
         ),
       ),
     );

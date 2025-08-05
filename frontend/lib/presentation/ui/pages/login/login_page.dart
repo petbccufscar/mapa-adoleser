@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mapa_adoleser/core/constants.dart';
+import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_app_bar.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
 import 'package:mapa_adoleser/presentation/validators.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -41,90 +44,86 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  // String? selectedOption;
-  // final List<String> options = const ['Academia', 'Parque', 'Praça'];
-
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
 
+    final isLoggedIn = auth.isLoggedIn;
+
     return Scaffold(
-        appBar: CustomAppBar(isLoggedIn: auth.isLoggedIn),
-        body: ResponsivePageWrapper(
-            child: Center(
-                child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 450),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Entre com sua conta",
-                      style: Theme.of(context).textTheme.headlineMedium),
-                  const SizedBox(height: 20),
-                  CustomTextField(
-                      label: 'E-mail',
-                      hint: 'Digite seu e-mail',
-                      controller: _emailController,
-                      validator: Validators.isEmail),
-                  const SizedBox(height: 12),
-                  CustomTextField(
-                      label: 'Senha',
-                      hint: 'Digite sua senha',
+      appBar: CustomAppBar(isLoggedIn: isLoggedIn),
+      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
+          ? CustomDrawer(isLoggedIn: isLoggedIn)
+          : null,
+      body: Center(
+        child: SingleChildScrollView(
+          child: ResponsivePageWrapper(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 450),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 15,
+                  children: [
+                    Text(AppTexts.login.title,
+                        style: Theme.of(context).textTheme.headlineMedium),
+                    CustomTextField(
+                        label: AppTexts.login.emailLabel,
+                        hint: AppTexts.login.emailHint,
+                        controller: _emailController,
+                        textInputAction: TextInputAction.next,
+                        validator: Validators.isEmail),
+                    CustomTextField(
+                      label: AppTexts.login.passwordLabel,
+                      hint: AppTexts.login.passwordHint,
                       controller: _passwordController,
                       obscureText: true,
-                      validator: Validators.isNotEmpty),
-                  const SizedBox(height: 12),
-                  ActionText(
-                    text: "Esqueceu a senha?",
-                    action: () => {context.go("/sobre")},
-                    underlined: true,
-                    boldOnHover: true,
-                  ),
-                  const SizedBox(height: 12),
-                  if (auth.error != null)
-                    Text(
-                      auth.error!,
-                      style: const TextStyle(color: Colors.red),
+                      validator: Validators.isNotEmpty,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) => _submit(),
                     ),
-                  const SizedBox(height: 12),
-                  CustomButton(
-                      text: "Entrar",
-                      onPressed: auth.isLoading ? null : _submit),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Text("Ainda não tem uma conta?"),
-                      ActionText(
-                        text: "Crie uma!",
-                        action: () => {context.go("/ajuda")},
-                        underlined: true,
-                        boldOnHover: true,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 5,
+                      children: [
+                        ActionText(
+                          text: AppTexts.login.forgotPassword,
+                          action: () => {context.go("/sobre")},
+                          underlined: true,
+                          boldOnHover: true,
+                        ),
+                      ],
+                    ),
+                    if (auth.error != null)
+                      Text(
+                        auth.error!,
+                        style: const TextStyle(color: Colors.red),
                       ),
-                    ],
-                  )
-
-                  // CustomDropdownField(
-                  //   hint: "Categoria",
-                  //   label: 'Selecione uma categoria',
-                  //   value: selectedOption,
-                  //   items: options
-                  //       .map((op) => DropdownMenuItem(
-                  //             value: op,
-                  //             child: Text(op),
-                  //           ))
-                  //       .toList(),
-                  //   onChanged: (value) => {},
-                  //   validator: (value) {
-                  //     if (value == null || value.isEmpty) {
-                  //       return 'Selecione uma categoria';
-                  //     }
-                  //
-                  //     return null;
-                  //   },
-                  // ),
-                ],
-              )),
-        ))));
+                    CustomButton(
+                      text: AppTexts.login.loginButton,
+                      onPressed: auth.isLoading ? null : _submit,
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 5,
+                      children: [
+                        Text(AppTexts.login.unregistered),
+                        ActionText(
+                          text: AppTexts.login.createAccount,
+                          action: () => {context.go("/ajuda")},
+                          underlined: true,
+                          boldOnHover: true,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

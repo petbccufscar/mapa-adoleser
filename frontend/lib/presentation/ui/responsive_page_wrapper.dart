@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 
 class ResponsivePageWrapper extends StatelessWidget {
@@ -9,18 +8,12 @@ class ResponsivePageWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height -
-                  AppDimensions.loggedInAppBarHeight,
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: ResponsiveUtils.horizontalPadding(context),
-                vertical: 25,
-              ),
-              child: child,
-            )));
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: ResponsiveUtils.horizontalPadding(context),
+        vertical: ResponsiveUtils.verticalPadding(context),
+      ),
+      child: child,
+    );
   }
 }

@@ -19,6 +19,29 @@ class CustomDropdownField<T> extends StatelessWidget {
       required this.onChanged,
       this.validator});
 
+  // String? selectedOption;
+  // final List<String> options = const ['Academia', 'Parque', 'Praça'];
+
+  // CustomDropdownField(
+  //   hint: "Categoria",
+  //   label: 'Selecione uma categoria',
+  //   value: selectedOption,
+  //   items: options
+  //       .map((op) => DropdownMenuItem(
+  //             value: op,
+  //             child: Text(op),
+  //           ))
+  //       .toList(),
+  //   onChanged: (value) => {},
+  //   validator: (value) {
+  //     if (value == null || value.isEmpty) {
+  //       return 'Selecione uma categoria';
+  //     }
+  //
+  //     return null;
+  //   },
+  // ),
+
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

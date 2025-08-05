@@ -44,9 +44,12 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: themeProvider.themeMode,
       builder: (context, child) => ResponsiveBreakpoints.builder(breakpoints: [
-        const Breakpoint(start: 0, end: 550, name: MOBILE),
-        const Breakpoint(start: 551, end: 1101, name: TABLET),
-        const Breakpoint(start: 1101, end: 1600, name: DESKTOP),
+        const Breakpoint(start: 0, end: 560, name: PHONE),
+        const Breakpoint(start: 561, end: 800, name: TABLET),
+        const Breakpoint(start: 801, end: 1200, name: 'LARGE_TABLET'),
+        const Breakpoint(start: 1201, end: 1600, name: DESKTOP),
+        const Breakpoint(
+            start: 1601, end: double.infinity, name: 'LARGE_DESKTOP')
       ], child: child!),
       debugShowCheckedModeBanner: false,
     );
