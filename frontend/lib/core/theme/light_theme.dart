@@ -5,14 +5,15 @@ import 'app_colors.dart';
 /// Configura o tema claro da aplicação, com base em `ThemeData`, para ambientes com alta luminosidade.
 
 ThemeData lightTheme = ThemeData(
+    dividerColor: AppColors.inputBorder,
     brightness: Brightness.light,
     fontFamily: 'Lexend',
     colorScheme: const ColorScheme.light(
       primary: AppColors.purple,
       onPrimary: AppColors.textLight,
-      secondary: AppColors.purple,
+      secondary: AppColors.pink,
       onSecondary: AppColors.textLight,
-      surface: AppColors.backgroundSmoke,
+      surface: AppColors.backgroundWhite,
       surfaceBright: AppColors.backgroundWhite,
       onSurface: AppColors.textPrimary,
       error: AppColors.warning,
@@ -50,13 +51,29 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
     textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 32,
+          fontWeight: FontWeight.w700),
+      headlineMedium: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 24,
+          fontWeight: FontWeight.w700),
+      headlineSmall: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 20,
+          fontWeight: FontWeight.w700),
+      labelSmall: TextStyle(
+        color: AppColors.textSecondary,
+        fontSize: 12,
+      ),
       labelMedium: TextStyle(
           color: AppColors.textPrimary,
           fontSize: 14,
           fontWeight: FontWeight.w500),
-      bodyLarge: TextStyle(color: AppColors.textPrimary),
-      bodyMedium: TextStyle(
-          color: AppColors.textSecondary, fontWeight: FontWeight.w400),
+      bodyLarge: TextStyle(color: AppColors.textPrimary, fontSize: 16),
+      bodyMedium: TextStyle(color: AppColors.textPrimary, fontSize: 14),
+      bodySmall: TextStyle(color: AppColors.textSecondary, fontSize: 12),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

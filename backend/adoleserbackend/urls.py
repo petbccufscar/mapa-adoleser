@@ -5,7 +5,12 @@ from .views import (
     LogoutView,
     UserProfileView,
     CustomTokenObtainPairView,
-    LocationViewSet
+    LocationViewSet,
+    PasswordResetRequestView,
+    PasswordResetConfirmView,
+    ActivityViewSet,
+    LocationReviewViewSet,
+    ActivityReviewViewSet
 )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -13,6 +18,9 @@ from rest_framework_simplejwt.views import (
 
 router = DefaultRouter()  # chama os cruds para url de locations
 router.register(r'locations', LocationViewSet, basename='location')
+router.register(r'location-reviews',LocationReviewViewSet, basename='locationreview')
+router.register(r'activity-reviews',ActivityReviewViewSet, basename='activityreview')
+router.register(r'activities', ActivityViewSet, basename='activity')
 
 urlpatterns = [
     path('register/', UserRegistrationView.as_view(), name='user_register'),
@@ -20,6 +28,10 @@ urlpatterns = [
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),    # Refresh token
     path('logout/', LogoutView.as_view(), name='user_logout'),
     path('profile/', UserProfileView.as_view(), name='user_profile'),
+    
+    # Recuperação de senha
+    path('password-reset/request/', PasswordResetRequestView.as_view(), name='password_reset_request'),
+    path('password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
-    path('', include(router.urls)) # api/locations/...
+    path('', include(router.urls)) # api/locations/ e api/locations-reviews/ e...
 ]
