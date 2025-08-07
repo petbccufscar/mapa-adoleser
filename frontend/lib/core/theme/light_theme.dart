@@ -92,3 +92,13 @@ ThemeData lightTheme = ThemeData(
       size: 24,
     ),
     useMaterial3: true);
+//Tema botão de avaliação
+final ButtonStyle avaliacaoButtonStyle = ElevatedButton.styleFrom(
+  backgroundColor: AppColors.backgroundMain,
+  foregroundColor: AppColors.textPrimary,
+  textStyle: const TextStyle(fontWeight: FontWeight.bold),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10),
+  ),
+  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+);
