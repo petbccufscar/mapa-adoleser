@@ -20,6 +20,7 @@ ThemeData lightTheme = ThemeData(
       onError: AppColors.textPrimary,
     ),
     inputDecorationTheme: const InputDecorationTheme(
+      contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
         borderSide: BorderSide(

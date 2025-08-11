@@ -66,11 +66,11 @@ class DesktopAppBar extends StatelessWidget {
                   colorOnHover: AppColors.purple),
               const SizedBox(width: 15),
               ActionText(
-                  text: "Ajuda",
-                  action: () => {context.go("/ajuda")},
-                  bold: currentRoute == "/ajuda",
+                  text: "Fale Conosco",
+                  action: () => {context.go("/contato")},
+                  bold: currentRoute == "/contato",
                   boldOnHover: true,
-                  color: currentRoute == "/ajuda" ? AppColors.purple : null,
+                  color: currentRoute == "/contato" ? AppColors.purple : null,
                   colorOnHover: AppColors.purple),
               if (!isLoggedIn && currentRoute != "/login") ...[
                 const SizedBox(width: 10),

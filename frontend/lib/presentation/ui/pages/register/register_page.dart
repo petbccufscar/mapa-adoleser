@@ -13,22 +13,27 @@ import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart'
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _nameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
 
     super.dispose();
   }
@@ -37,7 +42,8 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState?.validate() ?? false) {
       final auth = context.read<AuthProvider>();
 
-      await auth.login(_emailController.text, _passwordController.text);
+      await auth.register(_emailController.text, _nameController.text,
+          DateTime.now(), _passwordController.text);
 
       if (auth.isLoggedIn && mounted) {
         context.go('/');
@@ -67,33 +73,38 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   spacing: 15,
                   children: [
-                    Text(AppTexts.login.title,
+                    Text(AppTexts.register.title,
                         style: Theme.of(context).textTheme.headlineMedium),
                     CustomTextField(
-                        label: AppTexts.login.emailLabel,
-                        hint: AppTexts.login.emailHint,
+                        label: AppTexts.register.emailLabel,
+                        hint: AppTexts.register.emailHint,
                         controller: _emailController,
                         textInputAction: TextInputAction.next,
                         validator: Validators.isEmail),
+                    CustomTextField(
+                        label: AppTexts.register.nameLabel,
+                        hint: AppTexts.register.nameHint,
+                        controller: _nameController,
+                        textInputAction: TextInputAction.next,
+                        validator: Validators.isNotEmpty),
                     CustomPasswordField(
-                      label: AppTexts.login.passwordLabel,
-                      hint: AppTexts.login.passwordHint,
+                      label: AppTexts.register.passwordLabel,
+                      hint: AppTexts.register.passwordHint,
                       controller: _passwordController,
-                      validator: Validators.isNotEmpty,
-                      textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (_) => _submit(),
+                      textInputAction: TextInputAction.next,
+                      showPasswordStrength: true,
+                      validator: Validators.isValidPassword,
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 5,
-                      children: [
-                        ActionText(
-                          text: AppTexts.login.forgotPassword,
-                          action: () => {context.go("/sobre")},
-                          underlined: true,
-                          boldOnHover: true,
-                        ),
-                      ],
+                    CustomPasswordField(
+                      label: AppTexts.register.confirmPasswordLabel,
+                      hint: AppTexts.register.confirmPasswordHint,
+                      controller: _confirmPasswordController,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) => Validators.passwordsMatch(
+                        value,
+                        _passwordController.text,
+                      ),
+                      onFieldSubmitted: (_) => _submit(),
                     ),
                     if (auth.error != null)
                       Text(
@@ -101,17 +112,17 @@ class _LoginPageState extends State<LoginPage> {
                         style: const TextStyle(color: Colors.red),
                       ),
                     CustomButton(
-                      text: AppTexts.login.loginButton,
+                      text: AppTexts.register.registerButton,
                       onPressed: auth.isLoading ? null : _submit,
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       spacing: 5,
                       children: [
-                        Text(AppTexts.login.unregistered),
+                        Text(AppTexts.register.registered),
                         ActionText(
-                          text: AppTexts.login.createAccount,
-                          action: () => {context.go("/cadastro")},
+                          text: AppTexts.register.loginAccount,
+                          action: () => {context.go("/login")},
                           underlined: true,
                           boldOnHover: true,
                         ),

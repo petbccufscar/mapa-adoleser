@@ -26,6 +26,31 @@ class CustomDrawer extends StatelessWidget {
 
     final userName = context.watch<AuthProvider>().user?.name;
 
+    Widget route(String name, String route) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: currentRoute == route
+            ? const BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: AppColors.purple,
+                    width: 4,
+                  ),
+                ),
+              )
+            : null,
+        child: ActionText(
+          text: name,
+          action: () => {context.go(route)},
+          bold: currentRoute == route,
+          boldOnHover: true,
+          color: currentRoute == route
+              ? AppColors.purple
+              : AppColors.textSecondary,
+        ),
+      );
+    }
+
     return Drawer(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
@@ -55,7 +80,7 @@ class CustomDrawer extends StatelessWidget {
                   ActionText(
                     text: "crie sua conta",
                     action: () {
-                      context.go('/ajuda');
+                      context.go('/cadastro');
                     },
                     underlined: true,
                     color: AppColors.textLight,
@@ -107,140 +132,14 @@ class CustomDrawer extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     spacing: 5,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        decoration: currentRoute == "/"
-                            ? const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: AppColors.purple, // Cor da borda
-                                    width: 4, // Largura da borda
-                                  ),
-                                ),
-                              )
-                            : null,
-                        child: ActionText(
-                            text: "Início",
-                            action: () => {context.go("/")},
-                            bold: currentRoute == "/",
-                            boldOnHover: true,
-                            color: currentRoute == "/"
-                                ? AppColors.purple
-                                : AppColors.textSecondary),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        decoration: currentRoute == "/pesquisa"
-                            ? const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: AppColors.purple, // Cor da borda
-                                    width: 4, // Largura da borda
-                                  ),
-                                ),
-                              )
-                            : null,
-                        child: ActionText(
-                            text: "Pesquisa",
-                            action: () => {context.go("/pesquisa")},
-                            bold: currentRoute == "/pesquisa",
-                            boldOnHover: true,
-                            color: currentRoute == "/pesquisa"
-                                ? AppColors.purple
-                                : AppColors.textSecondary),
-                      ),
+                      route('Início', '/'),
+                      route('Pesquisa', '/pesquisa'),
                       if (isLoggedIn) ...[
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 16),
-                          decoration: currentRoute == "/favoritos"
-                              ? const BoxDecoration(
-                                  border: Border(
-                                    left: BorderSide(
-                                      color: AppColors.purple, // Cor da borda
-                                      width: 4, // Largura da borda
-                                    ),
-                                  ),
-                                )
-                              : null,
-                          child: ActionText(
-                              text: "Favoritos",
-                              action: () => {context.go("/favoritos")},
-                              bold: currentRoute == "/favoritos",
-                              boldOnHover: true,
-                              color: currentRoute == "/favoritos"
-                                  ? AppColors.purple
-                                  : AppColors.textSecondary),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 16),
-                          decoration: currentRoute == "/perfil"
-                              ? const BoxDecoration(
-                                  border: Border(
-                                    left: BorderSide(
-                                      color: AppColors.purple, // Cor da borda
-                                      width: 4, // Largura da borda
-                                    ),
-                                  ),
-                                )
-                              : null,
-                          child: ActionText(
-                              text: "Perfil",
-                              action: () => {context.go("/perfil")},
-                              bold: currentRoute == "/perfil",
-                              boldOnHover: true,
-                              color: currentRoute == "/perfil"
-                                  ? AppColors.purple
-                                  : AppColors.textSecondary),
-                        ),
+                        route('Favoritos', '/favotiros'),
+                        route('Perfil', '/perfil'),
                       ],
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        decoration: currentRoute == "/sobre"
-                            ? const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: AppColors.purple, // Cor da borda
-                                    width: 4, // Largura da borda
-                                  ),
-                                ),
-                              )
-                            : null,
-                        child: ActionText(
-                            text: "Sobre",
-                            action: () => {context.go("/sobre")},
-                            bold: currentRoute == "/sobre",
-                            boldOnHover: true,
-                            color: currentRoute == "/sobre"
-                                ? AppColors.purple
-                                : AppColors.textSecondary),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        decoration: currentRoute == "/ajuda"
-                            ? const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: AppColors.purple, // Cor da borda
-                                    width: 4, // Largura da borda
-                                  ),
-                                ),
-                              )
-                            : null,
-                        child: ActionText(
-                            text: "Ajuda",
-                            action: () => {context.go("/ajuda")},
-                            bold: currentRoute == "/ajuda",
-                            boldOnHover: true,
-                            color: currentRoute == "/ajuda"
-                                ? AppColors.purple
-                                : AppColors.textSecondary),
-                      ),
+                      route('Sobre', '/sobre'),
+                      route('Fale Conosco', '/contato'),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8, horizontal: 16),

@@ -1,11 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/presentation/routes/guards.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/about/about_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/contact/contact_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/favorites/favorites_page.dart';
-import 'package:mapa_adoleser/presentation/ui/pages/help/help_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/home/home_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/login/login_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/message/message_result_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/profile/profile_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/register/register_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/search/search_page.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 
@@ -16,7 +18,7 @@ GoRouter createRouter(AuthProvider auth) {
   return GoRouter(
     refreshListenable: auth,
     debugLogDiagnostics: true,
-    initialLocation: '/',
+    initialLocation: '/contato',
     //errorBuilder: (context, state) => const ErrorPage(),
     redirect: (context, state) => authGuard(auth, state),
     routes: [
@@ -41,10 +43,24 @@ GoRouter createRouter(AuthProvider auth) {
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: FavoritesPage())),
       GoRoute(
-          //name: 'Ajuda',
-          path: '/ajuda',
+          //name: 'Contato',
+          path: '/contato',
           pageBuilder: (context, state) =>
-              const NoTransitionPage(child: HelpPage())),
+              const NoTransitionPage(child: ContactPage()),
+          routes: [
+            GoRoute(
+              path: '/envio',
+              pageBuilder: (context, state) {
+                final data = state.extra as Map<String, dynamic>;
+
+                return NoTransitionPage(
+                    child: MessageResultPage(
+                  title: data['title'] as String,
+                  message: data['message'] as String,
+                ));
+              },
+            )
+          ]),
       GoRoute(
           //name: 'Sobre',
           path: '/sobre',
@@ -54,7 +70,12 @@ GoRouter createRouter(AuthProvider auth) {
           //name: 'Login',
           path: '/login',
           pageBuilder: (context, state) =>
-              const NoTransitionPage(child: LoginPage()))
+              const NoTransitionPage(child: LoginPage())),
+      GoRoute(
+          //name: 'Cadastro',
+          path: '/cadastro',
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: RegisterPage()))
     ],
   );
 }

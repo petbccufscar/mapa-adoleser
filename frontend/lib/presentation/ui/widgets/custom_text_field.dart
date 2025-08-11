@@ -5,25 +5,25 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String label; // Label do input
   final String? hint; // Placeholder o input
-  final TextEditingController controller; // Controler para digitação
+  final int maxLines;
   final TextInputType keyboardType; // Tipo de input
-  final bool obscureText; // Bool para esconder o texto
   final String? Function(String?)? validator; // Validação do campo
-  final IconData? icon; // Ícone a esquerda
   final void Function(String)? onFieldSubmitted;
+  final IconData? icon; // Ícone a esquerda
   final TextInputAction? textInputAction;
+  final TextEditingController controller; // Controler para digitação
 
   const CustomTextField({
     super.key,
-    required this.label,
+    this.maxLines = 1,
     this.hint,
-    required this.controller,
     this.keyboardType = TextInputType.text,
-    this.obscureText = false,
     this.validator,
     this.icon,
     this.onFieldSubmitted,
     this.textInputAction,
+    required this.label,
+    required this.controller,
   });
 
   @override
@@ -36,16 +36,15 @@ class CustomTextField extends StatelessWidget {
       TextFormField(
         style: Theme.of(context).textTheme.bodyMedium,
         controller: controller,
+        maxLines: maxLines,
         keyboardType: keyboardType,
-        obscureText: obscureText,
         validator: validator,
         onFieldSubmitted: onFieldSubmitted,
         textInputAction: textInputAction,
         decoration: InputDecoration(
-            hintText: hint,
-            prefixIcon: icon != null ? Icon(icon) : null,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 10)),
+          hintText: hint,
+          prefixIcon: icon != null ? Icon(icon) : null,
+        ),
       )
     ]);
   }
