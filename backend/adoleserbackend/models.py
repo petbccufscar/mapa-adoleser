@@ -34,8 +34,7 @@ class Location(models.Model):
         default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     description = models.TextField(max_length=1023)
-    nota = models.IntegerField(validators=[
-        MinValueValidator(0), MaxValueValidator(10)], default=5)
+    nota = models.FloatField(default=0.0, editable=False)
 
     def __str__(self):
         return self.name
@@ -45,8 +44,7 @@ class Activity(models.Model):
         default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     description = models.TextField(max_length=1023)
-    nota = models.IntegerField(validators=[
-        MinValueValidator(0), MaxValueValidator(10)], default=5)
+    nota = models.FloatField(default=0.0, editable=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     horario = models.DateTimeField("Start Time", default=timezone.now)
 
