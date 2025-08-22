@@ -9,6 +9,7 @@ import uuid
 class Role(models.TextChoices):
     USER = 'USER', 'User'
     ADMIN = 'ADMIN', 'Admin'
+    SUPER = 'SUPER', 'Super'
 
 
 class User(AbstractUser):
