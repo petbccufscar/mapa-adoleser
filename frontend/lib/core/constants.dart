@@ -37,6 +37,7 @@ class AppTexts {
   static const home = _HomeTexts();
   static const register = _RegisterTexts();
   static const help = _HelpTexts();
+  static const forgotPassword = _ForgotPasswordTexts();
 }
 
 class _HelpTexts {
@@ -66,6 +67,18 @@ class _LoginTexts {
   final loginButton = 'Entrar';
   final unregistered = "Ainda não tem uma conta?";
   final createAccount = 'Crie uma!';
+}
+
+class _ForgotPasswordTexts{
+  const _ForgotPasswordTexts();
+
+  final title = 'Recuperar sua senha';
+  final emailLabel = 'Digite seu e-mail para receber um código de confirmação';
+  final emailHint = 'Digite seu e-mail';
+  final emailSubmit = 'Enviar';
+  final codeLabel = 'Digite o código de 6 dígitos recebido';
+  final codeValidate = 'Validar';
+  final codeResend = 'Reenviar ';
 }
 
 class _RegisterTexts {

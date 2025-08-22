@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         ActionText(
                           text: AppTexts.login.forgotPassword,
-                          action: () => {context.go("/sobre")},
+                          action: () => {context.go("/recuperar-senha")},
                           underlined: true,
                           boldOnHover: true,
                         ),

@@ -7,6 +7,7 @@ import 'package:mapa_adoleser/presentation/ui/pages/home/home_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/login/login_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/message/message_result_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/profile/profile_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/register/forgot_password.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/register/register_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/search/search_page.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
@@ -75,7 +76,12 @@ GoRouter createRouter(AuthProvider auth) {
           //name: 'Cadastro',
           path: '/cadastro',
           pageBuilder: (context, state) =>
-              const NoTransitionPage(child: RegisterPage()))
+              const NoTransitionPage(child: RegisterPage())),
+      GoRoute(
+        //name: 'recuperar senha',
+          path: '/recuperar-senha',
+          pageBuilder: (context, state) =>
+          const NoTransitionPage(child: ForgotPasswordPage()))
     ],
   );
 }

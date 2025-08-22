@@ -1,6 +1,8 @@
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
 import 'package:mapa_adoleser/domain/models/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/register_request_model.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_email_response_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
 
 class AuthService {
@@ -48,5 +50,20 @@ class AuthService {
     };
 
     return UserModel.fromJson(mockResponse);
+  }
+
+  Future<ForgotPasswordEmailResponseModel?> forgotPasswordEmail(ForgotPasswordEmailRequestModel data) async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    if(data.email == "fulanodetal@gmail.com"){
+      throw AuthException('E-mail já está em uso!');
+    }
+
+    // Simulando resposta da API
+    final mockResponse = {
+      'success': true,
+    };
+
+    return ForgotPasswordEmailResponseModel.fromJson(mockResponse);
   }
 }
