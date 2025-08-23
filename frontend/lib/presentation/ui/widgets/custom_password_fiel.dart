@@ -81,17 +81,24 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             hintText: widget.hint,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscureText
-                    ? Icons.visibility_rounded
-                    : Icons.visibility_off_rounded,
+            suffixIcon: Padding(
+              padding:
+                  const EdgeInsets.only(right: 4.0), // ajuste a margem aqui
+              child: IconButton(
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                icon: Icon(
+                  _obscureText
+                      ? Icons.visibility_rounded
+                      : Icons.visibility_off_rounded,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
               ),
-              onPressed: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
             ),
           ),
         ),

@@ -16,8 +16,10 @@ class DesktopAppBar extends StatelessWidget {
     final currentRoute =
         GoRouter.of(context).routeInformationProvider.value.uri.toString();
 
-    final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
-    final userName = context.watch<AuthProvider>().user?.name;
+    final authProvider = context.watch<AuthProvider>();
+
+    final isLoggedIn = authProvider.isLoggedIn;
+    final userName = authProvider.user?.name;
 
     return Column(children: [
       Container(

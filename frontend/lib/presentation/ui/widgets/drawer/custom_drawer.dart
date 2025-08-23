@@ -135,7 +135,7 @@ class CustomDrawer extends StatelessWidget {
                       route('Início', '/'),
                       route('Pesquisa', '/pesquisa'),
                       if (isLoggedIn) ...[
-                        route('Favoritos', '/favotiros'),
+                        route('Favoritos', '/favoritos'),
                         route('Perfil', '/perfil'),
                       ],
                       route('Sobre', '/sobre'),

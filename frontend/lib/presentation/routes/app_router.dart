@@ -10,15 +10,19 @@ import 'package:mapa_adoleser/presentation/ui/pages/profile/profile_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/register/register_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/search/search_page.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
+import 'package:mapa_adoleser/providers/login_provider.dart';
+import 'package:mapa_adoleser/providers/register_provider.dart';
+import 'package:provider/provider.dart';
 
 /// Gerencia as rotas de navegação da aplicação.
 /// Define as páginas disponíveis e como navegar entre elas.
 ///
 GoRouter createRouter(AuthProvider auth) {
   return GoRouter(
+    // TODO: oq é isso?
     refreshListenable: auth,
     debugLogDiagnostics: true,
-    initialLocation: '/contato',
+    initialLocation: '/cadastro',
     //errorBuilder: (context, state) => const ErrorPage(),
     redirect: (context, state) => authGuard(auth, state),
     routes: [
@@ -67,15 +71,28 @@ GoRouter createRouter(AuthProvider auth) {
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: AboutPage())),
       GoRoute(
-          //name: 'Login',
-          path: '/login',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: LoginPage())),
+        //name: 'Login',
+        path: '/login',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => LoginProvider(),
+              child: const LoginPage(),
+            ),
+          );
+        },
+      ),
       GoRoute(
-          //name: 'Cadastro',
-          path: '/cadastro',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: RegisterPage()))
+        path: '/cadastro',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => RegisterProvider(),
+              child: const RegisterPage(),
+            ),
+          );
+        },
+      ),
     ],
   );
 }

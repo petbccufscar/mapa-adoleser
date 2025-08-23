@@ -59,4 +59,43 @@ class Validators {
     if (value != originalPassword) return message;
     return null;
   }
+
+  static String? isValidDayMonthYear(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Campo obrigatório';
+    }
+
+    final parts = value.split('/');
+    if (parts.length != 3) return 'Data inválida';
+
+    final day = int.tryParse(parts[0]);
+    final month = int.tryParse(parts[1]);
+    final year = int.tryParse(parts[2]);
+
+    if (day == null || month == null || year == null) return 'Data inválida';
+    if (year < 1 || parts[2].length != 4) return 'Ano inválido';
+    if (month < 1 || month > 12) return 'Mês inválido';
+
+    // Verifica limite de dias de cada mês
+    final List<int> daysInMonth = [
+      31,
+      (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
+          ? 29
+          : 28, // fevereiro bissexto
+      31,
+      30,
+      31,
+      30,
+      31,
+      31,
+      30,
+      31,
+      30,
+      31
+    ];
+
+    if (day < 1 || day > daysInMonth[month - 1]) return 'Dia inválido';
+
+    return null; // Data válida
+  }
 }
