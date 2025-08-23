@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
+import 'package:mapa_adoleser/core/utils/validators.dart';
+import 'package:mapa_adoleser/domain/models/user_model.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
-import 'package:mapa_adoleser/presentation/validators.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
+import 'package:mapa_adoleser/providers/login_provider.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,8 +24,16 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -34,11 +45,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final auth = context.read<AuthProvider>();
+      final loginProvider = context.read<LoginProvider>();
+      final authProvider = context.read<AuthProvider>();
 
-      await auth.login(_emailController.text, _passwordController.text);
+      await loginProvider
+          .login(_emailController.text, _passwordController.text)
+          .then((UserModel? model) {
+        if (model != null) {
+          authProvider.setUser(model);
+        }
+      });
 
-      if (auth.isLoggedIn && mounted) {
+      if (loginProvider.success && mounted) {
         context.go('/');
       }
     }
@@ -46,14 +64,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthProvider>();
-
-    final isLoggedIn = auth.isLoggedIn;
+    final authProvider = context.watch<AuthProvider>();
+    final loginProvider = context.watch<LoginProvider>();
 
     return Scaffold(
-      appBar: CustomAppBar(isLoggedIn: isLoggedIn),
+      appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: isLoggedIn)
+          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
       body: Center(
         child: SingleChildScrollView(
@@ -68,17 +85,17 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Text(AppTexts.login.title,
                         style: Theme.of(context).textTheme.headlineMedium),
+                    SizedBox(height: 5),
                     CustomTextField(
                         label: AppTexts.login.emailLabel,
                         hint: AppTexts.login.emailHint,
                         controller: _emailController,
                         textInputAction: TextInputAction.next,
                         validator: Validators.isEmail),
-                    CustomTextField(
+                    CustomPasswordField(
                       label: AppTexts.login.passwordLabel,
                       hint: AppTexts.login.passwordHint,
                       controller: _passwordController,
-                      obscureText: true,
                       validator: Validators.isNotEmpty,
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
@@ -95,14 +112,14 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                    if (auth.error != null)
+                    if (loginProvider.error != null)
                       Text(
-                        auth.error!,
+                        loginProvider.error!,
                         style: const TextStyle(color: Colors.red),
                       ),
                     CustomButton(
                       text: AppTexts.login.loginButton,
-                      onPressed: auth.isLoading ? null : _submit,
+                      onPressed: loginProvider.isLoading ? null : _submit,
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -111,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                         Text(AppTexts.login.unregistered),
                         ActionText(
                           text: AppTexts.login.createAccount,
-                          action: () => {context.go("/ajuda")},
+                          action: () => {context.go("/cadastro")},
                           underlined: true,
                           boldOnHover: true,
                         ),

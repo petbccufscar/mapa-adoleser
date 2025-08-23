@@ -107,7 +107,7 @@ class Footer extends StatelessWidget {
                         ActionText(
                           text: "Segurança",
                           action: () {
-                            context.go("/ajuda");
+                            context.go("/contato");
                           },
                           underlinedOnHover: true,
                           color: AppColors.buttonSecondary,
