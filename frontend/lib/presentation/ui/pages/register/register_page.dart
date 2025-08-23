@@ -72,8 +72,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
       if (registerProvider.success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Conta criada com com sucesso!"),
+          SnackBar(
+            content: Text(AppTexts.register.successMessage),
             backgroundColor: Colors.green,
           ),
         );

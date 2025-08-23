@@ -71,6 +71,7 @@ class _LoginTexts {
 class _RegisterTexts {
   const _RegisterTexts();
 
+  final successMessage = 'Conta criada com com sucesso!';
   final title = 'Crie sua conta';
   final nameLabel = 'Nome completo';
   final nameHint = 'Digite seu nome completo';
