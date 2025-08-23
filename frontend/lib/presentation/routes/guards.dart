@@ -13,8 +13,9 @@ String? authGuard(AuthProvider auth, GoRouterState state) {
     return '/login';
   }
 
-  //Se está logado não pode ir para '/login'
-  if (loggedIn && state.fullPath == '/login') {
+  //Se está logado não pode ir para '/login', '/cadastro'
+  if (loggedIn &&
+      (state.fullPath == '/login' || state.fullPath == '/cadastro')) {
     return '/';
   }
 

@@ -16,8 +16,10 @@ class DesktopAppBar extends StatelessWidget {
     final currentRoute =
         GoRouter.of(context).routeInformationProvider.value.uri.toString();
 
-    final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
-    final userName = context.watch<AuthProvider>().user?.name;
+    final authProvider = context.watch<AuthProvider>();
+
+    final isLoggedIn = authProvider.isLoggedIn;
+    final userName = authProvider.user?.name;
 
     return Column(children: [
       Container(
@@ -66,11 +68,11 @@ class DesktopAppBar extends StatelessWidget {
                   colorOnHover: AppColors.purple),
               const SizedBox(width: 15),
               ActionText(
-                  text: "Ajuda",
-                  action: () => {context.go("/ajuda")},
-                  bold: currentRoute == "/ajuda",
+                  text: "Fale Conosco",
+                  action: () => {context.go("/contato")},
+                  bold: currentRoute == "/contato",
                   boldOnHover: true,
-                  color: currentRoute == "/ajuda" ? AppColors.purple : null,
+                  color: currentRoute == "/contato" ? AppColors.purple : null,
                   colorOnHover: AppColors.purple),
               if (!isLoggedIn && currentRoute != "/login") ...[
                 const SizedBox(width: 10),
