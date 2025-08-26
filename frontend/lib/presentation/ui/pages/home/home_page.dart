@@ -27,52 +27,45 @@ class HomePage extends StatelessWidget {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: SingleChildScrollView(
-        child: Column(
+      body: ResponsivePageWrapper(
+        header: Carousel(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 20,
           children: [
-            Carousel(),
-            ResponsivePageWrapper(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 12,
-                    children: [
-                      Text(
-                        AppTexts.home.aboutTitle,
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      Text(
-                        AppTexts.home.aboutText,
-                        textAlign: TextAlign.justify,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 12,
-                    children: [
-                      Text(
-                        AppTexts.home.mapTitle,
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      Text(
-                        AppTexts.home.mapText,
-                        textAlign: TextAlign.justify,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 12,
+              children: [
+                Text(
+                  AppTexts.home.aboutTitle,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+                Text(
+                  AppTexts.home.aboutText,
+                  textAlign: TextAlign.justify,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
             ),
-            Footer()
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 12,
+              children: [
+                Text(
+                  AppTexts.home.mapTitle,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+                Text(
+                  AppTexts.home.mapText,
+                  textAlign: TextAlign.justify,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
           ],
         ),
+        footer: const Footer(),
       ),
     );
   }

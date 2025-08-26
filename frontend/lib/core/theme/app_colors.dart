@@ -25,6 +25,9 @@ class AppColors {
   static const backgroundSmoke = Color(0xFFEFF2F0);
   static const backgroundWhite = Color(0xFFFAFAFA);
 
+  static const inputBackground = Color(0xFFF5F5F5);
+  static const inputBackgroundDisabled = Color(0xFF919191);
+
   // Icon
   static const iconLight = Color(0xFFF6F6F6);
   static const iconDark = Color(0xFF2E1B47);
@@ -33,4 +36,5 @@ class AppColors {
   static const inputPlaceholder = Color(0xFFB0B0B0);
   static const inputBorder = Color(0xFFC9C9C9);
   static const inputBorderFocus = Color(0xFF687082);
+  static const inputBorderDisabled = Color(0xFFE0E0E0);
 }

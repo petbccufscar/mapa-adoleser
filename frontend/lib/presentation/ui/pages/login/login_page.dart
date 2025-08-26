@@ -72,70 +72,68 @@ class _LoginPageState extends State<LoginPage> {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: ResponsivePageWrapper(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: 15,
-                  children: [
-                    Text(AppTexts.login.title,
-                        style: Theme.of(context).textTheme.headlineMedium),
-                    SizedBox(height: 5),
-                    CustomTextField(
-                        label: AppTexts.login.emailLabel,
-                        hint: AppTexts.login.emailHint,
-                        controller: _emailController,
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.isEmail),
-                    CustomPasswordField(
-                      label: AppTexts.login.passwordLabel,
-                      hint: AppTexts.login.passwordHint,
-                      controller: _passwordController,
-                      validator: Validators.isNotEmpty,
-                      textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (_) => _submit(),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 5,
-                      children: [
-                        ActionText(
-                          text: AppTexts.login.forgotPassword,
-                          action: () => {context.go("/sobre")},
-                          underlined: true,
-                          boldOnHover: true,
-                        ),
-                      ],
-                    ),
-                    if (loginProvider.error != null)
-                      Text(
-                        loginProvider.error!,
-                        style: const TextStyle(color: Colors.red),
+      body: ResponsivePageWrapper(
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 450),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 15,
+                children: [
+                  Text(AppTexts.login.title,
+                      style: Theme.of(context).textTheme.headlineMedium),
+                  SizedBox(height: 5),
+                  CustomTextField(
+                      label: AppTexts.login.emailLabel,
+                      hint: AppTexts.login.emailHint,
+                      controller: _emailController,
+                      textInputAction: TextInputAction.next,
+                      validator: Validators.isEmail),
+                  CustomPasswordField(
+                    label: AppTexts.login.passwordLabel,
+                    hint: AppTexts.login.passwordHint,
+                    controller: _passwordController,
+                    validator: Validators.isNotEmpty,
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) => _submit(),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 5,
+                    children: [
+                      ActionText(
+                        text: AppTexts.login.forgotPassword,
+                        action: () => {context.go("/sobre")},
+                        underlined: true,
+                        boldOnHover: true,
                       ),
-                    CustomButton(
-                      text: AppTexts.login.loginButton,
-                      onPressed: loginProvider.isLoading ? null : _submit,
+                    ],
+                  ),
+                  if (loginProvider.error != null)
+                    Text(
+                      loginProvider.error!,
+                      style: const TextStyle(color: Colors.red),
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 5,
-                      children: [
-                        Text(AppTexts.login.unregistered),
-                        ActionText(
-                          text: AppTexts.login.createAccount,
-                          action: () => {context.go("/cadastro")},
-                          underlined: true,
-                          boldOnHover: true,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                  CustomButton(
+                    text: AppTexts.login.loginButton,
+                    onPressed: loginProvider.isLoading ? null : _submit,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 5,
+                    children: [
+                      Text(AppTexts.login.unregistered),
+                      ActionText(
+                        text: AppTexts.login.createAccount,
+                        action: () => {context.go("/cadastro")},
+                        underlined: true,
+                        boldOnHover: true,
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
           ),

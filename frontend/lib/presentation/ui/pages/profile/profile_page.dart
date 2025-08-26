@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
+import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_date_field.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/footer.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
@@ -19,14 +22,21 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isEditing = false;
   final _formKey = GlobalKey<FormState>();
 
-  // Mock data (depois puxar do provider)
-  String name = "Fulano de Tal";
-  String email = "fulano@gmail.com";
-  String birthDate = "00/00/0000";
-  String address = "Rua da Alegria, Jardim da Saúde";
-  String number = "123";
-  String city = "São Carlos";
-  String cep = "000000-00";
+  final TextEditingController _dateController =
+      TextEditingController(text: "12/02/2004");
+  final TextEditingController _cepController =
+      TextEditingController(text: "13180-220");
+  final TextEditingController _numberController =
+      TextEditingController(text: "338");
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _addressController =
+      TextEditingController(text: "Rua da Alegria, Jardim da Saúde");
+  final TextEditingController _nameController =
+      TextEditingController(text: "Vinícius Martins Cotrim");
+  final TextEditingController _emailController =
+      TextEditingController(text: "vini.cotrim@hotmail.com");
+  final TextEditingController _userNameController =
+      TextEditingController(text: "coutrims");
 
   @override
   Widget build(BuildContext context) {
@@ -37,315 +47,162 @@ class _ProfilePageState extends State<ProfilePage> {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1000),
+      body: ResponsivePageWrapper(
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 750),
+            child: Column(
+              children: [
+                /// Formulário
+                Form(
+                  key: _formKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// Título
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "| Perfil",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(color: AppColors.purple),
-                        ),
+                      Text("Suas informações",
+                          style: Theme.of(context).textTheme.headlineSmall),
+
+                      const SizedBox(height: 16),
+
+                      Wrap(
+                        runSpacing: 16,
+                        spacing: 16,
+                        children: [
+                          SizedBox(
+                            width: 350,
+                            child: CustomTextField(
+                                enabled: false,
+                                label: 'Usuário',
+                                controller: _userNameController),
+                          ),
+                          SizedBox(
+                            width: 350,
+                            child: CustomTextField(
+                                enabled: isEditing,
+                                label: 'Nome',
+                                controller: _nameController),
+                          ),
+                          SizedBox(
+                            width: 350,
+                            child: CustomTextField(
+                                enabled: false,
+                                label: 'E-mail',
+                                controller: _emailController),
+                          ),
+                          SizedBox(
+                            width: 350,
+                            child: CustomDateField(
+                                enabled: isEditing,
+                                label: 'Data de Nascimento',
+                                controller: _dateController),
+                          )
+                        ],
                       ),
+
                       const SizedBox(height: 24),
 
-                      /// Avatar + Nome
-                      Column(
+                      Text("Endereço",
+                          style: Theme.of(context).textTheme.headlineSmall),
+
+                      const SizedBox(height: 16),
+
+                      Wrap(
+                        runSpacing: 16,
+                        spacing: 16,
                         children: [
-                          Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 60,
-                                backgroundColor: AppColors.purple,
-                                child: const Icon(Icons.person,
-                                    size: 60, color: Colors.white),
-                              ),
-                              if (isEditing)
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: AppColors.purple,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: IconButton(
-                                      icon: const Icon(Icons.camera_alt,
-                                          color: Colors.white, size: 20),
-                                      onPressed: () {
-                                        // TODO: abrir seletor de imagem
-                                        _showImagePickerDialog();
-                                      },
-                                    ),
-                                  ),
-                                ),
-                            ],
+                          SizedBox(
+                            width: 150,
+                            child: CustomTextField(
+                                enabled: isEditing,
+                                label: 'CEP',
+                                controller: _cepController,
+                                hint: '00000-000',
+                                keyboardType: TextInputType.number),
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            name,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          if (!isEditing)
-                            TextButton(
-                              onPressed: () {
-                                setState(() => isEditing = true);
-                              },
-                              child: const Text("Alterar foto"),
-                            ),
+                          CustomTextField(
+                              enabled: isEditing,
+                              label: 'Endereço',
+                              controller: _addressController),
                         ],
                       ),
 
                       const SizedBox(height: 32),
 
-                      /// Formulário
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Suas informações",
-                                style: Theme.of(context).textTheme.titleLarge),
-
-                            const SizedBox(height: 16),
-
-                            Wrap(
-                              runSpacing: 16,
-                              spacing: 16,
-                              children: [
-                                _buildField(
-                                  "Nome",
-                                  name,
-                                  (v) => setState(() => name = v!),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Nome é obrigatório';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                _buildField(
-                                  "Email",
-                                  email,
-                                  (v) => setState(() => email = v!),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Email é obrigatório';
-                                    }
-                                    if (!value.contains('@')) {
-                                      return 'Email inválido';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                _buildField(
-                                  "Data de nascimento",
-                                  birthDate,
-                                  (v) => setState(() => birthDate = v!),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Data de nascimento é obrigatória';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
+                      /// Botões de ação
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  isEditing ? Colors.grey : AppColors.purple,
+                              foregroundColor: Colors.white,
                             ),
-
-                            const SizedBox(height: 24),
-
-                            Text("Endereço",
-                                style: Theme.of(context).textTheme.titleLarge),
-
-                            const SizedBox(height: 16),
-
-                            Wrap(
-                              runSpacing: 16,
-                              spacing: 16,
-                              children: [
-                                _buildField(
-                                  "Endereço",
-                                  address,
-                                  (v) => setState(() => address = v!),
-                                  width: 400,
-                                ),
-                                _buildField(
-                                  "Número",
-                                  number,
-                                  (v) => setState(() => number = v!),
-                                  width: 150,
-                                ),
-                                _buildField(
-                                  "Cidade",
-                                  city,
-                                  (v) => setState(() => city = v!),
-                                ),
-                                _buildField(
-                                  "CEP",
-                                  cep,
-                                  (v) => setState(() => cep = v!),
-                                  width: 150,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'CEP é obrigatório';
-                                    }
-                                    if (value.length < 8) {
-                                      return 'CEP inválido';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 32),
-
-                            /// Botões de ação
-                            Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: isEditing
-                                          ? Colors.grey
-                                          : AppColors.purple,
-                                      foregroundColor: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        if (isEditing) {
-                                          // Cancelar edição - reverter alterações
-                                          _formKey.currentState?.reset();
-                                        }
-                                        isEditing = !isEditing;
-                                      });
-                                    },
-                                    child:
-                                        Text(isEditing ? "Cancelar" : "Editar"),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  if (isEditing)
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                        foregroundColor: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          _formKey.currentState!.save();
-                                          setState(() => isEditing = false);
-                                          // TODO: salvar no backend
-                                          _showSuccessSnackbar();
-                                        }
-                                      },
-                                      child: const Text("Salvar"),
-                                    ),
-                                ],
+                            onPressed: () {
+                              setState(() {
+                                if (isEditing) {
+                                  // Cancelar edição - reverter alterações
+                                  _formKey.currentState?.reset();
+                                }
+                                isEditing = !isEditing;
+                              });
+                            },
+                            child: Text(isEditing ? "Cancelar" : "Editar"),
+                          ),
+                          const SizedBox(width: 16),
+                          if (isEditing)
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
                               ),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  setState(() => isEditing = false);
+                                  // TODO: salvar no backend
+                                  _showSuccessSnackbar();
+                                }
+                              },
+                              child: const Text("Salvar"),
                             ),
+                        ],
+                      ),
 
-                            const SizedBox(height: 40),
+                      const SizedBox(height: 40),
 
-                            /// Seção de segurança
-                            Text("Segurança",
-                                style: Theme.of(context).textTheme.titleLarge),
-                            const SizedBox(height: 16),
+                      /// Seção de segurança
+                      Text("Segurança",
+                          style: Theme.of(context).textTheme.titleLarge),
+                      const SizedBox(height: 16),
 
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildSecurityLink(
-                                  "Política de Privacidade",
-                                  () => context.go("/privacidade"),
-                                ),
-                                const SizedBox(height: 8),
-                                _buildSecurityLink(
-                                  "Alterar Senha",
-                                  () => context.go("/alterar-senha"),
-                                ),
-                                const SizedBox(height: 8),
-                                _buildSecurityLink(
-                                  "Excluir conta",
-                                  _showDeleteAccountDialog,
-                                  isDestructive: true,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 8,
+                        children: [
+                          ActionText(
+                              underlinedOnHover: true,
+                              text: 'Políticas de Privacidade',
+                              action: () {}),
+                          ActionText(
+                              underlinedOnHover: true,
+                              text: 'Alterar Senha',
+                              action: () {}),
+                          ActionText(
+                              underlinedOnHover: true,
+                              text: 'Excluir conta',
+                              color: AppColors.warning,
+                              action: () {}),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-
-          /// Footer
-          const Footer(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildField(
-    String label,
-    String value,
-    Function(String?) onSaved, {
-    double? width,
-    String? Function(String?)? validator,
-  }) {
-    return SizedBox(
-      width: width ?? 300,
-      child: TextFormField(
-        initialValue: value,
-        enabled: isEditing,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-          filled: !isEditing,
-          fillColor: !isEditing ? Colors.grey[100] : null,
         ),
-        validator: validator,
-        onSaved: onSaved,
-      ),
-    );
-  }
-
-  //LINKS DE SEGURANÇA
-  Widget _buildSecurityLink(
-    String text,
-    VoidCallback onPressed, {
-    bool isDestructive = false,
-  }) {
-    final linkColor = isDestructive ? Colors.red : Color(0xFF629EA9);
-
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: linkColor,
-            decoration: TextDecoration.underline,
-            decorationColor: linkColor,
-            fontSize: 16,
-          ),
-        ),
+        footer: const Footer(),
       ),
     );
   }

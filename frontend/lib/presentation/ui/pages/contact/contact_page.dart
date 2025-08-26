@@ -71,61 +71,59 @@ class _ContactPageState extends State<ContactPage> {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: ResponsivePageWrapper(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: 15,
-                  children: [
-                    Text(AppTexts.help.title,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        textAlign: TextAlign.center),
-                    const SizedBox(height: 10),
-                    CustomTextField(
-                        label: AppTexts.help.emailLabel,
-                        hint: AppTexts.help.emailHint,
-                        controller: _emailController,
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.isEmail),
-                    CustomTextField(
-                      label: AppTexts.help.nameLabel,
-                      hint: AppTexts.help.nameHint,
-                      controller: _nameController,
+      body: ResponsivePageWrapper(
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 450),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 15,
+                children: [
+                  Text(AppTexts.help.title,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textAlign: TextAlign.center),
+                  const SizedBox(height: 10),
+                  CustomTextField(
+                      label: AppTexts.help.emailLabel,
+                      hint: AppTexts.help.emailHint,
+                      controller: _emailController,
                       textInputAction: TextInputAction.next,
-                      validator: Validators.isNotEmpty,
-                    ),
-                    CustomDropdownField<Subject>(
-                      label: AppTexts.help.subjectLabel,
-                      hint: AppTexts.help.subjectHint,
-                      value: selectedSubject,
-                      items: subjects,
-                      onChanged: (Subject? value) => {
-                        setState(() {
-                          selectedSubject = value;
-                        })
-                      },
-                      getLabel: (subject) => subject.label,
-                    ),
-                    CustomTextField(
-                      label: AppTexts.help.messageLabel,
-                      hint: AppTexts.help.messageHint,
-                      controller: _messageController,
-                      textInputAction: TextInputAction.next,
-                      maxLines: 8,
-                      keyboardType: TextInputType.multiline,
-                      validator: Validators.isNotEmpty,
-                    ),
-                    CustomButton(
-                      text: AppTexts.help.helpButton,
-                      onPressed: contact.isLoading ? null : _submit,
-                    ),
-                  ],
-                ),
+                      validator: Validators.isEmail),
+                  CustomTextField(
+                    label: AppTexts.help.nameLabel,
+                    hint: AppTexts.help.nameHint,
+                    controller: _nameController,
+                    textInputAction: TextInputAction.next,
+                    validator: Validators.isNotEmpty,
+                  ),
+                  CustomDropdownField<Subject>(
+                    label: AppTexts.help.subjectLabel,
+                    hint: AppTexts.help.subjectHint,
+                    value: selectedSubject,
+                    items: subjects,
+                    onChanged: (Subject? value) => {
+                      setState(() {
+                        selectedSubject = value;
+                      })
+                    },
+                    getLabel: (subject) => subject.label,
+                  ),
+                  CustomTextField(
+                    label: AppTexts.help.messageLabel,
+                    hint: AppTexts.help.messageHint,
+                    controller: _messageController,
+                    textInputAction: TextInputAction.next,
+                    maxLines: 8,
+                    keyboardType: TextInputType.multiline,
+                    validator: Validators.isNotEmpty,
+                  ),
+                  CustomButton(
+                    text: AppTexts.help.helpButton,
+                    onPressed: contact.isLoading ? null : _submit,
+                  ),
+                ],
               ),
             ),
           ),
