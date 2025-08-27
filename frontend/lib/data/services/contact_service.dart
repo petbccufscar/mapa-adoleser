@@ -4,7 +4,7 @@ import 'package:mapa_adoleser/domain/models/contact_response_model.dart';
 import 'package:mapa_adoleser/domain/models/subject_model.dart';
 
 class ContactService {
-  Future<ContactResponse> sendContact(ContactRequest data) async {
+  Future<ContactResponseModel> sendContact(ContactRequestModel data) async {
     await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
 
     if (data.email == 'vini.cotrim@hotmail.com') {
@@ -12,22 +12,22 @@ class ContactService {
     }
 
     // Simula sucesso
-    return const ContactResponse(success: true);
+    return const ContactResponseModel(success: true);
   }
 
-  Future<List<Subject>> fetchSubjects() async {
+  Future<List<SubjectModel>> fetchSubjects() async {
     await Future.delayed(const Duration(seconds: 2));
 
-    final List<Subject> subjectList = <Subject>[
-      Subject(
+    final List<SubjectModel> subjectList = <SubjectModel>[
+      SubjectModel(
         id: 1,
         label: 'Suporte Técnico',
       ),
-      Subject(
+      SubjectModel(
         id: 2,
         label: 'Dúvidas Gerais',
       ),
-      Subject(
+      SubjectModel(
         id: 3,
         label: 'Feedback',
       ),

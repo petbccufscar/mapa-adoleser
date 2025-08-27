@@ -11,7 +11,7 @@ class ContactProvider extends ChangeNotifier {
   String? _error;
   bool _loading = false;
   bool _success = false;
-  List<Subject> _subjects = [];
+  List<SubjectModel> _subjects = [];
 
   ContactProvider() {
     getSubjects();
@@ -20,7 +20,7 @@ class ContactProvider extends ChangeNotifier {
   bool get isLoading => _loading;
   String? get error => _error;
   bool get success => _success;
-  List<Subject> get subjects => _subjects;
+  List<SubjectModel> get subjects => _subjects;
 
   Future<void> getSubjects() async {
     if (subjects.isNotEmpty) return;
@@ -48,7 +48,7 @@ class ContactProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final request = ContactRequest(
+      final request = ContactRequestModel(
         name: name,
         email: email,
         subject: subject,

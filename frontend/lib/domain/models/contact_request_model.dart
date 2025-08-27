@@ -1,10 +1,10 @@
-class ContactRequest {
+class ContactRequestModel {
   final String name;
   final String email;
   final String message;
   final String subject;
 
-  const ContactRequest({
+  const ContactRequestModel({
     required this.name,
     required this.email,
     required this.message,

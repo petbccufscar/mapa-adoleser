@@ -14,9 +14,7 @@ class AboutPage extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
-      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
-          : null,
+      endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
       body: const Center(
         child: Text(
           'Sobre!',

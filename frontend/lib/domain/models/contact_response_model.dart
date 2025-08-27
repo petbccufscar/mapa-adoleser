@@ -1,12 +1,12 @@
-class ContactResponse {
+class ContactResponseModel {
   final bool success;
 
-  const ContactResponse({
+  const ContactResponseModel({
     required this.success,
   });
 
-  factory ContactResponse.fromJson(Map<String, dynamic> json) {
-    return ContactResponse(
+  factory ContactResponseModel.fromJson(Map<String, dynamic> json) {
+    return ContactResponseModel(
       success: json['success'] ?? false,
     );
   }

@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
+import 'package:mapa_adoleser/domain/models/adress_response_model.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/cep_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_date_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
@@ -26,9 +30,6 @@ class _ProfilePageState extends State<ProfilePage> {
       TextEditingController(text: "12/02/2004");
   final TextEditingController _cepController =
       TextEditingController(text: "13180-220");
-  final TextEditingController _numberController =
-      TextEditingController(text: "338");
-  final TextEditingController _cityController = TextEditingController();
   final TextEditingController _addressController =
       TextEditingController(text: "Rua da Alegria, Jardim da Saúde");
   final TextEditingController _nameController =
@@ -44,9 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
-      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
-          : null,
+      endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
       body: ResponsivePageWrapper(
         body: Center(
           child: ConstrainedBox(
@@ -112,15 +111,22 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SizedBox(
                             width: 150,
-                            child: CustomTextField(
-                                enabled: isEditing,
-                                label: 'CEP',
-                                controller: _cepController,
-                                hint: '00000-000',
-                                keyboardType: TextInputType.number),
+                            child: CepTextField(
+                              enabled: isEditing,
+                              controller: _cepController,
+                              onSearch: (AddressResponseModel? address) {
+                                if (address != null) {
+                                  log(address.toString());
+                                  _addressController.text =
+                                      '${address.street}, ${address.neighborhood}, ${address.city} - ${address.uf}';
+                                } else {
+                                  // Mostrar mensagem de erro
+                                }
+                              },
+                            ),
                           ),
                           CustomTextField(
-                              enabled: isEditing,
+                              enabled: false,
                               label: 'Endereço',
                               controller: _addressController),
                         ],
@@ -173,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                       /// Seção de segurança
                       Text("Segurança",
-                          style: Theme.of(context).textTheme.titleLarge),
+                          style: Theme.of(context).textTheme.headlineSmall),
                       const SizedBox(height: 16),
 
                       Column(
@@ -181,15 +187,18 @@ class _ProfilePageState extends State<ProfilePage> {
                         spacing: 8,
                         children: [
                           ActionText(
-                              underlinedOnHover: true,
+                              underlined: true,
+                              boldOnHover: true,
                               text: 'Políticas de Privacidade',
                               action: () {}),
                           ActionText(
-                              underlinedOnHover: true,
+                              underlined: true,
+                              boldOnHover: true,
                               text: 'Alterar Senha',
                               action: () {}),
                           ActionText(
-                              underlinedOnHover: true,
+                              underlined: true,
+                              boldOnHover: true,
                               text: 'Excluir conta',
                               color: AppColors.warning,
                               action: () {}),

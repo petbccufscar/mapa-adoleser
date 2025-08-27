@@ -50,9 +50,13 @@ class CustomTextField extends StatelessWidget {
             textInputAction: textInputAction,
             decoration: InputDecoration(
               hintText: hint,
-              suffixIcon: suffixIcon,
+              suffixIcon: Padding(
+                padding:
+                    const EdgeInsets.only(right: 4.0), // ajuste a margem aqui
+                child: suffixIcon,
+              ),
             ),
-          )
+          ),
         ]);
   }
 }

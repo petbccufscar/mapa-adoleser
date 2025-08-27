@@ -90,11 +90,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
-      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
-          : null,
+      endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
       body: ResponsivePageWrapper(
-        body: Center(
+        body: Align(
+          alignment: Alignment.center,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 450),
             child: Form(

@@ -24,9 +24,7 @@ class MessageResultPage extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: isLoggedIn),
-      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: isLoggedIn)
-          : null,
+      endDrawer: CustomDrawer(isLoggedIn: isLoggedIn),
       body: Center(
         child: SingleChildScrollView(
           child: ResponsivePageWrapper(

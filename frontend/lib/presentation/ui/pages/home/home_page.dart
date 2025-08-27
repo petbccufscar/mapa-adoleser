@@ -24,48 +24,47 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
-      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
-          : null,
-      body: ResponsivePageWrapper(
-        header: Carousel(),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 20,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 12,
-              children: [
-                Text(
-                  AppTexts.home.aboutTitle,
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                Text(
-                  AppTexts.home.aboutText,
-                  textAlign: TextAlign.justify,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 12,
-              children: [
-                Text(
-                  AppTexts.home.mapTitle,
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                Text(
-                  AppTexts.home.mapText,
-                  textAlign: TextAlign.justify,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ],
-            ),
-          ],
-        ),
-        footer: const Footer(),
+      endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
+      body: CustomScrollView(
+        slivers: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 20,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12,
+                children: [
+                  Text(
+                    AppTexts.home.aboutTitle,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  Text(
+                    AppTexts.home.aboutText,
+                    textAlign: TextAlign.justify,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12,
+                children: [
+                  Text(
+                    AppTexts.home.mapTitle,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  Text(
+                    AppTexts.home.mapText,
+                    textAlign: TextAlign.justify,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const Footer(),
+        ],
       ),
     );
   }

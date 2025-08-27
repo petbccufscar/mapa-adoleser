@@ -12,16 +12,21 @@ class ResponsivePageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (header != null) header!,
         Expanded(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: ResponsiveUtils.horizontalPadding(context),
-                vertical: ResponsiveUtils.verticalPadding(context),
-              ),
-              child: body,
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveUtils.horizontalPadding(context),
+              vertical: ResponsiveUtils.verticalPadding(context),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 30,
+              children: [
+                if (header != null) header!,
+                body,
+              ],
             ),
           ),
         ),

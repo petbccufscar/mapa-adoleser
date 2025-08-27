@@ -1,8 +1,8 @@
-class Subject {
+class SubjectModel {
   final int id;
   final String label;
 
-  const Subject({
+  const SubjectModel({
     required this.id,
     required this.label,
   });
@@ -14,8 +14,8 @@ class Subject {
     };
   }
 
-  factory Subject.fromJson(Map<String, dynamic> json) {
-    return Subject(
+  factory SubjectModel.fromJson(Map<String, dynamic> json) {
+    return SubjectModel(
       id: json['id'],
       label: json['label'],
     );

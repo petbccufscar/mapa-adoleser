@@ -1,13 +1,17 @@
-import 'package:via_cep_flutter/via_cep_flutter.dart';
-import 'package:mapa_adoleser/domain/models/contact_response_model.dart';
+import 'dart:convert';
 
-class AdressService {
-  Future<ContactResponse> searchCEP(String cep) async {
-    final result = await readAddressByCep('49328555'); //Cep inválido!
+import 'package:http/http.dart' as http;
+import 'package:mapa_adoleser/domain/models/adress_response_model.dart';
 
-    if (result.isEmpty) return;
+class AddressService {
+  Future<AddressResponseModel> searchCEP(String cep) async {
+    final url = Uri.parse('https://viacep.com.br/ws/$cep/json/');
+    final response = await http.get(url);
 
-    // Simula sucesso
-    return const ContactResponse(success: true);
+    if (response.statusCode == 200) {
+      return AddressResponseModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load address');
+    }
   }
 }
