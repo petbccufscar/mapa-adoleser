@@ -1,4 +1,6 @@
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_code_request_model.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_code_response_model.dart';
 import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
 import 'package:mapa_adoleser/domain/models/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/register_request_model.dart';
@@ -65,5 +67,20 @@ class AuthService {
     };
 
     return ForgotPasswordEmailResponseModel.fromJson(mockResponse);
+  }
+
+  Future<ForgotPasswordCodeResponseModel?> forgotPasswordCode(ForgotPasswordCodeRequestModel data) async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    if(data.code == "123456"){
+      throw AuthException('Código informado');
+    }
+
+    // Simulando resposta da API
+    final mockResponse = {
+      'success': true,
+    };
+
+    return ForgotPasswordCodeResponseModel.fromJson(mockResponse);
   }
 }

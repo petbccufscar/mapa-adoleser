@@ -6,7 +6,7 @@ import 'package:mapa_adoleser/data/services/auth_service.dart';
 import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
 import 'package:mapa_adoleser/domain/models/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/register_request_model.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_code_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -99,21 +99,19 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  //DESCOBRIR COMO FAZ PARA VALIDAR CÓDIGO
   Future<void> forgotPasswordCode(
-      String email) async {
+      String code) async {
     _loading = true;
     _error = null;
     _success = false;
     notifyListeners();
 
     try {
-      final request = ForgotPasswordEmailRequestModel(
-        email: email,
+      final request = ForgotPasswordCodeRequestModel(
+        code: code,
       );
 
-      await _authService.forgotPasswordEmail(request);
+      await _authService.forgotPasswordCode(request);
 
       _success = true;
     } catch (e) {
