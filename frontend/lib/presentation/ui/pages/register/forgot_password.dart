@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
+import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
@@ -26,16 +27,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _codeController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   int page = 0;
   int _resendTimer = 0;
   Timer? _timer;
-  String? _userEmail; // Para armazenar o email do usuário
+  String? _userEmail;
 
   @override
   void dispose() {
     _emailController.dispose();
     _codeController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _timer?.cancel();
     super.dispose();
   }
@@ -57,39 +62,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     });
   }
 
-  // Simulação para teste - remover quando conectar o banco
-  String? _simulatedCode; // Código simulado que será "enviado"
-
   Future<void> _submitEmail() async {
     if (_formKey.currentState?.validate() ?? false) {
       final auth = context.read<AuthProvider>();
 
-      // Simulação - gera um código aleatório de 6 dígitos para teste
-      _simulatedCode = '123456'; // Você pode usar: (100000 + Random().nextInt(900000)).toString();
+      await auth.forgotPasswordEmail(_emailController.text);
 
-      print('🔥 TESTE: Código simulado enviado para ${_emailController.text}: $_simulatedCode');
-
-      // Simula sucesso após 2 segundos (como se fosse uma requisição)
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Simula sucesso do AuthProvider
-      // await auth.forgotPasswordEmail(_emailController.text);
-
-      if (mounted) {
-        _userEmail = _emailController.text; // Salva o email
+      if (mounted && auth.error == null) {
+        _userEmail = _emailController.text;
         setState(() {
           page = 1;
         });
-        _startTimer(); // Inicia o timer quando muda para a página do código
-
-        // Mostra o código no console e em um SnackBar para teste
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('TESTE: Código enviado: $_simulatedCode'),
-            backgroundColor: Colors.blue,
-            duration: const Duration(seconds: 5),
-          ),
-        );
+        _startTimer();
       }
     }
   }
@@ -98,69 +82,57 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     if (_formKey.currentState?.validate() ?? false) {
       final auth = context.read<AuthProvider>();
 
-      // Simulação - verifica se o código digitado é igual ao simulado
-      String enteredCode = _codeController.text;
+      await auth.forgotPasswordCode(_codeController.text);
 
-      print('🔥 TESTE: Código digitado: $enteredCode');
-      print('🔥 TESTE: Código esperado: $_simulatedCode');
-
-      // Simula verificação após 1 segundo
-      await Future.delayed(const Duration(seconds: 1));
-
-      if (enteredCode == _simulatedCode) {
-        // Código correto - vai para próxima página
-        print('✅ TESTE: Código correto!');
-
-        if (mounted) {
-          setState(() {
-            page = 2; // Ou navegar para página de nova senha
-          });
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Código verificado com sucesso!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-
-          // Aqui você pode navegar para a página de redefinir senha
-          // context.go('/reset-password');
-        }
-      } else {
-        // Código incorreto
-        print('❌ TESTE: Código incorreto!');
-
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Código incorreto. Tente novamente.'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+      if (mounted && auth.error == null) {
+        setState(() {
+          page = 2;
+        });
       }
     }
   }
 
   Future<void> _resendCode() async {
     if (_userEmail != null) {
-      // Gera um novo código para teste
-      _simulatedCode = '654321'; // Ou usar Random novamente
+      final auth = context.read<AuthProvider>();
 
-      print('🔥 TESTE: Novo código reenviado para $_userEmail: $_simulatedCode');
+      await auth.forgotPasswordEmail(_userEmail!);
 
-      // Simula reenvio após 1 segundo
-      await Future.delayed(const Duration(seconds: 1));
-
-      if (mounted) {
-        _startTimer(); // Reinicia o timer
+      if (mounted && auth.error == null) {
+        _startTimer();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('TESTE: Novo código: $_simulatedCode'),
-            backgroundColor: Colors.orange,
-            duration: const Duration(seconds: 5),
+          const SnackBar(
+            content: Text('Código reenviado com sucesso!'),
+            backgroundColor: Colors.green,
           ),
         );
+      }
+    }
+  }
+
+  Future<void> _submitNewPassword() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final auth = context.read<AuthProvider>();
+
+      if (_userEmail == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Erro: e-mail não encontrado.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      await auth.resetPassword(
+        _userEmail!,
+        _passwordController.text,
+      );
+
+      if (mounted && auth.error == null) {
+        setState(() {
+          page = 3;
+        });
       }
     }
   }
@@ -221,37 +193,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                       Text(AppTexts.forgotPassword.codeLabel),
 
-                      // Card de informação para teste
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.blue.shade200),
-                        ),
-                        child: Column(
-                          children: [
-                            const Text(
-                              '🧪 MODO TESTE',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            if (_simulatedCode != null)
-                              Text(
-                                'Código: $_simulatedCode',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-
-                      // Pinput com tamanho maior para ficar igual aos botões
                       Pinput(
                         controller: _codeController,
                         length: 6,
@@ -302,7 +243,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           return null;
                         },
                         onCompleted: (pin) {
-                          // Opcional: submeter automaticamente quando completar os 6 dígitos
                           _submitCode();
                         },
                       ),
@@ -313,20 +253,82 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           style: const TextStyle(color: Colors.red),
                         ),
 
-                      // Botão de reenviar com timer
-                      CustomButton(
-                        text: _timerText,
-                        onPressed: _resendCode,
-                        enabled: _resendTimer == 0 && !auth.isLoading,
+                      ElevatedButton(
+                        onPressed: (_resendTimer == 0 && !auth.isLoading) ? _resendCode : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _resendTimer > 0
+                              ? Colors.grey.shade300
+                              : AppColors.pink,
+                          foregroundColor: _resendTimer > 0
+                              ? Colors.grey.shade600
+                              : Colors.white,
+                          minimumSize: const Size(double.infinity, 48),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Text(_timerText),
                       ),
 
-                      // Botão de validar código
                       CustomButton(
                         text: AppTexts.forgotPassword.emailSubmit,
                         onPressed: _submitCode,
                         enabled: !auth.isLoading,
                       ),
-                    ]
+                    ] else if (page == 2) ...[
+                      Text(
+                        AppTexts.forgotPassword.title,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      CustomPasswordField(
+                        label: AppTexts.forgotPassword.passwordLabel,
+                        hint: AppTexts.forgotPassword.newPassword,
+                        controller: _passwordController,
+                        textInputAction: TextInputAction.next,
+                        showPasswordStrength: true,
+                        validator: Validators.isValidPassword,
+                      ),
+                      CustomPasswordField(
+                        label: AppTexts.forgotPassword.passwordAgainLabel,
+                        hint: AppTexts.forgotPassword.newPasswordAgain,
+                        controller: _confirmPasswordController,
+                        textInputAction: TextInputAction.done,
+                        validator: (value) => Validators.passwordsMatch(
+                          value,
+                          _passwordController.text,
+                        ),
+                      ),
+                      if (auth.error != null)
+                        Text(
+                          auth.error!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      CustomButton(
+                        text: AppTexts.forgotPassword.emailSubmit,
+                        onPressed: auth.isLoading ? null : _submitNewPassword,
+                      ),
+                    ] else if (page == 3) ...[
+                      Column(
+                        children: [
+                          Text(
+                            AppTexts.forgotPassword.title,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            AppTexts.forgotPassword.successMessage,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(height: 20),
+                          ActionText(
+                            text: AppTexts.forgotPassword.returnLogin,
+                            action: () => context.go("/login"),
+                            underlined: true,
+                            boldOnHover: true,
+                          ),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
               ),

@@ -7,6 +7,7 @@ import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.
 import 'package:mapa_adoleser/domain/models/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/register_request_model.dart';
 import 'package:mapa_adoleser/domain/models/forgot_password_code_request_model.dart';
+import 'package:mapa_adoleser/domain/models/reset_password_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -122,6 +123,31 @@ class AuthProvider extends ChangeNotifier {
     _loading = false;
     notifyListeners();
   }
+
+  Future<void> resetPassword(String email, String password) async {
+    _loading = true;
+    _error = null;
+    _success = false;
+    notifyListeners();
+
+    try {
+      final request = ResetPasswordRequestModel(
+        email: email,
+        password: password,
+      );
+
+      await _authService.resetPassword(request);
+
+      _success = true;
+    } catch (e) {
+      _success = false;
+      _error = parseException(e);
+    }
+
+    _loading = false;
+    notifyListeners();
+  }
+
 
 
   Future<void> logout() async {

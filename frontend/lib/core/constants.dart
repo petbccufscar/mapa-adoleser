@@ -79,6 +79,12 @@ class _ForgotPasswordTexts{
   final codeLabel = 'Digite o código de 6 dígitos recebido';
   final codeValidate = 'Validar';
   final codeResend = 'Reenviar ';
+  final passwordLabel = "Nova senha";
+  final newPassword = "Digite sua nova senha";
+  final passwordAgainLabel = "Confirme a nova senha";
+  final newPasswordAgain = "Digite novamente sua nova senha";
+  final successMessage = "Sua senha foi alterada com sucesso!";
+  final returnLogin = "Retornar para o login";
 }
 
 class _RegisterTexts {

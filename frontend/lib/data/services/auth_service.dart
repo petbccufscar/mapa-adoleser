@@ -5,6 +5,7 @@ import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.
 import 'package:mapa_adoleser/domain/models/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/register_request_model.dart';
 import 'package:mapa_adoleser/domain/models/forgot_password_email_response_model.dart';
+import 'package:mapa_adoleser/domain/models/reset_password_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
 
 class AuthService {
@@ -83,4 +84,16 @@ class AuthService {
 
     return ForgotPasswordCodeResponseModel.fromJson(mockResponse);
   }
+
+  Future<void> resetPassword(ResetPasswordRequestModel request) async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (request.password.length < 8) {
+      throw AuthException('A senha deve ter pelo menos 8 caracteres.');
+    }
+
+    return;
+  }
 }
+
+
