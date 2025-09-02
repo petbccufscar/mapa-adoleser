@@ -8,6 +8,10 @@ abstract class AppException implements Exception {
   String toString() => message;
 }
 
+class ContactException extends AppException {
+  ContactException([super.message = 'Erro ao enviar seu contato :(']);
+}
+
 class AuthException extends AppException {
   AuthException(super.message);
 }

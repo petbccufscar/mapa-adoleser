@@ -10,6 +10,7 @@ from .serializers import UserRegistrationSerializer, UserSerializer, UserProfile
 
 from .models import User, Location,  LocationReview, Activity, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
+from .permissions import IsSuper, IsOwnerReviewOrReadOnly, IsOwnerLocationOrReadOnly
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -63,14 +64,14 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
     queryset = Location.objects.all()  # Define o conjunto de dados base
     serializer_class = LocationSerializer # Especifica o serializer que esta view usará
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly] # Exemplo de permissão
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerLocationOrReadOnly | IsSuper] # Exemplo de permissão
     # IsAuthenticatedOrReadOnly: Qualquer um pode ler, mas apenas usuários autenticados podem escrever.
     # Outras opções: permissions.AllowAny, permissions.IsAuthenticated, etc.
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerReviewOrReadOnly | IsSuper]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)  # Define o usuário logado como autor da atividade

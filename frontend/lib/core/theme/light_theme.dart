@@ -20,6 +20,7 @@ ThemeData lightTheme = ThemeData(
       onError: AppColors.textPrimary,
     ),
     inputDecorationTheme: const InputDecorationTheme(
+      contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
         borderSide: BorderSide(
@@ -53,7 +54,7 @@ ThemeData lightTheme = ThemeData(
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
           color: AppColors.textPrimary,
-          fontSize: 32,
+          fontSize: 28,
           fontWeight: FontWeight.w700),
       headlineMedium: TextStyle(
           color: AppColors.textPrimary,
@@ -90,5 +91,16 @@ ThemeData lightTheme = ThemeData(
     iconTheme: const IconThemeData(
       color: AppColors.textSecondary,
       size: 24,
+    ),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        iconColor: WidgetStateProperty.resolveWith<Color>((states) {
+          // if (states.contains(WidgetState.pressed)) {
+          //   return AppColors.textSecondary; // cor quando pressionado
+          // }
+
+          return AppColors.textTertiary; // cor padrão
+        }),
+      ),
     ),
     useMaterial3: true);

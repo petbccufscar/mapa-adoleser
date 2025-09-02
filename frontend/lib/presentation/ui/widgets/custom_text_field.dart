@@ -1,52 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 /// Widget customizado de campo de texto, possivelmente com estilos e validações personalizados.
 
 class CustomTextField extends StatelessWidget {
   final String label; // Label do input
   final String? hint; // Placeholder o input
-  final TextEditingController controller; // Controler para digitação
+  final int maxLines;
   final TextInputType keyboardType; // Tipo de input
-  final bool obscureText; // Bool para esconder o texto
   final String? Function(String?)? validator; // Validação do campo
-  final IconData? icon; // Ícone a esquerda
   final void Function(String)? onFieldSubmitted;
+  final Widget? suffixIcon; // Ícone a esquerda
   final TextInputAction? textInputAction;
+  final bool? enabled;
+  final TextEditingController controller; // Controler para digitação
+  final List<MaskTextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     super.key,
-    required this.label,
+    this.maxLines = 1,
     this.hint,
-    required this.controller,
     this.keyboardType = TextInputType.text,
-    this.obscureText = false,
     this.validator,
-    this.icon,
+    this.suffixIcon,
+    this.enabled = true,
     this.onFieldSubmitted,
     this.textInputAction,
+    this.inputFormatters,
+    required this.label,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      // Text para renderizar label
-      Text(label, style: Theme.of(context).textTheme.labelMedium),
-      const SizedBox(height: 5),
-      // Input
-      TextFormField(
-        style: Theme.of(context).textTheme.bodyMedium,
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        validator: validator,
-        onFieldSubmitted: onFieldSubmitted,
-        textInputAction: textInputAction,
-        decoration: InputDecoration(
-            hintText: hint,
-            prefixIcon: icon != null ? Icon(icon) : null,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 10)),
-      )
-    ]);
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 5,
+        children: [
+          Text(label, style: Theme.of(context).textTheme.labelMedium),
+          TextFormField(
+            enabled: enabled,
+            style: Theme.of(context).textTheme.bodyMedium,
+            controller: controller,
+            maxLines: maxLines,
+            keyboardType: keyboardType,
+            validator: validator,
+            inputFormatters: inputFormatters,
+            onFieldSubmitted: onFieldSubmitted,
+            textInputAction: textInputAction,
+            decoration: InputDecoration(
+              hintText: hint,
+              suffixIcon: suffixIcon,
+            ),
+          )
+        ]);
   }
 }
