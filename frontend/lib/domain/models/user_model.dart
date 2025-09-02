@@ -6,6 +6,7 @@ class UserModel {
   final String name;
   final String email;
   final DateTime birthDate;
+  final String cep;
   final String? avatarUrl;
   final String? token; // se for retornado no login
 
@@ -15,6 +16,7 @@ class UserModel {
     required this.name,
     required this.email,
     required this.birthDate,
+    required this.cep,
     this.avatarUrl,
     this.token,
   });
@@ -23,11 +25,12 @@ class UserModel {
     return UserModel(
       id: json['id'],
       username: json['username'] ?? '',
-      name: json['name'],
-      email: json['email'],
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      cep: json['cep'] ?? '',
       birthDate: DateTime.parse(json['birthDate']),
-      avatarUrl: json['avatar_url'],
-      token: json['token'],
+      avatarUrl: json['avatar_url'] ?? '',
+      token: json['token'] ?? '',
     );
   }
 
@@ -38,6 +41,7 @@ class UserModel {
       'name': name,
       'email': email,
       'birthDate': birthDate.toIso8601String(),
+      'cep': cep,
       'avatar_url': avatarUrl,
       'token': token,
     };

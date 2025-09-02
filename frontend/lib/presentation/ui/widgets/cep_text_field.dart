@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mapa_adoleser/data/adress_service.dart';
+import 'package:mapa_adoleser/data/services/adress_service.dart';
 import 'package:mapa_adoleser/domain/models/adress_response_model.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 

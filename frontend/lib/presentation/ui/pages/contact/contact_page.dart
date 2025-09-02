@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
-import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/domain/models/subject_model.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
@@ -69,9 +68,10 @@ class _ContactPageState extends State<ContactPage> {
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
       endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
-      body: ResponsivePageWrapper(
-        body: Center(
-          child: ConstrainedBox(
+      body: Center(
+        child: SingleChildScrollView(
+            child: ResponsivePageWrapper(
+          body: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 450),
             child: Form(
               key: _formKey,
@@ -125,7 +125,7 @@ class _ContactPageState extends State<ContactPage> {
               ),
             ),
           ),
-        ),
+        )),
       ),
     );
   }

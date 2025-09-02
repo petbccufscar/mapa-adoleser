@@ -53,6 +53,25 @@ class Validators {
     return null;
   }
 
+  static String? isValidUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'O campo é obrigatório';
+    }
+    if (value.isEmpty) {
+      return 'Mínimo 1 caractere';
+    }
+    if (value.length > 150) {
+      return 'Máximo 150 caracteres';
+    }
+
+    final regex = RegExp(r'^[\w.@+-]+$');
+    if (!regex.hasMatch(value)) {
+      return 'Formato inválido. Use apenas letras, números e . @ + - _';
+    }
+
+    return null; // válido
+  }
+
   static String? passwordsMatch(String? value, String originalPassword,
       {String message = 'As senhas não coincidem'}) {
     if (value == null || value.isEmpty) return 'Confirme a senha';

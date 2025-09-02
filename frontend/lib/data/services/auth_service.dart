@@ -7,8 +7,8 @@ class AuthService {
   Future<UserModel> login(LoginRequestModel data) async {
     await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
 
-    if (data.email != 'admin@example.com') {
-      throw AuthException('E-mail não encontrado!');
+    if (data.username != 'coutrims') {
+      throw AuthException('Usuário não encontrado!');
     }
 
     if (data.password != '123') {
@@ -18,9 +18,11 @@ class AuthService {
     // Simulando resposta da API
     final mockResponse = {
       'id': 1,
-      'name': 'Admin',
-      'email': data.email,
+      'name': 'Vinícius Martins Cotrim',
+      'username': data.username,
+      'email': 'vini.cotrim@hotmail.com',
       'birthDate': '2025-08-11T01:37:16.936',
+      'cep': '13180-220',
       'role': 'admin',
       'avatar_url': null,
       'token': 'abc.def.ghi',
@@ -40,6 +42,7 @@ class AuthService {
     final mockResponse = {
       'id': 1,
       'email': data.email,
+      'username': data.username,
       'name': data.name,
       'birthDate': data.birthDate.toIso8601String(),
       'role': 'admin',

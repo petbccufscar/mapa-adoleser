@@ -16,7 +16,7 @@ class LoginProvider extends ChangeNotifier {
   bool get isLoading => _loading;
   bool get success => _success;
 
-  Future<UserModel?> login(String email, String password) async {
+  Future<UserModel?> login(String username, String password) async {
     _loading = true;
     _error = null;
     _success = false;
@@ -25,7 +25,7 @@ class LoginProvider extends ChangeNotifier {
     UserModel? user;
 
     try {
-      final request = LoginRequestModel(email: email, password: password);
+      final request = LoginRequestModel(username: username, password: password);
       user = await _authService.login(request);
 
       _success = true;

@@ -15,8 +15,8 @@ class RegisterProvider extends ChangeNotifier {
   bool get isLoading => _loading;
   bool get success => _success;
 
-  Future<void> register(String email, String name, DateTime birthDate,
-      String password, bool acceptTerms) async {
+  Future<void> register(String email, String username, String name,
+      DateTime birthDate, String password, bool acceptTerms) async {
     _loading = true;
     _error = null;
     _success = false;
@@ -33,6 +33,7 @@ class RegisterProvider extends ChangeNotifier {
     try {
       final request = RegisterRequestModel(
         name: name,
+        username: username,
         email: email,
         birthDate: birthDate,
         password: password,

@@ -2,13 +2,13 @@
 class ResponsivePaddings {
   static const double horizontalPhone = 16.0;
   static const double horizontalTablet = 32.0;
-  static const double horizontalTableLarge = 80.0;
+  static const double horizontalTableLarge = 64.0;
   static const double horizontalDesktop = 192.0;
   static const double horizontalDesktopLarge = 320.0;
 
   static const double verticalPhone = 16.0;
-  static const double verticalTablet = 16.0;
-  static const double verticalTableLarge = 32.0;
+  static const double verticalTablet = 32.0;
+  static const double verticalTableLarge = 64.0;
   static const double verticalDesktop = 64.0;
   static const double verticalDesktopLarge = 64.0;
 }
@@ -58,8 +58,8 @@ class _LoginTexts {
   const _LoginTexts();
 
   final title = 'Entre com sua conta';
-  final emailLabel = 'E-mail';
-  final emailHint = 'Digite seu e-mail';
+  final usernameLabel = "Username";
+  final usernameHint = 'Digite seu username';
   final passwordLabel = 'Senha';
   final passwordHint = 'Digite sua senha';
   final forgotPassword = 'Esqueceu a senha?';
@@ -77,6 +77,8 @@ class _RegisterTexts {
   final nameHint = 'Digite seu nome completo';
   final emailLabel = 'E-mail';
   final emailHint = 'Digite seu e-mail';
+  final usernameLabel = "Username";
+  final usernameHint = 'Digite seu username';
   final birthDateLabel = 'Data de Nascimento';
   final birthDateHint = 'dd/mm/aaaa';
   final passwordLabel = 'Senha';

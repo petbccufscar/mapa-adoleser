@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/constants.dart';
-import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/carousel.dart';
@@ -25,46 +24,51 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
       endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
-      body: CustomScrollView(
-        slivers: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 20,
-            children: [
-              Column(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Carousel(),
+            ResponsivePageWrapper(
+              body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
+                spacing: 20,
                 children: [
-                  Text(
-                    AppTexts.home.aboutTitle,
-                    style: Theme.of(context).textTheme.headlineLarge,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 12,
+                    children: [
+                      Text(
+                        AppTexts.home.aboutTitle,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      Text(
+                        AppTexts.home.aboutText,
+                        textAlign: TextAlign.justify,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
                   ),
-                  Text(
-                    AppTexts.home.aboutText,
-                    textAlign: TextAlign.justify,
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 12,
+                    children: [
+                      Text(
+                        AppTexts.home.mapTitle,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      Text(
+                        AppTexts.home.mapText,
+                        textAlign: TextAlign.justify,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Text(
-                    AppTexts.home.mapTitle,
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  Text(
-                    AppTexts.home.mapText,
-                    textAlign: TextAlign.justify,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const Footer(),
-        ],
+            ),
+            const Footer(),
+          ],
+        ),
       ),
     );
   }
