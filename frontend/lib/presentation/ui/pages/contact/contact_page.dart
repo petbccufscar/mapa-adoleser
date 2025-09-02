@@ -23,10 +23,28 @@ class ContactPage extends StatefulWidget {
 class _ContactPageState extends State<ContactPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final _emailController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _messageController = TextEditingController();
+  late final TextEditingController _emailController;
+  late final TextEditingController _nameController;
+  late final TextEditingController _messageController;
   SubjectModel? selectedSubject;
+
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _nameController = TextEditingController();
+    _messageController = TextEditingController();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    _messageController.dispose();
+
+    super.dispose();
+  }
 
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -47,15 +65,6 @@ class _ContactPageState extends State<ContactPage> {
         },
       );
     }
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _nameController.dispose();
-    _messageController.dispose();
-
-    super.dispose();
   }
 
   @override

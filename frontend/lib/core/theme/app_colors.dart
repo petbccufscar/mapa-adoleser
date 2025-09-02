@@ -17,6 +17,7 @@ class AppColors {
   static const textSecondary = Color(0xFF4C5466);
   static const textTertiary = Color(0xFFA8A8A8);
   static const textLight = Color(0xFFF6F6F6);
+  static const textLightSmoke = Color(0xFF629EA9);
   static const warning = Color(0xFFFF5A5A);
 
   // Background

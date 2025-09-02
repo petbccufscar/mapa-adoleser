@@ -106,7 +106,7 @@ class DesktopAppBar extends StatelessWidget {
                     bold: currentRoute == "/favoritos",
                     boldOnHover: true,
                     color: currentRoute == "/favoritos"
-                        ? AppColors.textSecondary
+                        ? AppColors.textLightSmoke
                         : AppColors.textLight),
                 const SizedBox(width: 15),
                 ActionText(
@@ -115,7 +115,7 @@ class DesktopAppBar extends StatelessWidget {
                     bold: currentRoute == "/perfil",
                     boldOnHover: true,
                     color: currentRoute == "/perfil"
-                        ? AppColors.textSecondary
+                        ? AppColors.textLightSmoke
                         : AppColors.textLight),
                 const SizedBox(width: 15),
                 ActionText(
@@ -124,7 +124,7 @@ class DesktopAppBar extends StatelessWidget {
                       {await context.read<AuthProvider>().logout()},
                   boldOnHover: true,
                   color: AppColors.textLight,
-                  colorOnHover: AppColors.textPrimary,
+                  colorOnHover: AppColors.warning,
                 ),
               ],
             ))

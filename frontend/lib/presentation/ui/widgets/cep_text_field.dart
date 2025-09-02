@@ -1,9 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:mapa_adoleser/data/services/adress_service.dart';
-import 'package:mapa_adoleser/domain/models/adress_response_model.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
+import 'dart:developer';
 
-class CepTextField extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:mapa_adoleser/core/utils/validators.dart';
+import 'package:mapa_adoleser/data/services/address_service.dart';
+import 'package:mapa_adoleser/domain/models/address_response_model.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+class CepTextField extends StatefulWidget {
   final bool enabled;
   final TextEditingController controller;
   final void Function(AddressResponseModel?) onSearch;
@@ -14,34 +18,58 @@ class CepTextField extends StatelessWidget {
       required this.controller,
       required this.onSearch});
 
-  Future<AddressResponseModel?> fetchAddress(String cep) async {
+  @override
+  State<CepTextField> createState() => _CepTextFieldState();
+}
+
+class _CepTextFieldState extends State<CepTextField> {
+  late final MaskTextInputFormatter _maskFormatter;
+
+  @override
+  void initState() {
+    _maskFormatter = MaskTextInputFormatter(
+      mask: '#####-###',
+      filter: {"#": RegExp(r'[0-9]')},
+    );
+
+    if (widget.controller.text.isNotEmpty) {
+      fetchAddress(widget.controller.text);
+    }
+
+    super.initState();
+  }
+
+  void fetchAddress(String cep) async {
     AddressService addressService = AddressService();
 
     try {
-      return await addressService.searchCEP(cep);
+      await addressService.searchCEP(cep).then((address) {
+        widget.onSearch(address);
+      });
     } catch (e) {
-      debugPrint('Erro ao buscar endereço: $e');
+      log('Erro ao buscar endereço: $e');
+      widget.onSearch(null);
     }
-
-    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
-      enabled: enabled,
+      enabled: widget.enabled,
       label: 'CEP',
-      controller: controller,
+      controller: widget.controller,
+      validator: Validators.isNotEmpty,
       hint: '00000-000',
       keyboardType: TextInputType.number,
-      suffixIcon: enabled
+      inputFormatters: [_maskFormatter],
+      onFieldSubmitted: (cep) {
+        fetchAddress(cep);
+      },
+      suffixIcon: widget.enabled
           ? IconButton(
               icon: const Icon(Icons.search),
-              onPressed: () async {
-                final AddressResponseModel? address =
-                    await fetchAddress(controller.text);
-
-                onSearch(address);
+              onPressed: () {
+                fetchAddress(widget.controller.text);
               },
             )
           : null,

@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final bool? enabled;
   final TextEditingController controller; // Controler para digitação
   final List<MaskTextInputFormatter>? inputFormatters;
+  final FocusNode? focusNode;
 
   const CustomTextField({
     super.key,
@@ -25,6 +26,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.enabled = true,
     this.onFieldSubmitted,
+    this.focusNode,
     this.textInputAction,
     this.inputFormatters,
     required this.label,
@@ -39,6 +41,7 @@ class CustomTextField extends StatelessWidget {
         children: [
           Text(label, style: Theme.of(context).textTheme.labelMedium),
           TextFormField(
+            focusNode: focusNode,
             enabled: enabled,
             style: Theme.of(context).textTheme.bodyMedium,
             controller: controller,
