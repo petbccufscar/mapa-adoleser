@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomPasswordField extends StatefulWidget {
-  final String label;
+  final String? label;
   final String? hint;
   final bool showPasswordStrength;
   final TextEditingController controller;
@@ -11,7 +11,7 @@ class CustomPasswordField extends StatefulWidget {
 
   const CustomPasswordField({
     super.key,
-    required this.label,
+    this.label,
     this.hint,
     required this.controller,
     this.validator,
@@ -66,7 +66,8 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Label
-        Text(widget.label, style: Theme.of(context).textTheme.labelMedium),
+        if (widget.label != null)
+          Text(widget.label!, style: Theme.of(context).textTheme.labelMedium),
         const SizedBox(height: 5),
 
         TextFormField(

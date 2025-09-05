@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/presentation/routes/guards.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/about/about_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/change_password/change_password_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/contact/contact_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/favorites/favorites_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/home/home_page.dart';
@@ -46,6 +47,11 @@ GoRouter createRouter(AuthProvider auth) {
           path: '/favoritos',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: FavoritesPage())),
+      GoRoute(
+          //name: 'Alterar Senha',
+          path: '/alterar-senha',
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: ChangePasswordPage())),
       GoRoute(
           //name: 'Contato',
           path: '/contato',

@@ -1,4 +1,8 @@
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
+import 'package:mapa_adoleser/domain/models/change_password_request_model.dart';
+import 'package:mapa_adoleser/domain/models/change_password_response_model.dart';
+import 'package:mapa_adoleser/domain/models/check_current_password_response_model.dart';
+import 'package:mapa_adoleser/domain/models/check_current_password_resquest_model.dart';
 import 'package:mapa_adoleser/domain/models/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/register_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
@@ -48,5 +52,45 @@ class AuthService {
     };
 
     return UserModel.fromJson(mockResponse);
+  }
+
+  Future<CheckCurrentPasswordResponseModel> checkCurrentPassword(
+      CheckCurrentPasswordRequestModel data) async {
+    await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
+
+    if (data.password != '123') {
+      throw AuthException('Senha incorreta!');
+    }
+
+    // Simulando resposta da API
+    final mockResponse = {
+      'valid': true,
+    };
+
+    if (!mockResponse['valid']!) {
+      throw AuthException('Senha incorreta!');
+    }
+
+    return CheckCurrentPasswordResponseModel.fromJson(mockResponse);
+  }
+
+  Future<ChangePasswordResponseModel> changePassword(
+      ChangePasswordRequestModel data) async {
+    await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
+
+    if (data.password != '123') {
+      throw AuthException('Senha atual incorreta!');
+    }
+
+    // Simulando resposta da API
+    final mockResponse = {
+      'success': true,
+    };
+
+    if (!mockResponse['success']!) {
+      throw AuthException('Não foi possível alterar a senha!');
+    }
+
+    return ChangePasswordResponseModel.fromJson(mockResponse);
   }
 }
