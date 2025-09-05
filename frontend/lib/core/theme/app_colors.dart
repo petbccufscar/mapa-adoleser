@@ -33,4 +33,7 @@ class AppColors {
   static const inputPlaceholder = Color(0xFFB0B0B0);
   static const inputBorder = Color(0xFFC9C9C9);
   static const inputBorderFocus = Color(0xFF687082);
+
+  //Link
+  static const link = Color(0xFF4B46D3);
 }
