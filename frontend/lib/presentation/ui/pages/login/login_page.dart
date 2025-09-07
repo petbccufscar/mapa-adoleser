@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
 
-      if (loginProvider.success && mounted) {
+      if (loginProvider.error == null && mounted) {
         context.go('/');
       }
     }

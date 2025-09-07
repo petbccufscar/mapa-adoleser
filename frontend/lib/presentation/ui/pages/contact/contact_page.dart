@@ -37,7 +37,7 @@ class _ContactPageState extends State<ContactPage> {
 
       if (!mounted) return;
 
-      if (contact.success) {
+      if (contact.error == null) {
         _formKey.currentState?.reset();
 
         _emailController.clear();

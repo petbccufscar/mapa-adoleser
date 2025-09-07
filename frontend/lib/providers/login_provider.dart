@@ -10,16 +10,14 @@ class LoginProvider extends ChangeNotifier {
 
   String? _error;
   bool _loading = false;
-  bool _success = false;
 
   String? get error => _error;
   bool get isLoading => _loading;
-  bool get success => _success;
 
   Future<UserModel?> login(String email, String password) async {
     _loading = true;
     _error = null;
-    _success = false;
+
     notifyListeners();
 
     UserModel? user;
@@ -27,14 +25,12 @@ class LoginProvider extends ChangeNotifier {
     try {
       final request = LoginRequestModel(email: email, password: password);
       user = await _authService.login(request);
-
-      _success = true;
     } catch (e) {
       _error = parseException(e);
-      _success = false;
     }
 
     _loading = false;
+
     notifyListeners();
 
     return user;

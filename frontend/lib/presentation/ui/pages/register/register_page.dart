@@ -70,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
           _passwordController.text,
           acceptTerms);
 
-      if (registerProvider.success && mounted) {
+      if (registerProvider.error == null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(AppTexts.register.successMessage),
