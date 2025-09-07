@@ -15,19 +15,19 @@ class ContactService {
     return const ContactResponse(success: true);
   }
 
-  Future<List<Subject>> fetchSubjects() async {
+  Future<List<SubjectModel>> fetchSubjects() async {
     await Future.delayed(const Duration(seconds: 2));
 
-    final List<Subject> subjectList = <Subject>[
-      Subject(
+    final List<SubjectModel> subjectList = <SubjectModel>[
+      SubjectModel(
         id: 1,
         label: 'Suporte Técnico',
       ),
-      Subject(
+      SubjectModel(
         id: 2,
         label: 'Dúvidas Gerais',
       ),
-      Subject(
+      SubjectModel(
         id: 3,
         label: 'Feedback',
       ),

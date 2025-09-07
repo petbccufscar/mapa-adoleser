@@ -54,7 +54,7 @@ class CustomDropdownField<T> extends StatelessWidget {
             onChanged: onChanged,
             validator: validator,
             hint: Text(
-              hint!,
+              hint ?? '',
               style: Theme.of(context).inputDecorationTheme.hintStyle,
             ),
           ),

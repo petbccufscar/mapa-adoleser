@@ -27,7 +27,7 @@ class _ContactPageState extends State<ContactPage> {
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
   final _messageController = TextEditingController();
-  Subject? selectedSubject;
+  SubjectModel? selectedSubject;
 
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -64,7 +64,7 @@ class _ContactPageState extends State<ContactPage> {
     final auth = context.watch<AuthProvider>();
     final contact = context.watch<ContactProvider>();
 
-    final List<Subject> subjects = contact.subjects;
+    final List<SubjectModel> subjects = contact.subjects;
     final isLoggedIn = auth.isLoggedIn;
 
     return Scaffold(
@@ -100,12 +100,12 @@ class _ContactPageState extends State<ContactPage> {
                       textInputAction: TextInputAction.next,
                       validator: Validators.isNotEmpty,
                     ),
-                    CustomDropdownField<Subject>(
+                    CustomDropdownField<SubjectModel>(
                       label: AppTexts.help.subjectLabel,
                       hint: AppTexts.help.subjectHint,
                       value: selectedSubject,
                       items: subjects,
-                      onChanged: (Subject? value) => {
+                      onChanged: (SubjectModel? value) => {
                         setState(() {
                           selectedSubject = value;
                         })

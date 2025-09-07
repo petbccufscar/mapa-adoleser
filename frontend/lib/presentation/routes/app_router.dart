@@ -18,7 +18,7 @@ GoRouter createRouter(AuthProvider auth) {
   return GoRouter(
     refreshListenable: auth,
     debugLogDiagnostics: true,
-    initialLocation: '/contato',
+    initialLocation: '/',
     //errorBuilder: (context, state) => const ErrorPage(),
     redirect: (context, state) => authGuard(auth, state),
     routes: [
