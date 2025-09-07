@@ -90,11 +90,14 @@ class _ForgotPasswordTexts{
 class _RegisterTexts {
   const _RegisterTexts();
 
+  final successMessage = 'Conta criada com com sucesso!';
   final title = 'Crie sua conta';
   final nameLabel = 'Nome completo';
   final nameHint = 'Digite seu nome completo';
   final emailLabel = 'E-mail';
   final emailHint = 'Digite seu e-mail';
+  final birthDateLabel = 'Data de Nascimento';
+  final birthDateHint = 'dd/mm/aaaa';
   final passwordLabel = 'Senha';
   final passwordHint = 'Crie sua senha';
   final confirmPasswordLabel = 'Confirme sua senha';
@@ -103,6 +106,8 @@ class _RegisterTexts {
   final registerButton = 'Criar minha conta';
   final registered = 'Ja tem uma conta?';
   final loginAccount = 'Faça login!';
+  final checkBoxText = 'Ao marcar esta caixa, você concorda com nossos ';
+  final checkBoxTextTerms = 'Termos de Uso e Políticas de Privacidade';
 }
 
 class _HomeTexts {

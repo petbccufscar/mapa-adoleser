@@ -1,7 +1,4 @@
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_code_request_model.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_code_response_model.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
 import 'package:mapa_adoleser/domain/models/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/register_request_model.dart';
 import 'package:mapa_adoleser/domain/models/forgot_password_email_response_model.dart';
@@ -25,7 +22,7 @@ class AuthService {
       'id': 1,
       'name': 'Admin',
       'email': data.email,
-      'dateOfBirth': '2025-08-11T01:37:16.936',
+      'birthDate': '2025-08-11T01:37:16.936',
       'role': 'admin',
       'avatar_url': null,
       'token': 'abc.def.ghi',
@@ -46,7 +43,7 @@ class AuthService {
       'id': 1,
       'email': data.email,
       'name': data.name,
-      'dateOfBirth': data.dateOfBirth.toIso8601String(),
+      'birthDate': data.birthDate.toIso8601String(),
       'role': 'admin',
       'avatar_url': null,
       'token': 'abc.def.ghi',
@@ -55,10 +52,51 @@ class AuthService {
     return UserModel.fromJson(mockResponse);
   }
 
-  Future<ForgotPasswordEmailResponseModel?> forgotPasswordEmail(ForgotPasswordEmailRequestModel data) async {
+  Future<CheckCurrentPasswordResponseModel> checkCurrentPassword(
+      CheckCurrentPasswordRequestModel data) async {
+    await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
+
+    if (data.password != '123') {
+      throw AuthException('A senha digitada está incorreta!');
+    }
+
+    // Simulando resposta da API
+    final mockResponse = {
+      'valid': true,
+    };
+
+    if (!mockResponse['valid']!) {
+      throw AuthException('Senha incorreta!');
+    }
+
+    return CheckCurrentPasswordResponseModel.fromJson(mockResponse);
+  }
+
+  Future<ChangePasswordResponseModel> changePassword(
+      ChangePasswordRequestModel data) async {
+    await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
+
+    if (data.newPassword == 'coutrims1!') {
+      throw AuthException('Sua nova senha não pode ser igual a anterior!');
+    }
+
+    // Simulando resposta da API
+    final mockResponse = {
+      'success': true,
+    };
+
+    if (!mockResponse['success']!) {
+      throw AuthException('Não foi possível alterar a senha!');
+    }
+
+    return ChangePasswordResponseModel.fromJson(mockResponse);
+  }
+
+  Future<ForgotPasswordEmailResponseModel?> forgotPasswordEmail(
+      ForgotPasswordEmailRequestModel data) async {
     await Future.delayed(const Duration(seconds: 2));
 
-    if(data.email == "fulanodetal@gmail.com"){
+    if (data.email == "fulanodetal@gmail.com") {
       throw AuthException('E-mail já está em uso!');
     }
 
@@ -70,10 +108,11 @@ class AuthService {
     return ForgotPasswordEmailResponseModel.fromJson(mockResponse);
   }
 
-  Future<ForgotPasswordCodeResponseModel?> forgotPasswordCode(ForgotPasswordCodeRequestModel data) async {
+  Future<ForgotPasswordCodeResponseModel?> forgotPasswordCode(
+      ForgotPasswordCodeRequestModel data) async {
     await Future.delayed(const Duration(seconds: 2));
 
-    if(data.code == "123456"){
+    if (data.code == "123456") {
       throw AuthException('Código informado');
     }
 
@@ -95,5 +134,3 @@ class AuthService {
     return;
   }
 }
-
-

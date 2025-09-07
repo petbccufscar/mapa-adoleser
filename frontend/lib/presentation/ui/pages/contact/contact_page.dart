@@ -61,16 +61,15 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthProvider>();
+    final authProvider = context.watch<AuthProvider>();
     final contact = context.watch<ContactProvider>();
 
     final List<Subject> subjects = contact.subjects;
-    final isLoggedIn = auth.isLoggedIn;
 
     return Scaffold(
-      appBar: CustomAppBar(isLoggedIn: isLoggedIn),
+      appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: isLoggedIn)
+          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
       body: Center(
         child: SingleChildScrollView(

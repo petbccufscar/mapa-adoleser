@@ -20,14 +20,12 @@ class HomePage extends StatelessWidget {
     // final themeProvider = Provider.of<ThemeProvider>(context);
     // final isDark = themeProvider.themeMode == ThemeMode.dark;
 
-    final auth = context.watch<AuthProvider>();
-
-    final isLoggedIn = auth.isLoggedIn;
+    final authProvider = context.watch<AuthProvider>();
 
     return Scaffold(
-      appBar: CustomAppBar(isLoggedIn: isLoggedIn),
+      appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: isLoggedIn)
+          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
       body: SingleChildScrollView(
         child: Column(

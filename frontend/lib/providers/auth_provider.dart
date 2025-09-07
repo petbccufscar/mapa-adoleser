@@ -1,5 +1,6 @@
-// providers/auth_provider.dart
+// providers/register_provider.dart
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/auth_service.dart';
@@ -12,8 +13,6 @@ import 'package:mapa_adoleser/domain/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final AuthService _authService = AuthService();
-
   UserModel? _user;
   String? _error;
   bool _loading = false;
@@ -22,62 +21,24 @@ class AuthProvider extends ChangeNotifier {
   static const _userKey = 'user_data';
 
   UserModel? get user => _user;
-  String? get error => _error;
-  bool get isLoading => _loading;
   bool get isLoggedIn => _user != null;
   bool get success => _success;
+
+  static const _userKey = 'user_data';
 
   AuthProvider() {
     _loadUserFromStorage();
   }
 
-  Future<void> login(String email, String password) async {
-    _loading = true;
-    _error = null;
-    notifyListeners();
+  void setUser(UserModel user) async {
+    _user = user;
 
-    try {
-      final request = LoginRequestModel(email: email, password: password);
-      _user = await _authService.login(request);
+    _saveUserToStorage(user);
 
-      await _saveUserToStorage(_user!);
-    } catch (e) {
-      _user = null;
-      _error = parseException(e);
-    }
-
-    _loading = false;
     notifyListeners();
   }
 
-  Future<void> register(
-      String email, String name, DateTime dateOfBirth, String password) async {
-    _loading = true;
-    _error = null;
-    notifyListeners();
-
-    try {
-      final request = RegisterRequestModel(
-        name: name,
-        email: email,
-        dateOfBirth: dateOfBirth,
-        password: password,
-      );
-
-      _user = await _authService.register(request);
-
-      await _saveUserToStorage(_user!);
-    } catch (e) {
-      _user = null;
-      _error = parseException(e);
-    }
-
-    _loading = false;
-    notifyListeners();
-  }
-
-  Future<void> forgotPasswordEmail(
-      String email) async {
+  Future<void> forgotPasswordEmail(String email) async {
     _loading = true;
     _error = null;
     _success = false;
@@ -100,8 +61,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> forgotPasswordCode(
-      String code) async {
+  Future<void> forgotPasswordCode(String code) async {
     _loading = true;
     _error = null;
     _success = false;
@@ -148,17 +108,13 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userKey);
 
     _user = null;
-    _error = null;
     notifyListeners();
   }
-
 
   Future<void> _saveUserToStorage(UserModel user) async {
     final prefs = await SharedPreferences.getInstance();
@@ -176,6 +132,4 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-
 }

@@ -16,11 +16,15 @@ class DesktopAppBar extends StatelessWidget {
     final currentRoute =
         GoRouter.of(context).routeInformationProvider.value.uri.toString();
 
-    final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
-    final userName = context.watch<AuthProvider>().user?.name;
+    final authProvider = context.watch<AuthProvider>();
 
-    return Column(children: [
-      Container(
+    final isLoggedIn = authProvider.isLoggedIn;
+    final userName = authProvider.user?.name;
+
+    return Column(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width,
           height: AppDimensions.loggedOutAppBarHeight,
           color: AppColors.backgroundSmoke,
           padding: EdgeInsets.symmetric(
@@ -36,53 +40,74 @@ class DesktopAppBar extends StatelessWidget {
                   },
                   child: Image.asset(
                     'images/ADOLESER.png',
+                    height: 40,
                     width: 160,
                   ),
                 ),
               ),
-              const Spacer(),
-              ActionText(
-                  text: "Início",
-                  action: () => {context.go("/")},
-                  bold: currentRoute == "/",
-                  boldOnHover: true,
-                  color: currentRoute == "/" ? AppColors.purple : null,
-                  colorOnHover: AppColors.purple),
-              const SizedBox(width: 15),
-              ActionText(
-                  text: "Pesquisar",
-                  action: () => {context.go("/pesquisa")},
-                  bold: currentRoute == "/pesquisa",
-                  boldOnHover: true,
-                  color: currentRoute == "/pesquisa" ? AppColors.purple : null,
-                  colorOnHover: AppColors.purple),
-              const SizedBox(width: 15),
-              ActionText(
-                  text: "Sobre",
-                  action: () => {context.go("/sobre")},
-                  bold: currentRoute == "/sobre",
-                  boldOnHover: true,
-                  color: currentRoute == "/sobre" ? AppColors.purple : null,
-                  colorOnHover: AppColors.purple),
-              const SizedBox(width: 15),
-              ActionText(
-                  text: "Fale Conosco",
-                  action: () => {context.go("/contato")},
-                  bold: currentRoute == "/contato",
-                  boldOnHover: true,
-                  color: currentRoute == "/contato" ? AppColors.purple : null,
-                  colorOnHover: AppColors.purple),
-              if (!isLoggedIn && currentRoute != "/login") ...[
-                const SizedBox(width: 10),
-                const Text('•'),
-                const SizedBox(width: 12),
-                CustomButton(
-                    text: 'Entrar', onPressed: () => context.go('/login'))
-              ]
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Wrap(
+                    alignment: WrapAlignment.end,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 5,
+                    runSpacing: 8,
+                    children: [
+                      ActionText(
+                          text: "Início",
+                          action: () => {context.go("/")},
+                          bold: currentRoute == "/",
+                          boldOnHover: true,
+                          color: currentRoute == "/" ? AppColors.purple : null,
+                          colorOnHover: AppColors.purple),
+                      const SizedBox(width: 15),
+                      ActionText(
+                          text: "Pesquisar",
+                          action: () => {context.go("/pesquisa")},
+                          bold: currentRoute == "/pesquisa",
+                          boldOnHover: true,
+                          color: currentRoute == "/pesquisa"
+                              ? AppColors.purple
+                              : null,
+                          colorOnHover: AppColors.purple),
+                      const SizedBox(width: 15),
+                      ActionText(
+                          text: "Sobre",
+                          action: () => {context.go("/sobre")},
+                          bold: currentRoute == "/sobre",
+                          boldOnHover: true,
+                          color: currentRoute == "/sobre"
+                              ? AppColors.purple
+                              : null,
+                          colorOnHover: AppColors.purple),
+                      const SizedBox(width: 15),
+                      ActionText(
+                          text: "Fale Conosco",
+                          action: () => {context.go("/contato")},
+                          bold: currentRoute == "/contato",
+                          boldOnHover: true,
+                          color: currentRoute == "/contato"
+                              ? AppColors.purple
+                              : null,
+                          colorOnHover: AppColors.purple),
+                      if (!isLoggedIn && currentRoute != "/login") ...[
+                        const SizedBox(width: 10),
+                        const Text('•'),
+                        const SizedBox(width: 12),
+                        CustomButton(
+                            text: 'Entrar',
+                            onPressed: () => context.go('/login'))
+                      ]
+                    ],
+                  ),
+                ),
+              ),
             ],
-          )),
-      if (isLoggedIn)
-        Container(
+          ),
+        ),
+        if (isLoggedIn)
+          Container(
             height: AppDimensions.appBarSecondaryHeight,
             color: AppColors.purple,
             padding: EdgeInsets.symmetric(
@@ -125,7 +150,9 @@ class DesktopAppBar extends StatelessWidget {
                   colorOnHover: AppColors.textPrimary,
                 ),
               ],
-            ))
-    ]);
+            ),
+          )
+      ],
+    );
   }
 }
