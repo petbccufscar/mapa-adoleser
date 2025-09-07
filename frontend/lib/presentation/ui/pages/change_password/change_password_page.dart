@@ -29,7 +29,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   late final TextEditingController _newPasswordController;
   late final TextEditingController _confirmNewPasswordController;
 
-  int _currentIndex = 2;
+  int _currentIndex = 0;
 
   @override
   void initState() {
