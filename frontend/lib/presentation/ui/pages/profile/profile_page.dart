@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer//custom_drawer.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
@@ -17,10 +19,12 @@ class ProfilePage extends StatelessWidget {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: const Center(
-        child: Text(
-          'Perfil!',
-          style: TextStyle(fontSize: 24),
+      body: Center(
+        child: ActionText(
+          text: 'Mudar senha',
+          action: () {
+            context.go('/alterar-senha');
+          },
         ),
       ),
     );

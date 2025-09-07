@@ -1,5 +1,5 @@
 class ChangePasswordResponseModel {
-  final String success;
+  final bool success;
 
   const ChangePasswordResponseModel({
     required this.success,

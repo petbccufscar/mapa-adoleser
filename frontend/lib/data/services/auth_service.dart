@@ -59,7 +59,7 @@ class AuthService {
     await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
 
     if (data.password != '123') {
-      throw AuthException('Senha incorreta!');
+      throw AuthException('A senha digitada está incorreta!');
     }
 
     // Simulando resposta da API
@@ -78,8 +78,8 @@ class AuthService {
       ChangePasswordRequestModel data) async {
     await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
 
-    if (data.password != '123') {
-      throw AuthException('Senha atual incorreta!');
+    if (data.newPassword == 'coutrims1!') {
+      throw AuthException('Sua nova senha não pode ser igual a anterior!');
     }
 
     // Simulando resposta da API

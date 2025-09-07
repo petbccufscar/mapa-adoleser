@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../core/theme/app_colors.dart';
+import 'package:mapa_adoleser/core/theme/app_colors.dart';
 
 class ActionText extends StatefulWidget {
   final String text;

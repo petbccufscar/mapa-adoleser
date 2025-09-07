@@ -179,8 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       text: AppTexts.register.registerButton,
                       onPressed: registerProvider.isLoading ? null : _submit,
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
+                    Wrap(
                       spacing: 5,
                       children: [
                         Text(AppTexts.register.registered),

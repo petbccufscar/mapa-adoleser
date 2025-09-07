@@ -28,32 +28,32 @@ GoRouter createRouter(AuthProvider auth) {
     redirect: (context, state) => authGuard(auth, state),
     routes: [
       GoRoute(
-          //name: 'Home',
+          name: 'Home',
           path: '/',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: HomePage())),
       GoRoute(
-          //name: 'Pesquisa',
+          name: 'Pesquisa',
           path: '/pesquisa',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: SearchPage())),
       GoRoute(
-          //name: 'Perfil',
+          name: 'Perfil',
           path: '/perfil',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: ProfilePage())),
       GoRoute(
-          //name: 'Favoritos',
+          name: 'Favoritos',
           path: '/favoritos',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: FavoritesPage())),
       GoRoute(
-          //name: 'Alterar Senha',
+          name: 'Alterar Senha',
           path: '/alterar-senha',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: ChangePasswordPage())),
       GoRoute(
-          //name: 'Contato',
+          name: 'Contato',
           path: '/contato',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: ContactPage()),
@@ -72,12 +72,12 @@ GoRouter createRouter(AuthProvider auth) {
             )
           ]),
       GoRoute(
-          //name: 'Sobre',
+          name: 'Sobre',
           path: '/sobre',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: AboutPage())),
       GoRoute(
-        //name: 'Login',
+        name: 'Login',
         path: '/login',
         pageBuilder: (context, state) {
           return NoTransitionPage(
@@ -89,6 +89,7 @@ GoRouter createRouter(AuthProvider auth) {
         },
       ),
       GoRoute(
+        name: 'Cadastro',
         path: '/cadastro',
         pageBuilder: (context, state) {
           return NoTransitionPage(
