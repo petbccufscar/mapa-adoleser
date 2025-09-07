@@ -2,10 +2,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
+from django.conf import settings
 import uuid
 
 
-# Create your models here.
 class Role(models.TextChoices):
     USER = 'USER', 'User'
     ADMIN = 'ADMIN', 'Admin'
@@ -37,6 +37,20 @@ class Location(models.Model):
     description = models.TextField(max_length=1023)
     nota = models.FloatField(default=0.0, editable=False)
 
+    
+    # Adding coordinates and address for the location
+    address = models.CharField(max_length=500, blank=True)
+    latitude = models.DecimalField(max_digits=10, decimal_places=8, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
+
+    created_by = models.ForeignKey(  # guarda o id do user que o criou
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,   # Se o usuário for deletado, o campo fica nulo
+        null=True,
+        related_name='locations'
+    )
+
+
     def __str__(self):
         return self.name
 
@@ -48,6 +62,12 @@ class Activity(models.Model):
     nota = models.FloatField(default=0.0, editable=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     horario = models.DateTimeField("Start Time", default=timezone.now)
+    created_by = models.ForeignKey(  # Se o usuário for deletado, o campo fica nulo
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,  # Se o usuário for deletado, o campo fica nulo
+        null=True,
+        related_name='activities'
+    )
 
     def __str__(self):
         return self.name

@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
 
-      if (loginProvider.success && mounted) {
+      if (loginProvider.error == null && mounted) {
         context.go('/');
       }
     }
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         ActionText(
                           text: AppTexts.login.forgotPassword,
-                          action: () => {},
+                          action: () => {context.go("/recuperar-senha")},
                           underlined: true,
                           boldOnHover: true,
                         ),

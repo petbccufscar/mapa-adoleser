@@ -8,10 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthProvider extends ChangeNotifier {
   UserModel? _user;
 
+  static const _userKey = 'user_data';
+
   UserModel? get user => _user;
   bool get isLoggedIn => _user != null;
-
-  static const _userKey = 'user_data';
 
   AuthProvider() {
     _loadUserFromStorage();

@@ -1,16 +1,20 @@
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/presentation/routes/guards.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/about/about_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/change_password/change_password_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/contact/contact_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/favorites/favorites_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/home/home_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/login/login_page.dart';
-import 'package:mapa_adoleser/presentation/ui/pages/message/message_result_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/profile/profile_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/recovery_passoword/recovery_password_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/register/register_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/search/search_page.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
+import 'package:mapa_adoleser/providers/change_password_provider.dart';
+import 'package:mapa_adoleser/providers/contact_provider.dart';
 import 'package:mapa_adoleser/providers/login_provider.dart';
+import 'package:mapa_adoleser/providers/recovery_password_provider.dart';
 import 'package:mapa_adoleser/providers/register_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,51 +31,44 @@ GoRouter createRouter(AuthProvider auth) {
     redirect: (context, state) => authGuard(auth, state),
     routes: [
       GoRoute(
-          //name: 'Home',
+          name: 'Home',
           path: '/',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: HomePage())),
       GoRoute(
-          //name: 'Pesquisa',
+          name: 'Pesquisa',
           path: '/pesquisa',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: SearchPage())),
       GoRoute(
-          //name: 'Perfil',
+          name: 'Perfil',
           path: '/perfil',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: ProfilePage())),
       GoRoute(
-          //name: 'Favoritos',
+          name: 'Favoritos',
           path: '/favoritos',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: FavoritesPage())),
       GoRoute(
-          //name: 'Contato',
-          path: '/contato',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: ContactPage()),
-          routes: [
-            GoRoute(
-              path: '/envio',
-              pageBuilder: (context, state) {
-                final data = state.extra as Map<String, dynamic>;
-
-                return NoTransitionPage(
-                    child: MessageResultPage(
-                  title: data['title'] as String,
-                  message: data['message'] as String,
-                ));
-              },
-            )
-          ]),
+        name: 'Contato',
+        path: '/contato',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => ContactProvider(),
+              child: const ContactPage(),
+            ),
+          );
+        },
+      ),
       GoRoute(
-          //name: 'Sobre',
+          name: 'Sobre',
           path: '/sobre',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: AboutPage())),
       GoRoute(
-        //name: 'Login',
+        name: 'Login',
         path: '/login',
         pageBuilder: (context, state) {
           return NoTransitionPage(
@@ -83,12 +80,37 @@ GoRouter createRouter(AuthProvider auth) {
         },
       ),
       GoRoute(
+        name: 'Cadastro',
         path: '/cadastro',
         pageBuilder: (context, state) {
           return NoTransitionPage(
             child: ChangeNotifierProvider(
               create: (_) => RegisterProvider(),
               child: const RegisterPage(),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        name: 'Recuperar Senha',
+        path: '/recuperar-senha',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => RecoveryPasswordProvider(),
+              child: const RecoveryPasswordPage(),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        name: 'Alterar Senha',
+        path: '/alterar-senha',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => ChangePasswordProvider(),
+              child: const ChangePasswordPage(),
             ),
           );
         },

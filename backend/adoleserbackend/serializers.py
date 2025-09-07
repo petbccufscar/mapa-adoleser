@@ -78,13 +78,30 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ['id', 'name', 'description', 'nota']
+        fields = ['id', 'name', 'description', 'nota', 'address', 'latitude', 'longitude']
 
     def validate_nota(self, value):
         if value < 0 or value > 10:
             raise serializers.ValidationError("The grade needs to be between 0 and 10.")
         return value
 
+    def validate_latitude(self, value):
+        if value is not None:
+            if not (-90 <= value <= 90):
+                raise serializers.ValidationError("Latitude must be between -90 and 90 degrees.")
+        return value
+    
+    def validate_longitude(self, value):
+        if value is not None:
+            if not (-180 <= value <= 180):
+                raise serializers.ValidationError("Longitude must be between -180 and 180 degrees.")
+        return value
+
+    def validate_address(self, value):
+        if not value:
+            raise serializers.ValidationError("Address cannot be empty.")
+        return value
+    
 class ActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Activity
