@@ -6,13 +6,15 @@ import 'package:mapa_adoleser/presentation/ui/pages/contact/contact_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/favorites/favorites_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/home/home_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/login/login_page.dart';
-import 'package:mapa_adoleser/presentation/ui/pages/message/message_result_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/profile/profile_page.dart';
-import 'package:mapa_adoleser/presentation/ui/pages/register/forgot_password.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/recovery_passoword/recovery_password_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/register/register_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/search/search_page.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
+import 'package:mapa_adoleser/providers/change_password_provider.dart';
+import 'package:mapa_adoleser/providers/contact_provider.dart';
 import 'package:mapa_adoleser/providers/login_provider.dart';
+import 'package:mapa_adoleser/providers/recovery_password_provider.dart';
 import 'package:mapa_adoleser/providers/register_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +26,7 @@ GoRouter createRouter(AuthProvider auth) {
     // TODO: oq é isso?
     refreshListenable: auth,
     debugLogDiagnostics: true,
-    initialLocation: '/cadastro',
+    initialLocation: '/recuperar-senha',
     //errorBuilder: (context, state) => const ErrorPage(),
     redirect: (context, state) => authGuard(auth, state),
     routes: [
@@ -49,29 +51,17 @@ GoRouter createRouter(AuthProvider auth) {
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: FavoritesPage())),
       GoRoute(
-          name: 'Alterar Senha',
-          path: '/alterar-senha',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: ChangePasswordPage())),
-      GoRoute(
-          name: 'Contato',
-          path: '/contato',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: ContactPage()),
-          routes: [
-            GoRoute(
-              path: '/envio',
-              pageBuilder: (context, state) {
-                final data = state.extra as Map<String, dynamic>;
-
-                return NoTransitionPage(
-                    child: MessageResultPage(
-                  title: data['title'] as String,
-                  message: data['message'] as String,
-                ));
-              },
-            )
-          ]),
+        name: 'Contato',
+        path: '/contato',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => ContactProvider(),
+              child: const ContactPage(),
+            ),
+          );
+        },
+      ),
       GoRoute(
           name: 'Sobre',
           path: '/sobre',
@@ -90,15 +80,41 @@ GoRouter createRouter(AuthProvider auth) {
         },
       ),
       GoRoute(
-          //name: 'Cadastro',
-          path: '/cadastro',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: RegisterPage())),
+        name: 'Cadastro',
+        path: '/cadastro',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => RegisterProvider(),
+              child: const RegisterPage(),
+            ),
+          );
+        },
+      ),
       GoRoute(
-          //name: 'recuperar senha',
-          path: '/recuperar-senha',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: ForgotPasswordPage()))
+        name: 'Recuperar Senha',
+        path: '/recuperar-senha',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => RecoveryPasswordProvider(),
+              child: const RecoveryPasswordPage(),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        name: 'Alterar Senha',
+        path: '/alterar-senha',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => ChangePasswordProvider(),
+              child: const ChangePasswordPage(),
+            ),
+          );
+        },
+      ),
     ],
   );
 }

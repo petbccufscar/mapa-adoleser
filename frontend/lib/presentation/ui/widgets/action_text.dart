@@ -11,6 +11,7 @@ class ActionText extends StatefulWidget {
   final Color? color;
   final Color? colorOnHover;
   final MouseCursor mouse;
+  final TextAlign alignment;
 
   const ActionText(
       {super.key,
@@ -22,7 +23,8 @@ class ActionText extends StatefulWidget {
       this.boldOnHover = false,
       this.color = AppColors.textSecondary,
       this.colorOnHover,
-      this.mouse = SystemMouseCursors.click});
+      this.mouse = SystemMouseCursors.click,
+      this.alignment = TextAlign.start});
 
   @override
   State<ActionText> createState() => _ActionTextState();
@@ -57,6 +59,7 @@ class _ActionTextState extends State<ActionText> {
                   ? FontWeight.w600
                   : null,
               color: _isHovering ? _effectiveColorOnHover : widget.color),
+          textAlign: widget.alignment,
         ),
       ),
     );

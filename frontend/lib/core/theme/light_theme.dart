@@ -20,6 +20,11 @@ ThemeData lightTheme = ThemeData(
       onError: AppColors.textPrimary,
     ),
     inputDecorationTheme: const InputDecorationTheme(
+      errorStyle: TextStyle(
+        color: Colors.red,
+        fontSize: 12,
+        height: 1.5,
+      ),
       contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),

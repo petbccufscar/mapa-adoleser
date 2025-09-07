@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/desktop_appbar.dart';

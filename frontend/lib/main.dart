@@ -2,9 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:mapa_adoleser/presentation/ui/pages/change_password/change_password_page.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
-import 'package:mapa_adoleser/providers/change_password_provider.dart';
 import 'package:mapa_adoleser/providers/contact_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -28,10 +26,6 @@ void main() {
     ChangeNotifierProvider(create: (_) => AuthProvider()),
     ChangeNotifierProvider(create: (_) => ContactProvider()),
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
-    ChangeNotifierProvider(
-      create: (_) => ChangePasswordProvider(),
-      child: ChangePasswordPage(),
-    )
   ], child: const MyApp()));
 }
 

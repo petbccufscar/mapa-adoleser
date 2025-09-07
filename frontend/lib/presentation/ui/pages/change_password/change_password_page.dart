@@ -1,9 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
@@ -23,12 +24,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final _checkPasswordFormKey = GlobalKey<FormState>();
   final _createPasswordFormKey = GlobalKey<FormState>();
 
-  late TextEditingController _passwordController;
+  late final TextEditingController _passwordController;
 
-  late TextEditingController _newPasswordController;
-  late TextEditingController _confirmNewPasswordController;
+  late final TextEditingController _newPasswordController;
+  late final TextEditingController _confirmNewPasswordController;
 
-  int _currentIndex = 0;
+  int _currentIndex = 2;
 
   @override
   void initState() {
@@ -98,7 +99,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
                 transitionBuilder: (child, animation) {
-                  // Pode trocar por ScaleTransition, SlideTransition, etc.
                   return FadeTransition(
                     opacity: animation,
                     child: child,
@@ -112,24 +112,27 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       key: _checkPasswordFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        spacing: 15,
+                        spacing: 10,
                         children: [
-                          Center(
-                            child: Text(
-                              'Alterar Senha',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
+                          Text(
+                            AppTexts.changePassword.title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                            textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 5),
+                          SizedBox(height: 12),
                           CustomPasswordField(
-                              hint: 'Digite sua senha atual',
+                              label: AppTexts.changePassword.passwordLabel,
+                              hint: AppTexts.changePassword.passwordHint,
                               controller: _passwordController,
                               validator: Validators.isNotEmpty),
-                          if (changePasswordProvider.error != null)
+                          if (changePasswordProvider.error != null) ...[
+                            SizedBox(height: 6),
                             Text(
                               changePasswordProvider.error!,
                               style: const TextStyle(color: Colors.red),
                             ),
+                          ],
+                          SizedBox(height: 6),
                           CustomButton(
                             text: 'Enviar',
                             onPressed: changePasswordProvider.isLoading
@@ -143,33 +146,39 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       key: _createPasswordFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        spacing: 15,
+                        spacing: 10,
                         children: [
-                          Center(
-                            child: Text(
-                              'Alterar Senha',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
+                          Text(
+                            AppTexts.changePassword.title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                            textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 5),
+                          SizedBox(height: 12),
                           CustomPasswordField(
-                              hint: 'Digite sua nova senha',
+                              label: AppTexts.changePassword.newPasswordLabel,
+                              hint: AppTexts.changePassword.newPasswordHint,
                               controller: _newPasswordController,
                               showPasswordStrength: true,
                               validator: Validators.isValidPassword),
                           CustomPasswordField(
-                            hint: 'Digite novamente sua nova senha',
+                            label:
+                                AppTexts.changePassword.confirmNewPasswordLabel,
+                            hint:
+                                AppTexts.changePassword.confirmNewPasswordHint,
                             controller: _confirmNewPasswordController,
                             validator: (value) => Validators.passwordsMatch(
                               value,
                               _newPasswordController.text,
                             ),
                           ),
-                          if (changePasswordProvider.error != null)
+                          if (changePasswordProvider.error != null) ...[
+                            SizedBox(height: 6),
                             Text(
                               changePasswordProvider.error!,
                               style: const TextStyle(color: Colors.red),
                             ),
+                          ],
+                          SizedBox(height: 6),
                           CustomButton(
                             text: 'Enviar',
                             onPressed: changePasswordProvider.isLoading
@@ -179,24 +188,31 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         ],
                       ),
                     ),
-                    Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        spacing: 15,
-                        children: [
-                          Text(
-                            'Senha alterada com sucesso!',
-                            style: Theme.of(context).textTheme.headlineMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            'Sua senha foi alterada com sucesso. Use sua nova senha na próxima vez que fizer login.',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    )
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 10,
+                      children: [
+                        Text(
+                          AppTexts.changePassword.successMessage,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          AppTexts.changePassword.successDescription,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 6),
+                        ActionText(
+                          text: AppTexts.changePassword.returnHome,
+                          action: () => context.go("/"),
+                          underlined: true,
+                          boldOnHover: true,
+                          alignment: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

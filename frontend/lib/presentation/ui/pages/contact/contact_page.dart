@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
@@ -38,14 +37,29 @@ class _ContactPageState extends State<ContactPage> {
 
       if (!mounted) return;
 
-      context.go(
-        '/contato/envio',
-        extra: {
-          'title': contact.success ? "Mensagem enviada" : "Erro",
-          'message': contact.success
-              ? "Fique de olho em seu email. Em breve entraremos em contato!"
-              : contact.error,
-        },
+      if (contact.success) {
+        _formKey.currentState?.reset();
+
+        _emailController.clear();
+        _nameController.clear();
+        _messageController.clear();
+        selectedSubject = null;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Mensagem enviada! Em breve entraremos em contato.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao enviar mensagem: ${contact.error}'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }

@@ -22,6 +22,18 @@ class Validators {
     return null;
   }
 
+  static String? isValidOTPCode(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Código obrigatório';
+    }
+
+    if (value.length != 6 || !RegExp(r'^\d{6}$').hasMatch(value)) {
+      return 'Código inválido';
+    }
+
+    return null;
+  }
+
   static String? isValidPassword(
     String? value, {
     int minLength = 8,

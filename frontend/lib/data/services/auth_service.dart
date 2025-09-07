@@ -1,4 +1,11 @@
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
+import 'package:mapa_adoleser/domain/models/change_password_request_model.dart';
+import 'package:mapa_adoleser/domain/models/change_password_response_model.dart';
+import 'package:mapa_adoleser/domain/models/check_current_password_response_model.dart';
+import 'package:mapa_adoleser/domain/models/check_current_password_resquest_model.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_code_request_model.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_code_response_model.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
 import 'package:mapa_adoleser/domain/models/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/register_request_model.dart';
 import 'package:mapa_adoleser/domain/models/forgot_password_email_response_model.dart';
@@ -97,7 +104,7 @@ class AuthService {
     await Future.delayed(const Duration(seconds: 2));
 
     if (data.email == "fulanodetal@gmail.com") {
-      throw AuthException('E-mail já está em uso!');
+      throw AuthException('Nenhuma conta vinculada a este e-mail');
     }
 
     // Simulando resposta da API
@@ -112,8 +119,8 @@ class AuthService {
       ForgotPasswordCodeRequestModel data) async {
     await Future.delayed(const Duration(seconds: 2));
 
-    if (data.code == "123456") {
-      throw AuthException('Código informado');
+    if (data.code != "123456") {
+      throw AuthException('Código inválido ou expirado!');
     }
 
     // Simulando resposta da API
@@ -127,8 +134,8 @@ class AuthService {
   Future<void> resetPassword(ResetPasswordRequestModel request) async {
     await Future.delayed(const Duration(seconds: 2));
 
-    if (request.password.length < 8) {
-      throw AuthException('A senha deve ter pelo menos 8 caracteres.');
+    if (request.password == "coutrims1!") {
+      throw AuthException('A nova senha não pode ser igual à anterior!');
     }
 
     return;

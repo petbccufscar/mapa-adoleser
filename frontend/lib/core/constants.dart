@@ -37,7 +37,8 @@ class AppTexts {
   static const home = _HomeTexts();
   static const register = _RegisterTexts();
   static const help = _HelpTexts();
-  static const forgotPassword = _ForgotPasswordTexts();
+  static const recoveryPassword = _RecoveryPasswordTexts();
+  static const changePassword = _ChangePasswordTexts();
 }
 
 class _HelpTexts {
@@ -69,8 +70,8 @@ class _LoginTexts {
   final createAccount = 'Crie uma!';
 }
 
-class _ForgotPasswordTexts{
-  const _ForgotPasswordTexts();
+class _RecoveryPasswordTexts {
+  const _RecoveryPasswordTexts();
 
   final title = 'Recuperar sua senha';
   final emailLabel = 'Digite seu e-mail para receber um código de confirmação';
@@ -85,6 +86,23 @@ class _ForgotPasswordTexts{
   final newPasswordAgain = "Digite novamente sua nova senha";
   final successMessage = "Sua senha foi alterada com sucesso!";
   final returnLogin = "Retornar para o login";
+}
+
+class _ChangePasswordTexts {
+  const _ChangePasswordTexts();
+
+  final title = 'Alterar sua senha';
+  final passwordLabel = 'Senha Atual';
+  final passwordHint = 'Digite sua senha atual';
+  final newPasswordLabel = 'Nova Senha';
+  final newPasswordHint = 'Digite sua nova senha';
+  final confirmNewPasswordLabel = 'Confirme a Nova Senha';
+  final confirmNewPasswordHint = 'Digite novamente sua nova senha';
+  final changePasswordButton = 'Enviar';
+  final successMessage = 'Senha alterada com sucesso!';
+  final successDescription =
+      'Sua senha foi alterada com sucesso. Use sua nova senha na próxima vez que fizer login.';
+  final returnHome = 'Retornar para a página inicial';
 }
 
 class _RegisterTexts {
