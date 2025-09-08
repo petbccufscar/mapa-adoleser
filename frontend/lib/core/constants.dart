@@ -8,9 +8,9 @@ class ResponsivePaddings {
 
   static const double verticalPhone = 16.0;
   static const double verticalTablet = 16.0;
-  static const double verticalTableLarge = 16.0;
-  static const double verticalDesktop = 16.0;
-  static const double verticalDesktopLarge = 16.0;
+  static const double verticalTableLarge = 32.0;
+  static const double verticalDesktop = 32.0;
+  static const double verticalDesktopLarge = 32.0;
 }
 
 class AppDimensions {
@@ -39,6 +39,7 @@ class AppTexts {
   static const help = _HelpTexts();
   static const recoveryPassword = _RecoveryPasswordTexts();
   static const changePassword = _ChangePasswordTexts();
+  static const about = _AboutTexts();
 }
 
 class _HelpTexts {
@@ -138,4 +139,16 @@ class _HomeTexts {
   final mapTitle = 'Conheça um local que lhe fará bem';
   final mapText =
       'Use o mapa e os filtros abaixo para achar um bom lugar para você';
+}
+
+class _AboutTexts {
+  const _AboutTexts();
+
+  final aboutAdoleserTitle = 'Sobre o Adoleser';
+  final aboutAdoleserParagraph =
+      'O AdoleSer é um núcleo pensado para o cuidado integral de adolescentes e suas famílias, composto por uma médica hebiatra, uma psiquiatra, uma professora de enfermagem e uma professora de terapia ocupacional da Universidade Federal de São Carlos. \n\n Entre suas ações, está a discussão de assuntos relacionados a adolescência, o apoio a rede para os atendimentos e a participação e coordenação do grupo Juntos pelas Adolescências, um grupo intersetorial que tem por objetivo discutir casos complexos, fornecer suporte em rede e pensar em propostas de melhoria para a população adolescente de São Carlos.';
+
+  final aboutPETBCCTitle = 'Sobre o PET BCC UFSCar';
+  final aboutPETBCCParagraph =
+      'O PET BCC UFSCar (Programa de Educação Tutorial do Bacharelado em Ciência da Computação da Universidade Federal de São Carlos) é um grupo formado por estudantes de graduação que desenvolve atividades integrando ensino, pesquisa e extensão. Coordenado por um professor tutor e vinculado ao MEC, o grupo tem como objetivo complementar a formação acadêmica, técnica e humana dos alunos, contribuindo também com a comunidade universitária e externa. \n\n Os petianos do BCC realizam projetos nas áreas de tecnologia, educação, responsabilidade social e divulgação científica. Organizam eventos, ministram minicursos, produzem conteúdos didáticos, desenvolvem sistemas e participam ativamente da vida acadêmica da UFSCar. O PET BCC também promove o crescimento pessoal e profissional dos seus membros, incentivando a autonomia, o trabalho em equipe e o pensamento crítico.';
 }

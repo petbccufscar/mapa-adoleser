@@ -26,7 +26,7 @@ GoRouter createRouter(AuthProvider auth) {
     // TODO: oq é isso?
     refreshListenable: auth,
     debugLogDiagnostics: true,
-    initialLocation: '/recuperar-senha',
+    initialLocation: '/sobre',
     //errorBuilder: (context, state) => const ErrorPage(),
     redirect: (context, state) => authGuard(auth, state),
     routes: [
