@@ -74,7 +74,9 @@ class _RecoveryPasswordTexts {
   const _RecoveryPasswordTexts();
 
   final title = 'Recuperar sua senha';
-  final emailLabel = 'Digite seu e-mail para receber um código de confirmação';
+  final description =
+      'Insira seu e-mail cadastrado para receber um código de recuperação de senha.';
+  final emailLabel = 'Seu e-mail';
   final emailHint = 'Digite seu e-mail';
   final emailSubmit = 'Enviar';
   final codeLabel = 'Digite o código de 6 dígitos recebido';

@@ -14,7 +14,7 @@ class RecoveryPasswordProvider extends ChangeNotifier {
   String? get error => _error;
   bool get isLoading => _loading;
 
-  Future<void> forgotPasswordEmail(String email) async {
+  Future<void> sendOTPCode(String email) async {
     _loading = true;
     _error = null;
 
@@ -35,7 +35,7 @@ class RecoveryPasswordProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> forgotPasswordCode(String code) async {
+  Future<void> checkOTPCode(String code) async {
     _loading = true;
     _error = null;
 

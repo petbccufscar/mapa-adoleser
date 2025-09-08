@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
@@ -13,38 +14,37 @@ import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart'
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
-import 'package:mapa_adoleser/providers/recovery_password_provider.dart';
+import 'package:mapa_adoleser/providers/delete_account_provider.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
-class RecoveryPasswordPage extends StatefulWidget {
-  const RecoveryPasswordPage({super.key});
+class DeleteAccountPage extends StatefulWidget {
+  const DeleteAccountPage({super.key});
 
   @override
-  State<RecoveryPasswordPage> createState() => _RecoveryPasswordPageState();
+  State<DeleteAccountPage> createState() => _DeleteAccountPageState();
 }
 
-class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
-  final _emailFormKey = GlobalKey<FormState>();
+class _DeleteAccountPageState extends State<DeleteAccountPage> {
+  // Chave global para validar o formulário
+  final _checkAccountFormKey = GlobalKey<FormState>();
   final _codeFormKey = GlobalKey<FormState>();
-  final _passwordFormKey = GlobalKey<FormState>();
 
+  // Controllers para capturar o valor dos campos de texto
   late final TextEditingController _emailController;
-  late final TextEditingController _codeController;
   late final TextEditingController _passwordController;
-  late final TextEditingController _confirmPasswordController;
+  late final TextEditingController _codeController;
 
-  int _currentIndex = 0;
+  int _currentIndex = 2;
 
   int _resendTimer = 0;
   Timer? _timer;
 
   @override
-  initState() {
+  void initState() {
     _emailController = TextEditingController();
-    _codeController = TextEditingController();
     _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
+    _codeController = TextEditingController();
 
     super.initState();
   }
@@ -52,9 +52,8 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
   @override
   void dispose() {
     _emailController.dispose();
-    _codeController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    _codeController.dispose();
     _timer?.cancel();
 
     super.dispose();
@@ -84,13 +83,18 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
     return 'Reenviar';
   }
 
-  Future<void> _submitEmail() async {
-    if (_emailFormKey.currentState?.validate() ?? false) {
-      final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
+  // Método que dispara a exclusão da conta
+  Future<void> _submitCheckAccount() async {
+    // Valida os campos antes de enviar
+    if (_checkAccountFormKey.currentState?.validate() ?? false) {
+      // Pega o DeleteAccountProvider
+      final deleteAccountProvider = context.read<DeleteAccountProvider>();
 
-      await recoveryPasswordProvider.sendOTPCode(_emailController.text);
+      // Chama o método do provider para excluir a conta
+      await deleteAccountProvider.sendOTPCode(_emailController.text);
 
-      if (mounted && recoveryPasswordProvider.error == null) {
+      // Se a exclusão foi bem-sucedida, redireciona para a home
+      if (deleteAccountProvider.error == null && mounted) {
         setState(() {
           _currentIndex = 1;
         });
@@ -102,11 +106,11 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
 
   Future<void> _resendCode() async {
     if (_emailController.text.isNotEmpty) {
-      final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
+      final deleteAccountProvider = context.read<DeleteAccountProvider>();
 
-      await recoveryPasswordProvider.sendOTPCode(_emailController.text);
+      await deleteAccountProvider.sendOTPCode(_emailController.text);
 
-      if (mounted && recoveryPasswordProvider.error == null) {
+      if (mounted && deleteAccountProvider.error == null) {
         _startTimer();
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -121,11 +125,11 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
 
   Future<void> _submitCode() async {
     if (_codeFormKey.currentState?.validate() ?? false) {
-      final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
+      final deleteAccountProvider = context.read<DeleteAccountProvider>();
 
-      await recoveryPasswordProvider.checkOTPCode(_codeController.text);
+      await deleteAccountProvider.checkOTPCode(_codeController.text);
 
-      if (mounted && recoveryPasswordProvider.error == null) {
+      if (mounted && deleteAccountProvider.error == null) {
         setState(() {
           _currentIndex = 2;
         });
@@ -133,32 +137,28 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
     }
   }
 
-  Future<void> _submitNewPassword() async {
-    if (_passwordFormKey.currentState?.validate() ?? false) {
-      final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
+  Future<void> _deleteAccount() async {
+    final deleteAccountProvider = context.read<DeleteAccountProvider>();
 
-      await recoveryPasswordProvider.resetPassword(
-        _emailController.text,
-        _passwordController.text,
-      );
+    await deleteAccountProvider.deleteAccount(_codeController.text);
 
-      if (mounted && recoveryPasswordProvider.error == null) {
-        setState(() {
-          _currentIndex = 3;
-        });
-      }
+    if (mounted && deleteAccountProvider.error == null) {
+      setState(() {
+        _currentIndex = 3;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final recoveryPasswordProvider = context.watch<RecoveryPasswordProvider>();
-    final authProvider = context.watch<AuthProvider>();
+    // Observa o provider para refletir mudanças de estado
+    final auth = context.watch<AuthProvider>();
+    final deleteAccountProvider = context.watch<DeleteAccountProvider>();
 
     return Scaffold(
-      appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
+      appBar: CustomAppBar(isLoggedIn: auth.isLoggedIn),
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
+          ? CustomDrawer(isLoggedIn: auth.isLoggedIn)
           : null,
       body: Center(
         child: SingleChildScrollView(
@@ -178,43 +178,65 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                   index: _currentIndex,
                   children: [
                     Form(
-                      key: _emailFormKey,
+                      key: _checkAccountFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         spacing: 10,
                         children: [
+                          // Título da página
                           Text(
-                            AppTexts.recoveryPassword.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
+                            "Excluir conta",
                             textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
-                          SizedBox(height: 12),
+
+                          const SizedBox(height: 12),
+
+                          // Subtítulo
                           Text(
-                            AppTexts.recoveryPassword.description,
+                            "Confirme seu email e senha. Você receberá um código de confirmação em seu email.",
                             style: Theme.of(context).textTheme.bodyMedium,
                             textAlign: TextAlign.justify,
                           ),
-                          SizedBox(height: 6),
+
+                          const SizedBox(height: 6),
+
+                          // Campo de e-mail
                           CustomTextField(
-                            label: AppTexts.recoveryPassword.emailLabel,
-                            hint: AppTexts.recoveryPassword.emailHint,
+                            label: "E-mail",
+                            hint: "Digite seu e-mail",
                             controller: _emailController,
-                            textInputAction: TextInputAction.done,
+                            textInputAction: TextInputAction.next,
                             validator: Validators.isEmail,
                           ),
-                          if (recoveryPasswordProvider.error != null) ...[
-                            SizedBox(height: 6),
+
+                          // Campo de senha
+                          CustomPasswordField(
+                            controller: _passwordController,
+                            label: "Senha",
+                            hint: "Digite sua senha",
+                            textInputAction: TextInputAction.done,
+                            validator: Validators.isNotEmpty,
+                            onFieldSubmitted: (_) => _submitCheckAccount(),
+                          ),
+
+                          // Exibe erro vindo do DeleteAccountProvider, se existir
+                          if (deleteAccountProvider.error != null) ...[
+                            const SizedBox(height: 6),
                             Text(
-                              recoveryPasswordProvider.error!,
-                              style: const TextStyle(color: Colors.red),
+                              deleteAccountProvider.error!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Color(0xFF4C5466)),
                             ),
                           ],
-                          SizedBox(height: 6),
+
+                          const SizedBox(height: 6),
+
                           CustomButton(
-                            text: AppTexts.recoveryPassword.emailSubmit,
-                            onPressed: recoveryPasswordProvider.isLoading
+                            text: "Enviar",
+                            onPressed: deleteAccountProvider.isLoading
                                 ? null
-                                : _submitEmail,
+                                : _submitCheckAccount,
                           ),
                         ],
                       ),
@@ -226,7 +248,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                         spacing: 10,
                         children: [
                           Text(
-                            AppTexts.recoveryPassword.title,
+                            "Excluir conta",
                             style: Theme.of(context).textTheme.headlineSmall,
                             textAlign: TextAlign.center,
                           ),
@@ -293,17 +315,17 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               ),
                             ),
                           ),
-                          if (recoveryPasswordProvider.error != null) ...[
+                          if (deleteAccountProvider.error != null) ...[
                             SizedBox(height: 6),
                             Text(
-                              recoveryPasswordProvider.error!,
+                              deleteAccountProvider.error!,
                               style: const TextStyle(color: Colors.red),
                             ),
                           ],
                           SizedBox(height: 6),
                           ElevatedButton(
                             onPressed: (_resendTimer == 0 &&
-                                    !recoveryPasswordProvider.isLoading)
+                                    !deleteAccountProvider.isLoading)
                                 ? _resendCode
                                 : null,
                             style: Theme.of(context)
@@ -327,55 +349,70 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               text: AppTexts.recoveryPassword.emailSubmit,
                               onPressed: _codeController.text.isNotEmpty &&
                                       _codeController.text.length == 6 &&
-                                      !recoveryPasswordProvider.isLoading
+                                      !deleteAccountProvider.isLoading
                                   ? _submitCode
                                   : null),
                         ],
                       ),
                     ),
                     Form(
-                      key: _passwordFormKey,
+                      key: _checkAccountFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         spacing: 10,
                         children: [
+                          // Título da página
                           Text(
-                            AppTexts.recoveryPassword.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
+                            "Excluir conta",
                             textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          SizedBox(height: 12),
-                          CustomPasswordField(
-                            label: AppTexts.recoveryPassword.passwordLabel,
-                            hint: AppTexts.recoveryPassword.newPassword,
-                            controller: _passwordController,
-                            textInputAction: TextInputAction.next,
-                            showPasswordStrength: true,
-                            validator: Validators.isValidPassword,
+
+                          const SizedBox(height: 12),
+
+                          // Subtítulo
+                          Text(
+                            "Deseja excluir sua conta? Seus dados não serão salvos e não será possível recuperá-la.",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            textAlign: TextAlign.justify,
                           ),
-                          CustomPasswordField(
-                            label: AppTexts.recoveryPassword.passwordAgainLabel,
-                            hint: AppTexts.recoveryPassword.newPasswordAgain,
-                            controller: _confirmPasswordController,
-                            textInputAction: TextInputAction.done,
-                            validator: (value) => Validators.passwordsMatch(
-                              value,
-                              _passwordController.text,
-                            ),
-                          ),
-                          if (recoveryPasswordProvider.error != null) ...[
-                            SizedBox(height: 6),
+
+                          // Exibe erro vindo do DeleteAccountProvider, se existir
+                          if (deleteAccountProvider.error != null) ...[
+                            const SizedBox(height: 6),
                             Text(
-                              recoveryPasswordProvider.error!,
-                              style: const TextStyle(color: Colors.red),
+                              deleteAccountProvider.error!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Color(0xFF4C5466)),
                             ),
                           ],
-                          SizedBox(height: 6),
-                          CustomButton(
-                            text: AppTexts.recoveryPassword.emailSubmit,
-                            onPressed: recoveryPasswordProvider.isLoading
+
+                          const SizedBox(height: 6),
+
+                          ElevatedButton(
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style
+                                ?.copyWith(
+                                  backgroundColor: WidgetStateProperty.all(
+                                      const Color.fromARGB(255, 255, 77, 77)),
+                                  foregroundColor:
+                                      WidgetStateProperty.all(Colors.white),
+                                ),
+                            onPressed: deleteAccountProvider.isLoading
                                 ? null
-                                : _submitNewPassword,
+                                : _deleteAccount,
+                            child: Text("Confirmar"),
+                          ),
+                          CustomButton(
+                            text: "Cancelar",
+                            onPressed: deleteAccountProvider.isLoading
+                                ? null
+                                : () {
+                                    if (mounted) {
+                                      context.go('/perfil');
+                                    }
+                                  },
                           ),
                         ],
                       ),
@@ -385,18 +422,18 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                         spacing: 10,
                         children: [
                           Text(
-                            AppTexts.recoveryPassword.title,
+                            "Excluir conta",
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            AppTexts.recoveryPassword.successMessage,
+                            'Sua conta foi excluída com sucesso!',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 6),
                           ActionText(
-                            text: AppTexts.recoveryPassword.returnLogin,
-                            action: () => context.go("/login"),
+                            text: 'Voltar para a página inicial',
+                            action: () => context.go("/"),
                             underlined: true,
                             boldOnHover: true,
                           ),
