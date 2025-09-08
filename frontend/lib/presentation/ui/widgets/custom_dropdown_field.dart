@@ -23,7 +23,6 @@ class CustomDropdownField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< Updated upstream
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 5,
@@ -34,7 +33,7 @@ class CustomDropdownField<T> extends StatelessWidget {
           ),
           DropdownButtonFormField<T>(
             icon: const Icon(Icons.keyboard_arrow_down),
-            value: value,
+            initialValue: value,
             items: items.map((item) {
               return DropdownMenuItem<T>(
                 value: item,
@@ -60,25 +59,5 @@ class CustomDropdownField<T> extends StatelessWidget {
             ),
           ),
         ]);
-=======
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
-        label,
-        style: Theme.of(context).textTheme.labelMedium,
-      ),
-      const SizedBox(height: 5),
-      DropdownButtonFormField<T>(
-          icon: const Icon(Icons.keyboard_arrow_down),
-          initialValue: value,
-          items: items,
-          onChanged: onChanged,
-          validator: validator,
-          decoration: InputDecoration(
-            hintText: hint,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          ))
-    ]);
->>>>>>> Stashed changes
   }
 }
