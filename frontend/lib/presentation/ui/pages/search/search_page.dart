@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
@@ -16,29 +18,44 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthProvider>();
+    final authProvider = context.watch<AuthProvider>();
 
-    final isLoggedIn = auth.isLoggedIn;
+    final Completer<GoogleMapController> _controller =
+        Completer<GoogleMapController>();
 
-    late GoogleMapController mapController;
+    const CameraPosition _kGooglePlex = CameraPosition(
+      target: LatLng(37.42796133580664, -122.085749655962),
+      zoom: 14.4746,
+    );
 
-    final LatLng center = const LatLng(45.521563, -122.677433);
+    const CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414,
+    );
 
-    void onMapCreated(GoogleMapController controller) {
-      mapController = controller;
+    Future<void> _goToTheLake() async {
+      final GoogleMapController controller = await _controller.future;
+      await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
     }
 
     return Scaffold(
-      appBar: CustomAppBar(isLoggedIn: isLoggedIn),
+      appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: isLoggedIn)
+          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
       body: GoogleMap(
-        onMapCreated: onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: center,
-          zoom: 11.0,
-        ),
+        mapType: MapType.hybrid,
+        initialCameraPosition: _kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _goToTheLake,
+        label: const Text('To the lake!'),
+        icon: const Icon(Icons.directions_boat),
       ),
     );
   }
