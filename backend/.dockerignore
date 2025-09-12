@@ -1,0 +1,23 @@
+Ambiente virtual
+venv/
+.venv/
+
+Arquivos de cache do Python
+pycache/
+*.pyc
+*.pyo
+
+Banco de dados de desenvolvimento
+db.sqlite3
+
+Git
+.git
+.gitignore
+
+Docker
+Dockerfile
+docker-compose.yml
+
+Arquivos de configuração de IDEs
+.idea/
+.vscode/

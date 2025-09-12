@@ -1,4 +1,4 @@
-from rest_framework.persmissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 from .models import Role
 
 class IsSuper(BasePermission):
