@@ -7,7 +7,7 @@ class AuthService {
   Future<UserModel> login(LoginRequestModel data) async {
     await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
 
-    if (data.email != 'admin@example.com') {
+      if (data.email != 'admin@example.com') {
       throw AuthException('E-mail não encontrado!');
     }
 

@@ -35,6 +35,7 @@ class AppTexts {
 
   static const login = _LoginTexts();
   static const home = _HomeTexts();
+  static const favorites = _FavoritesTexts();
 }
 
 class _LoginTexts {
@@ -61,4 +62,11 @@ class _HomeTexts {
   final mapTitle = 'Conheça m local que lhe fará bem';
   final mapText =
       'Use o mapa e os filtros abaixo para achar um bom lugar para você';
+}
+class _FavoritesTexts {
+  const _FavoritesTexts();
+
+  final title = "| Meus favoritos";
+  final none = "Nenhum favorito encontrado";
+  final addMore = "Adicione suas atividades favoritas para vê-las aqui";
 }

@@ -46,7 +46,7 @@ class CustomCardAtividade extends StatelessWidget {
                 child: Image.asset(
                   imageUrl,
                   width: double.infinity,
-                  height: screenWidth < 600 ? 150 : 250, // Responsivo
+                  height: screenWidth < 600 ? 150 : 200,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -65,12 +65,12 @@ class CustomCardAtividade extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
 
                     // Rating
                     Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 6,
+                      spacing: 4,
                       children: [
                         Text(
                           '$rating',
@@ -99,7 +99,7 @@ class CustomCardAtividade extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
 
                     // Endereço + link
                     Wrap(
@@ -134,13 +134,13 @@ class CustomCardAtividade extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
 
                     // Descrição
                     Text(
                       description,
                       style: Theme.of(context).textTheme.bodySmall,
-                      maxLines: screenWidth < 400 ? 3 : 5,
+                      maxLines: screenWidth < 400 ? 2 : 3,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
