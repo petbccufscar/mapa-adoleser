@@ -15,7 +15,7 @@ O ultimo argumento pode ser qualquer pasta desejada, mas costuma-se usar a pasta
 ```cmd
 .venv\Scripts\activate.bat
 ```
-	- No Linux e MacOS (e outros sistemas POSIX):
+- No Linux e MacOS (e outros sistemas POSIX):
 ```bash
 source .venv/bin/activate
 ```
