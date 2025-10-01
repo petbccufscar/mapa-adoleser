@@ -19,7 +19,6 @@ class MobileAppBar extends StatelessWidget {
     return Column(children: [
       Container(
           height: AppDimensions.loggedOutAppBarHeight,
-          color: AppColors.backgroundSmoke,
           padding: EdgeInsets.symmetric(
               vertical: 10,
               horizontal: ResponsiveUtils.horizontalPadding(context)),

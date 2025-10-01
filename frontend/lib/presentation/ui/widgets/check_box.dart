@@ -21,7 +21,8 @@ class CustomCheckbox extends StatelessWidget {
       highlightColor: Colors.transparent,
       onTap: () => onChanged(!value), // permite clicar no label
       child: Row(
-        spacing: 8,
+        spacing: 12,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
               width: 24,
@@ -30,9 +31,9 @@ class CustomCheckbox extends StatelessWidget {
               decoration: BoxDecoration(
                 color: value ? AppColors.purple : Colors.transparent,
                 border: Border.all(color: AppColors.inputBorder, width: 1),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(6),
               )),
-          Expanded(child: label)
+          label
         ],
       ),
     );

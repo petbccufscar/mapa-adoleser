@@ -25,31 +25,31 @@ ThemeData lightTheme = ThemeData(
         fontSize: 12,
         height: 1.5,
       ),
-      contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
         borderSide: BorderSide(
           width: 1,
           color: AppColors.inputBorder,
         ),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
         borderSide: BorderSide(
           width: 1,
           color: AppColors.inputBorder,
         ),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
         borderSide: BorderSide(
           width: 1,
-          color: AppColors.inputBorderFocus,
+          color: AppColors.purple,
         ),
       ),
       hintStyle: TextStyle(fontSize: 14, color: AppColors.inputPlaceholder),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
         borderSide: BorderSide(
           width: 1,
           color: AppColors.warning,
@@ -77,9 +77,21 @@ ThemeData lightTheme = ThemeData(
           color: AppColors.textPrimary,
           fontSize: 14,
           fontWeight: FontWeight.w500),
-      bodyLarge: TextStyle(color: AppColors.textPrimary, fontSize: 16),
-      bodyMedium: TextStyle(color: AppColors.textPrimary, fontSize: 14),
-      bodySmall: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+      bodyLarge: TextStyle(
+        color: AppColors.textPrimary,
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+      ),
+      bodyMedium: TextStyle(
+        color: AppColors.textPrimary,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      bodySmall: TextStyle(
+        color: AppColors.textSecondary,
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -104,7 +116,7 @@ ThemeData lightTheme = ThemeData(
           //   return AppColors.textSecondary; // cor quando pressionado
           // }
 
-          return AppColors.textTertiary; // cor padrão
+          return AppColors.inputPlaceholder; // cor padrão
         }),
       ),
     ),

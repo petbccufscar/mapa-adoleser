@@ -1,5 +1,17 @@
 /// Contém constantes reutilizáveis na aplicação, como strings, tamanhos, margens, etc.
 class ResponsivePaddings {
+  static const double modalHorizontalPhone = 20.0;
+  static const double modalHorizontalTablet = 30.0;
+  static const double modalHorizontalTableLarge = 30.0;
+  static const double modalHorizontalDesktop = 30.0;
+  static const double modalHorizontalDesktopLarge = 30.0;
+
+  static const double modalVerticalPhone = 35.0;
+  static const double modalVerticalTablet = 35.0;
+  static const double modalVerticalTableLarge = 35.0;
+  static const double modalVerticalDesktop = 35.0;
+  static const double modalVerticalDesktopLarge = 35.0;
+
   static const double horizontalPhone = 16.0;
   static const double horizontalTablet = 32.0;
   static const double horizontalTableLarge = 80.0;
@@ -60,12 +72,15 @@ class _HelpTexts {
 class _LoginTexts {
   const _LoginTexts();
 
+  final welcome = 'Bem vindo de volta!';
+  final welcomeSubtitle = 'Faça login com as suas credenciais para entrar!';
   final title = 'Entre com sua conta';
   final emailLabel = 'E-mail';
   final emailHint = 'Digite seu e-mail';
   final passwordLabel = 'Senha';
   final passwordHint = 'Digite sua senha';
   final forgotPassword = 'Esqueceu a senha?';
+  final rememberMe = 'Lembrar de mim';
   final loginButton = 'Entrar';
   final unregistered = "Ainda não tem uma conta?";
   final createAccount = 'Crie uma!';
@@ -109,6 +124,8 @@ class _ChangePasswordTexts {
 class _RegisterTexts {
   const _RegisterTexts();
 
+  final welcome = 'Faça seu cadastro!';
+  final welcomeSubtitle = 'Preencha os campos para fazer seu cadastro!';
   final successMessage = 'Conta criada com com sucesso!';
   final title = 'Crie sua conta';
   final nameLabel = 'Nome completo';
@@ -125,8 +142,10 @@ class _RegisterTexts {
   final registerButton = 'Criar minha conta';
   final registered = 'Ja tem uma conta?';
   final loginAccount = 'Faça login!';
-  final checkBoxText = 'Ao marcar esta caixa, você concorda com nossos ';
-  final checkBoxTextTerms = 'Termos de Uso e Políticas de Privacidade';
+  final checkBoxText =
+      'Ao marcar esta caixa, você concorda com nossos Termos de Uso e Políticas de Privacidade';
+  final checkBoxTextTerms = 'Termos de Uso';
+  final checkBoxTextPolicy = 'Políticas de Privacidade';
 }
 
 class _HomeTexts {
