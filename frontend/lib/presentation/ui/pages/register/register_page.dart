@@ -154,6 +154,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      if (ResponsiveBreakpoints.of(context)
+                          .largerOrEqualTo('LARGE_TABLET'))
+                        SizedBox(height: 100),
                       ModalWrapper(
                         child: Form(
                           key: _formKey,
@@ -226,6 +229,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Wrap(
                                 alignment: WrapAlignment.center,
                                 spacing: 15,
+                                runSpacing: 10,
                                 direction: Axis.horizontal,
                                 children: [
                                   ActionText(
@@ -251,6 +255,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Text(
                                   registerProvider.error!,
                                   style: const TextStyle(color: Colors.red),
+                                  textAlign: TextAlign.center,
                                 ),
                               ],
                               SizedBox(height: 18),
@@ -273,17 +278,18 @@ class _RegisterPageState extends State<RegisterPage> {
                                     color: AppColors.purpleLight,
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 100),
                     ],
                   ),
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

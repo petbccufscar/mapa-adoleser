@@ -90,9 +90,12 @@ class _RecoveryPasswordTexts {
   const _RecoveryPasswordTexts();
 
   final title = 'Recuperar sua senha';
-  final emailLabel = 'Digite seu e-mail para receber um código de confirmação';
+  final instructions =
+      'Digite seu e-mail para receber um código de confirmação';
+  final emailLabel = 'Digite seu e-mail';
   final emailHint = 'Digite seu e-mail';
   final emailSubmit = 'Enviar';
+  final cancel = 'Cancelar';
   final codeLabel = 'Digite o código de 6 dígitos recebido';
   final codeValidate = 'Validar';
   final codeResend = 'Reenviar ';
@@ -101,7 +104,7 @@ class _RecoveryPasswordTexts {
   final passwordAgainLabel = "Confirme a nova senha";
   final newPasswordAgain = "Digite novamente sua nova senha";
   final successMessage = "Sua senha foi alterada com sucesso!";
-  final returnLogin = "Retornar para o login";
+  final backToLogin = "Retornar para o login";
 }
 
 class _ChangePasswordTexts {
