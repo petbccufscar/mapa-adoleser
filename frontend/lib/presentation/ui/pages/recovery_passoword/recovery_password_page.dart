@@ -79,13 +79,20 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
     });
   }
 
+  String get _timerText {
+    if (_resendTimer > 0) {
+      return 'Reenviar (${_resendTimer}s)';
+    }
+    return 'Reenviar';
+  }
+
   Future<void> _submitEmail() async {
     if (_emailFormKey.currentState?.validate() ?? false) {
-      final auth = context.read<RecoveryPasswordProvider>();
+      final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
 
-      await auth.forgotPasswordEmail(_emailController.text);
+      await recoveryPasswordProvider.sendOTPCode(_emailController.text);
 
-      if (mounted && auth.error == null) {
+      if (mounted && recoveryPasswordProvider.error == null) {
         setState(() {
           _currentIndex = 1;
         });
@@ -95,28 +102,13 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
     }
   }
 
-  Future<void> _submitCode() async {
-    if (_codeFormKey.currentState?.validate() ?? false) {
-      final auth = context.read<RecoveryPasswordProvider>();
-
-      await auth.forgotPasswordCode(_codeController.text);
-
-      if (mounted && auth.error == null) {
-        setState(() {
-          _currentIndex = 2;
-        });
-      }
-    }
-  }
-
   Future<void> _resendCode() async {
-    log(_emailController.text);
     if (_emailController.text.isNotEmpty) {
-      final auth = context.read<RecoveryPasswordProvider>();
+      final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
 
-      await auth.forgotPasswordEmail(_emailController.text);
+      await recoveryPasswordProvider.sendOTPCode(_emailController.text);
 
-      if (mounted && auth.error == null) {
+      if (mounted && recoveryPasswordProvider.error == null) {
         _startTimer();
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -129,28 +121,35 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
     }
   }
 
-  Future<void> _submitNewPassword() async {
-    if (_passwordFormKey.currentState?.validate() ?? false) {
-      final auth = context.read<RecoveryPasswordProvider>();
+  Future<void> _submitCode() async {
+    if (_codeFormKey.currentState?.validate() ?? false) {
+      final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
 
-      await auth.resetPassword(
-        _emailController.text,
-        _passwordController.text,
-      );
+      await recoveryPasswordProvider.checkOTPCode(_codeController.text);
 
-      if (mounted && auth.error == null) {
+      if (mounted && recoveryPasswordProvider.error == null) {
         setState(() {
-          _currentIndex = 3;
+          _currentIndex = 2;
         });
       }
     }
   }
 
-  String get _timerText {
-    if (_resendTimer > 0) {
-      return 'Reenviar (${_resendTimer}s)';
+  Future<void> _submitNewPassword() async {
+    if (_passwordFormKey.currentState?.validate() ?? false) {
+      final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
+
+      await recoveryPasswordProvider.resetPassword(
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      if (mounted && recoveryPasswordProvider.error == null) {
+        setState(() {
+          _currentIndex = 3;
+        });
+      }
     }
-    return 'Reenviar';
   }
 
   @override

@@ -6,7 +6,12 @@ String? authGuard(AuthProvider auth, GoRouterState state) {
   final loggedIn = auth.isLoggedIn;
 
   // Lista de rotas protegidas:
-  final protectedRoutes = ['/perfil', '/favoritos', '/alterar-senha'];
+  final protectedRoutes = [
+    '/perfil',
+    '/favoritos',
+    '/alterar-senha',
+    'excluir-conta'
+  ];
 
   // Verifica as rotas protegidas
   if (!loggedIn && protectedRoutes.contains(state.fullPath)) {

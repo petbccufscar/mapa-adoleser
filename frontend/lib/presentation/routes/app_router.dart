@@ -3,6 +3,7 @@ import 'package:mapa_adoleser/presentation/routes/guards.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/about/about_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/change_password/change_password_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/contact/contact_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/delete_account/delete_account_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/favorites/favorites_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/home/home_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/login/login_page.dart';
@@ -13,6 +14,7 @@ import 'package:mapa_adoleser/presentation/ui/pages/search/search_page.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:mapa_adoleser/providers/change_password_provider.dart';
 import 'package:mapa_adoleser/providers/contact_provider.dart';
+import 'package:mapa_adoleser/providers/delete_account_provider.dart';
 import 'package:mapa_adoleser/providers/login_provider.dart';
 import 'package:mapa_adoleser/providers/recovery_password_provider.dart';
 import 'package:mapa_adoleser/providers/register_provider.dart';
@@ -26,7 +28,7 @@ GoRouter createRouter(AuthProvider auth) {
     // TODO: oq é isso?
     refreshListenable: auth,
     debugLogDiagnostics: true,
-    initialLocation: '/recuperar-senha',
+    initialLocation: '/',
     //errorBuilder: (context, state) => const ErrorPage(),
     redirect: (context, state) => authGuard(auth, state),
     routes: [
@@ -111,6 +113,18 @@ GoRouter createRouter(AuthProvider auth) {
             child: ChangeNotifierProvider(
               create: (_) => ChangePasswordProvider(),
               child: const ChangePasswordPage(),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        name: 'Excluir Conta',
+        path: '/excluir-conta',
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => DeleteAccountProvider(),
+              child: const DeleteAccountPage(),
             ),
           );
         },
