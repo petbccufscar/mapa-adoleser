@@ -26,7 +26,6 @@ class DesktopAppBar extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width,
           height: AppDimensions.loggedOutAppBarHeight,
-          color: AppColors.backgroundSmoke,
           padding: EdgeInsets.symmetric(
               vertical: 10,
               horizontal: ResponsiveUtils.horizontalPadding(context)),

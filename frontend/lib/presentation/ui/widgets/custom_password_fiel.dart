@@ -81,7 +81,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
           decoration: InputDecoration(
             hintText: widget.hint,
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             suffixIcon: Padding(
               padding:
                   const EdgeInsets.only(right: 4.0), // ajuste a margem aqui

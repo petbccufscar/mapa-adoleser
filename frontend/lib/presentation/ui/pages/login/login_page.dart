@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
+import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
-import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
+import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/check_box.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
@@ -14,6 +16,8 @@ import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart'
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:mapa_adoleser/providers/login_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart'
+    hide ResponsiveUtils;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,20 +28,23 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _usernameController;
+
+  late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
+  late bool rememberMe;
 
   @override
   void initState() {
-    _usernameController = TextEditingController();
+    _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    rememberMe = false;
 
     super.initState();
   }
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
 
     super.dispose();
@@ -49,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
       final authProvider = context.read<AuthProvider>();
 
       await loginProvider
-          .login(_usernameController.text, _passwordController.text)
+          .login(_emailController.text, _passwordController.text)
           .then((UserModel? model) {
         if (model != null) {
           authProvider.setUser(model);
@@ -72,74 +79,155 @@ class _LoginPageState extends State<LoginPage> {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: ResponsivePageWrapper(
-            body: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: 15,
-                  children: [
-                    Text(AppTexts.login.title,
-                        style: Theme.of(context).textTheme.headlineMedium),
-                    SizedBox(height: 5),
-                    CustomTextField(
-                        label: AppTexts.login.usernameLabel,
-                        hint: AppTexts.login.usernameHint,
-                        controller: _usernameController,
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.isValidUsername),
-                    CustomPasswordField(
-                      label: AppTexts.login.passwordLabel,
-                      hint: AppTexts.login.passwordHint,
-                      controller: _passwordController,
-                      validator: Validators.isNotEmpty,
-                      textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (_) => _submit(),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 5,
-                      children: [
-                        ActionText(
-                          text: AppTexts.login.forgotPassword,
-                          action: () => {context.go("/recuperar-senha")},
-                          underlined: true,
-                          boldOnHover: true,
-                        ),
-                      ],
-                    ),
-                    if (loginProvider.error != null)
-                      Text(
-                        loginProvider.error!,
-                        style: const TextStyle(color: Colors.red),
+      body: Row(
+        children: [
+          if (ResponsiveBreakpoints.of(context).largerOrEqualTo('LARGE_TABLET'))
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft, // início do gradiente
+                    end: Alignment.bottomRight, // fim do gradiente
+                    colors: [
+                      AppColors.pinkLight,
+                      AppColors.pink,
+                      AppColors.purple,
+                      AppColors.purpleLight,
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/ADOLESER_1.png',
+                        height: 160,
+                        width: 200,
                       ),
-                    CustomButton(
-                      text: AppTexts.login.loginButton,
-                      onPressed: loginProvider.isLoading ? null : _submit,
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 5,
-                      children: [
-                        Text(AppTexts.login.unregistered),
-                        ActionText(
-                          text: AppTexts.login.createAccount,
-                          action: () => {context.go("/cadastro")},
-                          underlined: true,
-                          boldOnHover: true,
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        AppTexts.login.welcome,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge
+                            ?.copyWith(color: AppColors.textLight),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        AppTexts.login.welcomeSubtitle,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: AppColors.textLight),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          Expanded(
+            child: Container(
+              color: AppColors.backgroundSmoke,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ModalWrapper(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            spacing: 12,
+                            children: [
+                              Text(AppTexts.login.title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
+                              SizedBox(height: 18),
+                              CustomTextField(
+                                  label: AppTexts.login.emailLabel,
+                                  hint: AppTexts.login.emailHint,
+                                  controller: _emailController,
+                                  textInputAction: TextInputAction.next,
+                                  validator: Validators.isEmail),
+                              CustomPasswordField(
+                                label: AppTexts.login.passwordLabel,
+                                hint: AppTexts.login.passwordHint,
+                                controller: _passwordController,
+                                validator: Validators.isNotEmpty,
+                                textInputAction: TextInputAction.done,
+                                onFieldSubmitted: (_) => _submit(),
+                              ),
+                              Wrap(
+                                direction: Axis.horizontal,
+                                alignment: WrapAlignment.spaceBetween,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  CustomCheckbox(
+                                    value: rememberMe,
+                                    label: Text(AppTexts.login.rememberMe),
+                                    onChanged: (val) {
+                                      setState(() {
+                                        rememberMe = val;
+                                      });
+                                    },
+                                  ),
+                                  ActionText(
+                                    text: AppTexts.login.forgotPassword,
+                                    action: () =>
+                                        {context.go("/recuperar-senha")},
+                                    underlined: true,
+                                    boldOnHover: true,
+                                    color: AppColors.purpleLight,
+                                  ),
+                                ],
+                              ),
+                              if (loginProvider.error != null) ...[
+                                SizedBox(height: 18),
+                                Text(
+                                  loginProvider.error!,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(color: Colors.red),
+                                ),
+                              ],
+                              SizedBox(height: 18),
+                              CustomButton(
+                                text: AppTexts.login.loginButton,
+                                onPressed:
+                                    loginProvider.isLoading ? null : _submit,
+                              ),
+                              SizedBox(height: 18),
+                              Wrap(
+                                direction: Axis.horizontal,
+                                alignment: WrapAlignment.center,
+                                spacing: 5,
+                                children: [
+                                  Text(AppTexts.login.unregistered),
+                                  ActionText(
+                                    text: AppTexts.login.createAccount,
+                                    action: () => {context.go("/cadastro")},
+                                    underlined: true,
+                                    boldOnHover: true,
+                                    color: AppColors.purpleLight,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ],
-                    )
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

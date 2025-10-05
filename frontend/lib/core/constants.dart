@@ -1,5 +1,17 @@
 /// Contém constantes reutilizáveis na aplicação, como strings, tamanhos, margens, etc.
 class ResponsivePaddings {
+  static const double modalHorizontalPhone = 20.0;
+  static const double modalHorizontalTablet = 30.0;
+  static const double modalHorizontalTableLarge = 30.0;
+  static const double modalHorizontalDesktop = 30.0;
+  static const double modalHorizontalDesktopLarge = 30.0;
+
+  static const double modalVerticalPhone = 35.0;
+  static const double modalVerticalTablet = 35.0;
+  static const double modalVerticalTableLarge = 35.0;
+  static const double modalVerticalDesktop = 35.0;
+  static const double modalVerticalDesktopLarge = 35.0;
+
   static const double horizontalPhone = 16.0;
   static const double horizontalTablet = 32.0;
   static const double horizontalTableLarge = 64.0;
@@ -7,10 +19,10 @@ class ResponsivePaddings {
   static const double horizontalDesktopLarge = 320.0;
 
   static const double verticalPhone = 16.0;
-  static const double verticalTablet = 32.0;
-  static const double verticalTableLarge = 64.0;
-  static const double verticalDesktop = 64.0;
-  static const double verticalDesktopLarge = 64.0;
+  static const double verticalTablet = 16.0;
+  static const double verticalTableLarge = 32.0;
+  static const double verticalDesktop = 32.0;
+  static const double verticalDesktopLarge = 32.0;
 }
 
 class AppDimensions {
@@ -39,6 +51,7 @@ class AppTexts {
   static const help = _HelpTexts();
   static const recoveryPassword = _RecoveryPasswordTexts();
   static const changePassword = _ChangePasswordTexts();
+  static const about = _AboutTexts();
 }
 
 class _HelpTexts {
@@ -59,12 +72,15 @@ class _HelpTexts {
 class _LoginTexts {
   const _LoginTexts();
 
+  final welcome = 'Bem vindo de volta!';
+  final welcomeSubtitle = 'Faça login com as suas credenciais para entrar!';
   final title = 'Entre com sua conta';
   final usernameLabel = "Username";
   final usernameHint = 'Digite seu username';
   final passwordLabel = 'Senha';
   final passwordHint = 'Digite sua senha';
   final forgotPassword = 'Esqueceu a senha?';
+  final rememberMe = 'Lembrar de mim';
   final loginButton = 'Entrar';
   final unregistered = "Ainda não tem uma conta?";
   final createAccount = 'Crie uma!';
@@ -74,9 +90,12 @@ class _RecoveryPasswordTexts {
   const _RecoveryPasswordTexts();
 
   final title = 'Recuperar sua senha';
-  final emailLabel = 'Digite seu e-mail para receber um código de confirmação';
+  final instructions =
+      'Digite seu e-mail para receber um código de confirmação';
+  final emailLabel = 'Digite seu e-mail';
   final emailHint = 'Digite seu e-mail';
   final emailSubmit = 'Enviar';
+  final cancel = 'Cancelar';
   final codeLabel = 'Digite o código de 6 dígitos recebido';
   final codeValidate = 'Validar';
   final codeResend = 'Reenviar ';
@@ -85,7 +104,7 @@ class _RecoveryPasswordTexts {
   final passwordAgainLabel = "Confirme a nova senha";
   final newPasswordAgain = "Digite novamente sua nova senha";
   final successMessage = "Sua senha foi alterada com sucesso!";
-  final returnLogin = "Retornar para o login";
+  final backToLogin = "Retornar para o login";
 }
 
 class _ChangePasswordTexts {
@@ -108,6 +127,8 @@ class _ChangePasswordTexts {
 class _RegisterTexts {
   const _RegisterTexts();
 
+  final welcome = 'Faça seu cadastro!';
+  final welcomeSubtitle = 'Preencha os campos para fazer seu cadastro!';
   final successMessage = 'Conta criada com com sucesso!';
   final title = 'Crie sua conta';
   final nameLabel = 'Nome completo';
@@ -126,8 +147,10 @@ class _RegisterTexts {
   final registerButton = 'Criar minha conta';
   final registered = 'Ja tem uma conta?';
   final loginAccount = 'Faça login!';
-  final checkBoxText = 'Ao marcar esta caixa, você concorda com nossos ';
-  final checkBoxTextTerms = 'Termos de Uso e Políticas de Privacidade';
+  final checkBoxText =
+      'Ao marcar esta caixa, você concorda com nossos Termos de Uso e Políticas de Privacidade';
+  final checkBoxTextTerms = 'Termos de Uso';
+  final checkBoxTextPolicy = 'Políticas de Privacidade';
 }
 
 class _HomeTexts {
@@ -140,4 +163,16 @@ class _HomeTexts {
   final mapTitle = 'Conheça um local que lhe fará bem';
   final mapText =
       'Use o mapa e os filtros abaixo para achar um bom lugar para você';
+}
+
+class _AboutTexts {
+  const _AboutTexts();
+
+  final aboutAdoleserTitle = 'Sobre o Adoleser';
+  final aboutAdoleserParagraph =
+      'O AdoleSer é um núcleo pensado para o cuidado integral de adolescentes e suas famílias, composto por uma médica hebiatra, uma psiquiatra, uma professora de enfermagem e uma professora de terapia ocupacional da Universidade Federal de São Carlos. \n\n Entre suas ações, está a discussão de assuntos relacionados a adolescência, o apoio a rede para os atendimentos e a participação e coordenação do grupo Juntos pelas Adolescências, um grupo intersetorial que tem por objetivo discutir casos complexos, fornecer suporte em rede e pensar em propostas de melhoria para a população adolescente de São Carlos.';
+
+  final aboutPETBCCTitle = 'Sobre o PET BCC UFSCar';
+  final aboutPETBCCParagraph =
+      'O PET BCC UFSCar (Programa de Educação Tutorial do Bacharelado em Ciência da Computação da Universidade Federal de São Carlos) é um grupo formado por estudantes de graduação que desenvolve atividades integrando ensino, pesquisa e extensão. Coordenado por um professor tutor e vinculado ao MEC, o grupo tem como objetivo complementar a formação acadêmica, técnica e humana dos alunos, contribuindo também com a comunidade universitária e externa. \n\n Os petianos do BCC realizam projetos nas áreas de tecnologia, educação, responsabilidade social e divulgação científica. Organizam eventos, ministram minicursos, produzem conteúdos didáticos, desenvolvem sistemas e participam ativamente da vida acadêmica da UFSCar. O PET BCC também promove o crescimento pessoal e profissional dos seus membros, incentivando a autonomia, o trabalho em equipe e o pensamento crítico.';
 }
