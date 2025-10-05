@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/auth_service.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_code_request_model.dart';
+import 'package:mapa_adoleser/domain/models/forgot_password_check_code_request_model.dart';
 import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
 import 'package:mapa_adoleser/domain/models/reset_password_request_model.dart';
 
@@ -25,7 +25,7 @@ class RecoveryPasswordProvider extends ChangeNotifier {
         email: email,
       );
 
-      await _authService.forgotPasswordEmail(request);
+      await _authService.recoveryPasswordSendOTPCode(request);
     } catch (e) {
       _error = parseException(e);
     }
@@ -42,11 +42,11 @@ class RecoveryPasswordProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final request = ForgotPasswordCodeRequestModel(
+      final request = ForgotPasswordCheckCodeRequestModel(
         code: code,
       );
 
-      await _authService.forgotPasswordCode(request);
+      await _authService.recoveryPasswordCheckCode(request);
     } catch (e) {
       _error = parseException(e);
     }
@@ -68,7 +68,7 @@ class RecoveryPasswordProvider extends ChangeNotifier {
         password: password,
       );
 
-      await _authService.resetPassword(request);
+      await _authService.recoveryPasswordResetPassword(request);
     } catch (e) {
       _error = parseException(e);
     }

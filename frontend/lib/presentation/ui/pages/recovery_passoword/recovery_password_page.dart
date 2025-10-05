@@ -35,7 +35,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
   late final TextEditingController _passwordController;
   late final TextEditingController _confirmPasswordController;
 
-  int _currentIndex = 0;
+  int _currentIndex = 3;
 
   int _resendTimer = 0;
   Timer? _timer;
@@ -102,7 +102,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
   }
 
   Future<void> _resendCode() async {
-    if (_emailController.text.isNotEmpty) {
+    if (_emailController.text.isNotEmpty && _resendTimer == 0) {
       final recoveryPasswordProvider = context.read<RecoveryPasswordProvider>();
 
       await recoveryPasswordProvider.sendOTPCode(_emailController.text);
@@ -111,8 +111,8 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
         _startTimer();
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Código reenviado com sucesso!'),
+          SnackBar(
+            content: Text(AppTexts.recoveryPassword.codeResendSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -183,9 +183,12 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             AppTexts.recoveryPassword.title,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          SizedBox(height: 30),
-                          Text(AppTexts.recoveryPassword.instructions),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 12),
+                          Text(
+                            AppTexts.recoveryPassword.instructions,
+                            textAlign: TextAlign.justify,
+                          ),
+                          const SizedBox(height: 30),
                           CustomTextField(
                             label: AppTexts.recoveryPassword.emailLabel,
                             hint: AppTexts.recoveryPassword.emailHint,
@@ -225,9 +228,14 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             AppTexts.recoveryPassword.title,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 12),
+                          Text(
+                            AppTexts.recoveryPassword.codeInstructions,
+                            textAlign: TextAlign.justify,
+                          ),
+                          const SizedBox(height: 30),
                           Text(AppTexts.recoveryPassword.codeLabel),
-                          SizedBox(height: 12),
+                          const SizedBox(height: 12),
                           Pinput(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             controller: _codeController,
@@ -341,7 +349,12 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             AppTexts.recoveryPassword.title,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 12),
+                          Text(
+                            AppTexts.recoveryPassword.passwordInstructions,
+                            textAlign: TextAlign.justify,
+                          ),
+                          const SizedBox(height: 30),
                           CustomPasswordField(
                             label: AppTexts.recoveryPassword.passwordLabel,
                             hint: AppTexts.recoveryPassword.newPassword,
@@ -350,7 +363,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             showPasswordStrength: true,
                             validator: Validators.isValidPassword,
                           ),
-                          SizedBox(height: 12),
+                          const SizedBox(height: 12),
                           CustomPasswordField(
                             label: AppTexts.recoveryPassword.passwordAgainLabel,
                             hint: AppTexts.recoveryPassword.newPasswordAgain,
@@ -394,7 +407,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                         const SizedBox(height: 30),
                         Text(
                           AppTexts.recoveryPassword.successMessage,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          textAlign: TextAlign.justify,
                         ),
                         const SizedBox(height: 30),
                         CustomButton(

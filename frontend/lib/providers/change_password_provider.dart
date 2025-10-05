@@ -26,7 +26,7 @@ class ChangePasswordProvider extends ChangeNotifier {
     try {
       final request = CheckCurrentPasswordRequestModel(password: password);
 
-      result = await _authService.checkCurrentPassword(request);
+      result = await _authService.changePasswordCheckCurrentPassword(request);
     } catch (e) {
       _error = parseException(e);
     }
@@ -53,7 +53,7 @@ class ChangePasswordProvider extends ChangeNotifier {
         newPassword: newPassword,
       );
 
-      result = await _authService.changePassword(request);
+      result = await _authService.changePasswordChangePassword(request);
     } catch (e) {
       _error = parseException(e);
     }

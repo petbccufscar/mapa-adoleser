@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
@@ -311,7 +312,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 boldOnHover: true,
                                 text: 'Excluir conta',
                                 color: AppColors.warning,
-                                action: () {}),
+                                action: () {
+                                  context.go('/excluir-conta');
+                                }),
                           ],
                         ),
                       ],

@@ -6,8 +6,8 @@ import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
+import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
@@ -35,7 +35,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
   late final TextEditingController _passwordController;
   late final TextEditingController _codeController;
 
-  int _currentIndex = 2;
+  int _currentIndex = 0; // Índice para controlar a etapa atual do fluxo
 
   int _resendTimer = 0;
   Timer? _timer;
@@ -91,10 +91,11 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
       final deleteAccountProvider = context.read<DeleteAccountProvider>();
 
       // Chama o método do provider para excluir a conta
-      await deleteAccountProvider.sendOTPCode(_emailController.text);
+      await deleteAccountProvider.sendOTPCode(
+          _emailController.text, _passwordController.text);
 
       // Se a exclusão foi bem-sucedida, redireciona para a home
-      if (deleteAccountProvider.error == null && mounted) {
+      if (mounted && deleteAccountProvider.error == null) {
         setState(() {
           _currentIndex = 1;
         });
@@ -105,17 +106,20 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
   }
 
   Future<void> _resendCode() async {
-    if (_emailController.text.isNotEmpty) {
+    if (_emailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty &&
+        _resendTimer == 0) {
       final deleteAccountProvider = context.read<DeleteAccountProvider>();
 
-      await deleteAccountProvider.sendOTPCode(_emailController.text);
+      await deleteAccountProvider.sendOTPCode(
+          _emailController.text, _passwordController.text);
 
       if (mounted && deleteAccountProvider.error == null) {
         _startTimer();
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Código reenviado com sucesso!'),
+          SnackBar(
+            content: Text(AppTexts.deleteAccount.codeResendSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -163,8 +167,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
       body: Center(
         child: SingleChildScrollView(
           child: ResponsivePageWrapper(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
+            child: ModalWrapper(
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
                 transitionBuilder: (child, animation) {
@@ -173,48 +176,44 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                     child: child,
                   );
                 },
-                child: IndexedStack(
-                  key: ValueKey(_currentIndex),
-                  index: _currentIndex,
-                  children: [
-                    Form(
+                child: switch (_currentIndex) {
+                  0 => Form(
                       key: _checkAccountFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        spacing: 10,
                         children: [
                           // Título da página
                           Text(
-                            "Excluir conta",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                            AppTexts.deleteAccount.title,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
 
                           const SizedBox(height: 12),
 
                           // Subtítulo
                           Text(
-                            "Confirme seu email e senha. Você receberá um código de confirmação em seu email.",
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            AppTexts.deleteAccount.confirmEmailAndPassword,
                             textAlign: TextAlign.justify,
                           ),
 
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 30),
 
                           // Campo de e-mail
                           CustomTextField(
-                            label: "E-mail",
-                            hint: "Digite seu e-mail",
+                            label: AppTexts.deleteAccount.emailLabel,
+                            hint: AppTexts.deleteAccount.emailHint,
                             controller: _emailController,
                             textInputAction: TextInputAction.next,
                             validator: Validators.isEmail,
                           ),
 
+                          const SizedBox(height: 12),
+
                           // Campo de senha
                           CustomPasswordField(
                             controller: _passwordController,
-                            label: "Senha",
-                            hint: "Digite sua senha",
+                            label: AppTexts.deleteAccount.passwordLabel,
+                            hint: AppTexts.deleteAccount.passwordHint,
                             textInputAction: TextInputAction.done,
                             validator: Validators.isNotEmpty,
                             onFieldSubmitted: (_) => _submitCheckAccount(),
@@ -222,7 +221,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
                           // Exibe erro vindo do DeleteAccountProvider, se existir
                           if (deleteAccountProvider.error != null) ...[
-                            const SizedBox(height: 6),
+                            const SizedBox(height: 30),
                             Text(
                               deleteAccountProvider.error!,
                               textAlign: TextAlign.center,
@@ -230,34 +229,43 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                             ),
                           ],
 
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 30),
 
                           CustomButton(
-                            text: "Enviar",
+                            text: AppTexts.deleteAccount.sendCodeButton,
                             onPressed: deleteAccountProvider.isLoading
                                 ? null
                                 : _submitCheckAccount,
                           ),
+
+                          const SizedBox(height: 12),
+
+                          CustomButton(
+                            text: AppTexts.deleteAccount.cancelButton,
+                            onPressed: () => {context.go('/perfil')},
+                          ),
                         ],
                       ),
                     ),
-                    Form(
+                  1 => Form(
                       key: _codeFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        spacing: 10,
                         children: [
                           Text(
-                            "Excluir conta",
+                            AppTexts.deleteAccount.title,
                             style: Theme.of(context).textTheme.headlineSmall,
-                            textAlign: TextAlign.center,
                           ),
-                          SizedBox(height: 12),
+                          const SizedBox(height: 12),
                           Text(
-                            AppTexts.recoveryPassword.codeLabel,
-                            textAlign: TextAlign.center,
+                            AppTexts.deleteAccount.codeInstructions,
+                            textAlign: TextAlign.justify,
                           ),
-                          SizedBox(height: 6),
+                          const SizedBox(height: 30),
+                          Text(
+                            AppTexts.deleteAccount.codeLabel,
+                          ),
+                          const SizedBox(height: 12),
                           Pinput(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             controller: _codeController,
@@ -316,13 +324,14 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                             ),
                           ),
                           if (deleteAccountProvider.error != null) ...[
-                            SizedBox(height: 6),
+                            SizedBox(height: 30),
                             Text(
                               deleteAccountProvider.error!,
                               style: const TextStyle(color: Colors.red),
+                              textAlign: TextAlign.center,
                             ),
                           ],
-                          SizedBox(height: 6),
+                          const SizedBox(height: 30),
                           ElevatedButton(
                             onPressed: (_resendTimer == 0 &&
                                     !deleteAccountProvider.isLoading)
@@ -345,41 +354,45 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                 ),
                             child: Text(_timerText),
                           ),
+                          const SizedBox(height: 12),
                           CustomButton(
-                              text: AppTexts.recoveryPassword.emailSubmit,
-                              onPressed: _codeController.text.isNotEmpty &&
-                                      _codeController.text.length == 6 &&
-                                      !deleteAccountProvider.isLoading
-                                  ? _submitCode
-                                  : null),
+                            text: AppTexts.deleteAccount.sendCodeButton,
+                            onPressed: _codeController.text.isNotEmpty &&
+                                    _codeController.text.length == 6 &&
+                                    !deleteAccountProvider.isLoading
+                                ? _submitCode
+                                : null,
+                          ),
+                          const SizedBox(height: 12),
+                          CustomButton(
+                            text: AppTexts.deleteAccount.cancelButton,
+                            onPressed: () => {context.go('/perfil')},
+                          ),
                         ],
                       ),
                     ),
-                    Form(
+                  2 => Form(
                       key: _checkAccountFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        spacing: 10,
                         children: [
                           // Título da página
                           Text(
-                            "Excluir conta",
-                            textAlign: TextAlign.center,
+                            AppTexts.deleteAccount.title,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
 
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 30),
 
                           // Subtítulo
                           Text(
-                            "Deseja excluir sua conta? Seus dados não serão salvos e não será possível recuperá-la.",
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            AppTexts.deleteAccount.deleteConfirmation,
                             textAlign: TextAlign.justify,
                           ),
 
                           // Exibe erro vindo do DeleteAccountProvider, se existir
                           if (deleteAccountProvider.error != null) ...[
-                            const SizedBox(height: 6),
+                            const SizedBox(height: 30),
                             Text(
                               deleteAccountProvider.error!,
                               textAlign: TextAlign.center,
@@ -387,7 +400,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                             ),
                           ],
 
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 30),
 
                           ElevatedButton(
                             style: Theme.of(context)
@@ -402,10 +415,15 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                             onPressed: deleteAccountProvider.isLoading
                                 ? null
                                 : _deleteAccount,
-                            child: Text("Confirmar"),
+                            child: Text(
+                              AppTexts.deleteAccount.confirmButton,
+                            ),
                           ),
+
+                          const SizedBox(height: 12),
+
                           CustomButton(
-                            text: "Cancelar",
+                            text: AppTexts.deleteAccount.cancelButton,
                             onPressed: deleteAccountProvider.isLoading
                                 ? null
                                 : () {
@@ -417,31 +435,28 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                         ],
                       ),
                     ),
-                    Center(
+                  _ => Center(
                       child: Column(
-                        spacing: 10,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            "Excluir conta",
+                            AppTexts.deleteAccount.title,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 30),
                           Text(
-                            'Sua conta foi excluída com sucesso!',
+                            AppTexts.deleteAccount.successMessage,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          const SizedBox(height: 6),
-                          ActionText(
-                            text: 'Voltar para a página inicial',
-                            action: () => context.go("/"),
-                            underlined: true,
-                            boldOnHover: true,
+                          const SizedBox(height: 30),
+                          CustomButton(
+                            text: AppTexts.deleteAccount.returnHome,
+                            onPressed: () => {context.go('/login')},
                           ),
                         ],
                       ),
                     )
-                  ],
-                ),
+                },
               ),
             ),
           ),

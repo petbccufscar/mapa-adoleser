@@ -1,10 +1,12 @@
 // providers/register_provider.dart
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
-import 'package:mapa_adoleser/data/services/auth_service.dart';
+import 'package:mapa_adoleser/data/services/profile_service.dart';
+import 'package:mapa_adoleser/domain/models/delete_account_check_account_request_model.dart';
+import 'package:mapa_adoleser/domain/models/delete_account_check_code_request_model.dart';
 
 class DeleteAccountProvider extends ChangeNotifier {
-  final AuthService _authService = AuthService();
+  final ProfileService _profileService = ProfileService();
 
   String? _error;
   bool _loading = false;
@@ -37,18 +39,17 @@ class DeleteAccountProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> sendOTPCode(String email) async {
+  Future<void> sendOTPCode(String email, String password) async {
     _loading = true;
     _error = null;
 
     notifyListeners();
 
-    //CheckCurrentPasswordResponseModel? result;
-
     try {
-      //final request = CheckCurrentPasswordRequestModel(password: password);
+      final request = DeleteAccountCheckAccountRequestModel(
+          email: email, password: password);
 
-      //result = await _authService.checkCurrentPassword(request);
+      await _profileService.deleteAccountSendOTPCode(request);
     } catch (e) {
       _error = parseException(e);
     }
@@ -56,24 +57,20 @@ class DeleteAccountProvider extends ChangeNotifier {
     _loading = false;
 
     notifyListeners();
-
-    //return result?.valid ?? false;
-
-    return true;
   }
 
-  Future<bool> checkOTPCode(String code) async {
+  Future<void> checkOTPCode(String code) async {
     _loading = true;
     _error = null;
 
     notifyListeners();
 
-    //CheckCurrentPasswordResponseModel? result;
-
     try {
-      //final request = CheckCurrentPasswordRequestModel(password: password);
+      final request = DeleteAccountCheckCodeRequestModel(
+        code: code,
+      );
 
-      //result = await _authService.checkCurrentPassword(request);
+      await _profileService.deleteAccountCheckCode(request);
     } catch (e) {
       _error = parseException(e);
     }
@@ -81,24 +78,17 @@ class DeleteAccountProvider extends ChangeNotifier {
     _loading = false;
 
     notifyListeners();
-
-    //return result?.valid ?? false;
-
-    return true;
   }
 
-  Future<bool> deleteAccount(String code) async {
+  Future<void> deleteAccount(String code) async {
     _loading = true;
     _error = null;
 
     notifyListeners();
 
-    //CheckCurrentPasswordResponseModel? result;
-
     try {
-      //final request = CheckCurrentPasswordRequestModel(password: password);
-
-      //result = await _authService.checkCurrentPassword(request);
+      // TODO: Implementar a lógica de exclusão de conta
+      //await _authService.deleteAccount(request);
     } catch (e) {
       _error = parseException(e);
     }
@@ -106,9 +96,5 @@ class DeleteAccountProvider extends ChangeNotifier {
     _loading = false;
 
     notifyListeners();
-
-    //return result?.valid ?? false;
-
-    return true;
   }
 }

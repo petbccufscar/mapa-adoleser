@@ -1,9 +1,9 @@
 // lib/models/forgot_password_email_request_model.dart
 
-class ForgotPasswordCodeRequestModel {
+class ForgotPasswordCheckCodeRequestModel {
   final String code;
 
-  ForgotPasswordCodeRequestModel({
+  ForgotPasswordCheckCodeRequestModel({
     required this.code,
   });
 

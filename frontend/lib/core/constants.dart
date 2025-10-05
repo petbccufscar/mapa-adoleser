@@ -52,6 +52,30 @@ class AppTexts {
   static const recoveryPassword = _RecoveryPasswordTexts();
   static const changePassword = _ChangePasswordTexts();
   static const about = _AboutTexts();
+  static const deleteAccount = _DeleteAccountTexts();
+}
+
+class _DeleteAccountTexts {
+  const _DeleteAccountTexts();
+
+  final title = 'Excluir conta';
+  final confirmEmailAndPassword =
+      "Confirme seu e-mail e senha para receber um código de confirmação.";
+  final emailLabel = 'E-mail';
+  final emailHint = 'Digite seu e-mail';
+  final passwordLabel = 'Senha';
+  final passwordHint = 'Digite sua senha';
+  final sendCodeButton = 'Enviar';
+  final codeResendSuccess = 'Código enviado com sucesso!';
+  final cancelButton = 'Cancelar';
+  final codeInstructions =
+      'Um código de confirmação foi enviado para o seu e-mail. Insira o código abaixo para continuar.';
+  final deleteConfirmation =
+      'Deseja excluir sua conta? Seus dados não serão salvos e não será possível recuperá-la.';
+  final confirmButton = 'Confirmar';
+  final codeLabel = 'Código de 6 dígitos';
+  final successMessage = 'Sua conta foi excluída com sucesso!';
+  final returnHome = 'Voltar para a página inicial';
 }
 
 class _HelpTexts {
@@ -97,13 +121,19 @@ class _RecoveryPasswordTexts {
   final emailSubmit = 'Enviar';
   final cancel = 'Cancelar';
   final codeLabel = 'Digite o código de 6 dígitos recebido';
+  final codeInstructions =
+      'Insira o código que enviamos para o seu e-mail para continuar com a recuperação da senha.';
   final codeValidate = 'Validar';
-  final codeResend = 'Reenviar ';
+  final codeResend = 'Reenviar';
+  final codeResendSuccess = 'Código enviado com sucesso!';
+  final passwordInstructions =
+      'Crie uma nova senha para sua conta. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.';
   final passwordLabel = "Nova senha";
   final newPassword = "Digite sua nova senha";
   final passwordAgainLabel = "Confirme a nova senha";
   final newPasswordAgain = "Digite novamente sua nova senha";
-  final successMessage = "Sua senha foi alterada com sucesso!";
+  final successMessage =
+      "Senha alterada com sucesso! Faça login novamente com sua nova senha.";
   final backToLogin = "Retornar para o login";
 }
 
