@@ -141,6 +141,10 @@ class _ChangePasswordTexts {
   const _ChangePasswordTexts();
 
   final title = 'Alterar sua senha';
+  final instructions =
+      'Para alterar sua senha, primeiro confirme sua senha atual.';
+  final passwordInstructions =
+      'Agora, crie uma nova senha para sua conta. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.';
   final passwordLabel = 'Senha Atual';
   final passwordHint = 'Digite sua senha atual';
   final newPasswordLabel = 'Nova Senha';
@@ -151,7 +155,7 @@ class _ChangePasswordTexts {
   final successMessage = 'Senha alterada com sucesso!';
   final successDescription =
       'Sua senha foi alterada com sucesso. Use sua nova senha na próxima vez que fizer login.';
-  final returnHome = 'Retornar para a página inicial';
+  final backToHomeButton = 'Retornar para a página inicial';
 }
 
 class _RegisterTexts {

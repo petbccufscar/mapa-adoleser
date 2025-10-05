@@ -306,7 +306,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 underlined: true,
                                 boldOnHover: true,
                                 text: 'Alterar Senha',
-                                action: () {}),
+                                action: () {
+                                  context.go('/alterar-senha');
+                                }),
                             ActionText(
                                 underlined: true,
                                 boldOnHover: true,

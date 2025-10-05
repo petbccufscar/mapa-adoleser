@@ -443,7 +443,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                             AppTexts.deleteAccount.title,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 12),
                           Text(
                             AppTexts.deleteAccount.successMessage,
                             style: Theme.of(context).textTheme.bodyMedium,
