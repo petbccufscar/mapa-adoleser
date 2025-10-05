@@ -27,7 +27,7 @@ class MessageResultPage extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           child: ResponsivePageWrapper(
-            body: ConstrainedBox(
+            child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 450),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

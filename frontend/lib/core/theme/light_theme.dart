@@ -13,7 +13,7 @@ ThemeData lightTheme = ThemeData(
       onPrimary: AppColors.textLight,
       secondary: AppColors.pink,
       onSecondary: AppColors.textLight,
-      surface: AppColors.backgroundWhite,
+      surface: AppColors.backgroundSmoke,
       surfaceBright: AppColors.backgroundWhite,
       onSurface: AppColors.textPrimary,
       error: AppColors.warning,

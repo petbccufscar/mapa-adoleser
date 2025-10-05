@@ -24,6 +24,7 @@ class DesktopAppBar extends StatelessWidget {
     return Column(
       children: [
         Container(
+          color: AppColors.backgroundWhite,
           width: MediaQuery.of(context).size.width,
           height: AppDimensions.loggedOutAppBarHeight,
           padding: EdgeInsets.symmetric(
@@ -128,7 +129,7 @@ class DesktopAppBar extends StatelessWidget {
                     bold: currentRoute == "/favoritos",
                     boldOnHover: true,
                     color: currentRoute == "/favoritos"
-                        ? AppColors.textLightSmoke
+                        ? AppColors.textLight
                         : AppColors.textLight),
                 const SizedBox(width: 15),
                 ActionText(
@@ -137,7 +138,7 @@ class DesktopAppBar extends StatelessWidget {
                     bold: currentRoute == "/perfil",
                     boldOnHover: true,
                     color: currentRoute == "/perfil"
-                        ? AppColors.textLightSmoke
+                        ? AppColors.textLight
                         : AppColors.textLight),
                 const SizedBox(width: 15),
                 ActionText(

@@ -1,5 +1,4 @@
 // providers/register_provider.dart
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';

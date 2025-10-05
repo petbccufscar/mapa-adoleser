@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
           children: [
             Carousel(),
             ResponsivePageWrapper(
-              body: Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 20,
                 children: [

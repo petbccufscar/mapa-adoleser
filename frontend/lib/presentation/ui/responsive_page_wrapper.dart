@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 
 class ResponsivePageWrapper extends StatelessWidget {
-  final Widget body;
+  final Widget child;
 
-  const ResponsivePageWrapper({super.key, required this.body});
+  const ResponsivePageWrapper({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class ResponsivePageWrapper extends StatelessWidget {
         horizontal: ResponsiveUtils.horizontalPadding(context),
         vertical: ResponsiveUtils.verticalPadding(context),
       ),
-      child: body,
+      child: child,
     );
   }
 }

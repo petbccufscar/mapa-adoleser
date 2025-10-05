@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
@@ -119,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         child: Center(
           child: ResponsivePageWrapper(
-            body: ConstrainedBox(
+            child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 450),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

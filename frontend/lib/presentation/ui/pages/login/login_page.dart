@@ -29,13 +29,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
-  late final TextEditingController _emailController;
+  late final TextEditingController _usernameController;
   late final TextEditingController _passwordController;
   late bool rememberMe;
 
   @override
   void initState() {
-    _emailController = TextEditingController();
+    _usernameController = TextEditingController();
     _passwordController = TextEditingController();
     rememberMe = false;
 
@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
 
     super.dispose();
@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
       final authProvider = context.read<AuthProvider>();
 
       await loginProvider
-          .login(_emailController.text, _passwordController.text)
+          .login(_usernameController.text, _passwordController.text)
           .then((UserModel? model) {
         if (model != null) {
           authProvider.setUser(model);
@@ -131,98 +131,95 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           Expanded(
-            child: Container(
-              color: AppColors.backgroundSmoke,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ModalWrapper(
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            spacing: 12,
-                            children: [
-                              Text(AppTexts.login.title,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium),
-                              SizedBox(height: 18),
-                              CustomTextField(
-                                  label: AppTexts.login.emailLabel,
-                                  hint: AppTexts.login.emailHint,
-                                  controller: _emailController,
-                                  textInputAction: TextInputAction.next,
-                                  validator: Validators.isEmail),
-                              CustomPasswordField(
-                                label: AppTexts.login.passwordLabel,
-                                hint: AppTexts.login.passwordHint,
-                                controller: _passwordController,
-                                validator: Validators.isNotEmpty,
-                                textInputAction: TextInputAction.done,
-                                onFieldSubmitted: (_) => _submit(),
-                              ),
-                              Wrap(
-                                direction: Axis.horizontal,
-                                alignment: WrapAlignment.spaceBetween,
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: [
-                                  CustomCheckbox(
-                                    value: rememberMe,
-                                    label: Text(AppTexts.login.rememberMe),
-                                    onChanged: (val) {
-                                      setState(() {
-                                        rememberMe = val;
-                                      });
-                                    },
-                                  ),
-                                  ActionText(
-                                    text: AppTexts.login.forgotPassword,
-                                    action: () =>
-                                        {context.go("/recuperar-senha")},
-                                    underlined: true,
-                                    boldOnHover: true,
-                                    color: AppColors.purpleLight,
-                                  ),
-                                ],
-                              ),
-                              if (loginProvider.error != null) ...[
-                                SizedBox(height: 18),
-                                Text(
-                                  loginProvider.error!,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.red),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ModalWrapper(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(AppTexts.login.title,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium),
+                            const SizedBox(height: 30),
+                            CustomTextField(
+                                label: AppTexts.login.usernameLabel,
+                                hint: AppTexts.login.usernameHint,
+                                controller: _usernameController,
+                                textInputAction: TextInputAction.next,
+                                validator: Validators.isNotEmpty),
+                            const SizedBox(height: 12),
+                            CustomPasswordField(
+                              label: AppTexts.login.passwordLabel,
+                              hint: AppTexts.login.passwordHint,
+                              controller: _passwordController,
+                              validator: Validators.isNotEmpty,
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (_) => _submit(),
+                            ),
+                            const SizedBox(height: 12),
+                            Wrap(
+                              direction: Axis.horizontal,
+                              alignment: WrapAlignment.spaceBetween,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                CustomCheckbox(
+                                  value: rememberMe,
+                                  label: Text(AppTexts.login.rememberMe),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      rememberMe = val;
+                                    });
+                                  },
+                                ),
+                                ActionText(
+                                  text: AppTexts.login.forgotPassword,
+                                  action: () =>
+                                      {context.go("/recuperar-senha")},
+                                  underlined: true,
+                                  boldOnHover: true,
+                                  color: AppColors.purpleLight,
                                 ),
                               ],
-                              SizedBox(height: 18),
-                              CustomButton(
-                                text: AppTexts.login.loginButton,
-                                onPressed:
-                                    loginProvider.isLoading ? null : _submit,
+                            ),
+                            if (loginProvider.error != null) ...[
+                              const SizedBox(height: 30),
+                              Text(
+                                loginProvider.error!,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(color: Colors.red),
                               ),
-                              SizedBox(height: 18),
-                              Wrap(
-                                direction: Axis.horizontal,
-                                alignment: WrapAlignment.center,
-                                spacing: 5,
-                                children: [
-                                  Text(AppTexts.login.unregistered),
-                                  ActionText(
-                                    text: AppTexts.login.createAccount,
-                                    action: () => {context.go("/cadastro")},
-                                    underlined: true,
-                                    boldOnHover: true,
-                                    color: AppColors.purpleLight,
-                                  ),
-                                ],
-                              )
                             ],
-                          ),
+                            const SizedBox(height: 30),
+                            CustomButton(
+                              text: AppTexts.login.loginButton,
+                              onPressed:
+                                  loginProvider.isLoading ? null : _submit,
+                            ),
+                            const SizedBox(height: 30),
+                            Wrap(
+                              direction: Axis.horizontal,
+                              alignment: WrapAlignment.center,
+                              spacing: 5,
+                              children: [
+                                Text(AppTexts.login.unregistered),
+                                ActionText(
+                                  text: AppTexts.login.createAccount,
+                                  action: () => {context.go("/cadastro")},
+                                  underlined: true,
+                                  boldOnHover: true,
+                                  color: AppColors.purpleLight,
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

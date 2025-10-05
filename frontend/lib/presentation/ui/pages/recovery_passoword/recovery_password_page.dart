@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -162,251 +161,249 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: Container(
-        color: AppColors.backgroundSmoke,
-        child: Center(
-          child: SingleChildScrollView(
-            child: ResponsivePageWrapper(
-              child: ModalWrapper(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  transitionBuilder: (child, animation) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                  child: switch (_currentIndex) {
-                    0 => Form(
-                        key: _emailFormKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          spacing: 12,
-                          children: [
-                            Text(
-                              AppTexts.recoveryPassword.title,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            SizedBox(height: 18),
-                            Text(AppTexts.recoveryPassword.instructions),
-                            SizedBox(height: 18),
-                            CustomTextField(
-                              label: AppTexts.recoveryPassword.emailLabel,
-                              hint: AppTexts.recoveryPassword.emailHint,
-                              controller: _emailController,
-                              textInputAction: TextInputAction.done,
-                              validator: Validators.isEmail,
-                            ),
-                            if (recoveryPasswordProvider.error != null) ...[
-                              SizedBox(height: 18),
-                              Text(
-                                recoveryPasswordProvider.error!,
-                                style: const TextStyle(color: Colors.red),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                            SizedBox(height: 18),
-                            CustomButton(
-                              text: AppTexts.recoveryPassword.emailSubmit,
-                              onPressed: recoveryPasswordProvider.isLoading
-                                  ? null
-                                  : _submitEmail,
-                            ),
-                            CustomButton(
-                              text: AppTexts.recoveryPassword.cancel,
-                              onPressed: () => {context.go('/login')},
-                            ),
-                          ],
-                        ),
-                      ),
-                    1 => Form(
-                        key: _codeFormKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          spacing: 12,
-                          children: [
-                            Text(
-                              AppTexts.recoveryPassword.title,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            SizedBox(height: 18),
-                            Text(AppTexts.recoveryPassword.codeLabel),
-                            Pinput(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              controller: _codeController,
-                              length: 6,
-                              defaultPinTheme: PinTheme(
-                                width: 56,
-                                height: 56,
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              errorPinTheme: PinTheme(
-                                width: 56,
-                                height: 56,
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.red),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              focusedPinTheme: PinTheme(
-                                width: 56,
-                                height: 56,
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 2,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              submittedPinTheme: PinTheme(
-                                width: 56,
-                                height: 56,
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            if (recoveryPasswordProvider.error != null) ...[
-                              SizedBox(height: 18),
-                              Text(
-                                recoveryPasswordProvider.error!,
-                                style: const TextStyle(color: Colors.red),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                            SizedBox(height: 18),
-                            ElevatedButton(
-                              onPressed: (_resendTimer == 0 &&
-                                      !recoveryPasswordProvider.isLoading)
-                                  ? _resendCode
-                                  : null,
-                              style: Theme.of(context)
-                                  .elevatedButtonTheme
-                                  .style
-                                  ?.copyWith(
-                                    backgroundColor: WidgetStateProperty.all(
-                                      _resendTimer > 0
-                                          ? Colors.grey.shade300
-                                          : AppColors.pink,
-                                    ),
-                                    foregroundColor: WidgetStateProperty.all(
-                                      _resendTimer > 0
-                                          ? Colors.grey.shade600
-                                          : Colors.white,
-                                    ),
-                                  ),
-                              child: Text(_timerText),
-                            ),
-                            CustomButton(
-                                text: AppTexts.recoveryPassword.emailSubmit,
-                                onPressed: _codeController.text.isNotEmpty &&
-                                        _codeController.text.length == 6 &&
-                                        !recoveryPasswordProvider.isLoading
-                                    ? _submitCode
-                                    : null),
-                            CustomButton(
-                              text: AppTexts.recoveryPassword.cancel,
-                              onPressed: () => {context.go('/login')},
-                            ),
-                          ],
-                        ),
-                      ),
-                    2 => Form(
-                        key: _passwordFormKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          spacing: 12,
-                          children: [
-                            Text(
-                              AppTexts.recoveryPassword.title,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            SizedBox(height: 18),
-                            CustomPasswordField(
-                              label: AppTexts.recoveryPassword.passwordLabel,
-                              hint: AppTexts.recoveryPassword.newPassword,
-                              controller: _passwordController,
-                              textInputAction: TextInputAction.next,
-                              showPasswordStrength: true,
-                              validator: Validators.isValidPassword,
-                            ),
-                            CustomPasswordField(
-                              label:
-                                  AppTexts.recoveryPassword.passwordAgainLabel,
-                              hint: AppTexts.recoveryPassword.newPasswordAgain,
-                              controller: _confirmPasswordController,
-                              textInputAction: TextInputAction.done,
-                              validator: (value) => Validators.passwordsMatch(
-                                value,
-                                _passwordController.text,
-                              ),
-                            ),
-                            if (recoveryPasswordProvider.error != null) ...[
-                              SizedBox(height: 18),
-                              Text(
-                                recoveryPasswordProvider.error!,
-                                style: const TextStyle(color: Colors.red),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                            SizedBox(height: 18),
-                            CustomButton(
-                              text: AppTexts.recoveryPassword.emailSubmit,
-                              onPressed: recoveryPasswordProvider.isLoading
-                                  ? null
-                                  : _submitNewPassword,
-                            ),
-                            CustomButton(
-                              text: AppTexts.recoveryPassword.cancel,
-                              onPressed: () => {context.go('/login')},
-                            ),
-                          ],
-                        ),
-                      ),
-                    _ => Column(
-                        spacing: 12,
+      body: Center(
+        child: SingleChildScrollView(
+          child: ResponsivePageWrapper(
+            child: ModalWrapper(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (child, animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                child: switch (_currentIndex) {
+                  0 => Form(
+                      key: _emailFormKey,
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
                             AppTexts.recoveryPassword.title,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          const SizedBox(height: 18),
-                          Text(
-                            AppTexts.recoveryPassword.successMessage,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                          SizedBox(height: 30),
+                          Text(AppTexts.recoveryPassword.instructions),
+                          SizedBox(height: 30),
+                          CustomTextField(
+                            label: AppTexts.recoveryPassword.emailLabel,
+                            hint: AppTexts.recoveryPassword.emailHint,
+                            controller: _emailController,
+                            textInputAction: TextInputAction.done,
+                            validator: Validators.isEmail,
                           ),
-                          const SizedBox(height: 18),
+                          if (recoveryPasswordProvider.error != null) ...[
+                            SizedBox(height: 30),
+                            Text(
+                              recoveryPasswordProvider.error!,
+                              style: const TextStyle(color: Colors.red),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                          SizedBox(height: 30),
                           CustomButton(
-                            text: AppTexts.recoveryPassword.backToLogin,
+                            text: AppTexts.recoveryPassword.emailSubmit,
+                            onPressed: recoveryPasswordProvider.isLoading
+                                ? null
+                                : _submitEmail,
+                          ),
+                          SizedBox(height: 8),
+                          CustomButton(
+                            text: AppTexts.recoveryPassword.cancel,
                             onPressed: () => {context.go('/login')},
                           ),
                         ],
                       ),
-                  },
-                ),
+                    ),
+                  1 => Form(
+                      key: _codeFormKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            AppTexts.recoveryPassword.title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          SizedBox(height: 30),
+                          Text(AppTexts.recoveryPassword.codeLabel),
+                          SizedBox(height: 12),
+                          Pinput(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            controller: _codeController,
+                            length: 6,
+                            defaultPinTheme: PinTheme(
+                              width: 56,
+                              height: 56,
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            errorPinTheme: PinTheme(
+                              width: 56,
+                              height: 56,
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.red),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            focusedPinTheme: PinTheme(
+                              width: 56,
+                              height: 56,
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Theme.of(context).primaryColor,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            submittedPinTheme: PinTheme(
+                              width: 56,
+                              height: 56,
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                          if (recoveryPasswordProvider.error != null) ...[
+                            SizedBox(height: 30),
+                            Text(
+                              recoveryPasswordProvider.error!,
+                              style: const TextStyle(color: Colors.red),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                          SizedBox(height: 30),
+                          ElevatedButton(
+                            onPressed: (_resendTimer == 0 &&
+                                    !recoveryPasswordProvider.isLoading)
+                                ? _resendCode
+                                : null,
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style
+                                ?.copyWith(
+                                  backgroundColor: WidgetStateProperty.all(
+                                    _resendTimer > 0
+                                        ? Colors.grey.shade300
+                                        : AppColors.pink,
+                                  ),
+                                  foregroundColor: WidgetStateProperty.all(
+                                    _resendTimer > 0
+                                        ? Colors.grey.shade600
+                                        : Colors.white,
+                                  ),
+                                ),
+                            child: Text(_timerText),
+                          ),
+                          SizedBox(height: 8),
+                          CustomButton(
+                              text: AppTexts.recoveryPassword.emailSubmit,
+                              onPressed: _codeController.text.isNotEmpty &&
+                                      _codeController.text.length == 6 &&
+                                      !recoveryPasswordProvider.isLoading
+                                  ? _submitCode
+                                  : null),
+                          SizedBox(height: 8),
+                          CustomButton(
+                            text: AppTexts.recoveryPassword.cancel,
+                            onPressed: () => {context.go('/login')},
+                          ),
+                        ],
+                      ),
+                    ),
+                  2 => Form(
+                      key: _passwordFormKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            AppTexts.recoveryPassword.title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          SizedBox(height: 30),
+                          CustomPasswordField(
+                            label: AppTexts.recoveryPassword.passwordLabel,
+                            hint: AppTexts.recoveryPassword.newPassword,
+                            controller: _passwordController,
+                            textInputAction: TextInputAction.next,
+                            showPasswordStrength: true,
+                            validator: Validators.isValidPassword,
+                          ),
+                          SizedBox(height: 12),
+                          CustomPasswordField(
+                            label: AppTexts.recoveryPassword.passwordAgainLabel,
+                            hint: AppTexts.recoveryPassword.newPasswordAgain,
+                            controller: _confirmPasswordController,
+                            textInputAction: TextInputAction.done,
+                            validator: (value) => Validators.passwordsMatch(
+                              value,
+                              _passwordController.text,
+                            ),
+                          ),
+                          if (recoveryPasswordProvider.error != null) ...[
+                            SizedBox(height: 30),
+                            Text(
+                              recoveryPasswordProvider.error!,
+                              style: const TextStyle(color: Colors.red),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                          SizedBox(height: 30),
+                          CustomButton(
+                            text: AppTexts.recoveryPassword.emailSubmit,
+                            onPressed: recoveryPasswordProvider.isLoading
+                                ? null
+                                : _submitNewPassword,
+                          ),
+                          SizedBox(height: 12),
+                          CustomButton(
+                            text: AppTexts.recoveryPassword.cancel,
+                            onPressed: () => {context.go('/login')},
+                          ),
+                        ],
+                      ),
+                    ),
+                  _ => Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          AppTexts.recoveryPassword.title,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 30),
+                        Text(
+                          AppTexts.recoveryPassword.successMessage,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const SizedBox(height: 30),
+                        CustomButton(
+                          text: AppTexts.recoveryPassword.backToLogin,
+                          onPressed: () => {context.go('/login')},
+                        ),
+                      ],
+                    ),
+                },
               ),
             ),
           ),
