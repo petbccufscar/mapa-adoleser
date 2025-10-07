@@ -91,132 +91,165 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: ResponsivePageWrapper(
-            child: ModalWrapper(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 400),
-                transitionBuilder: (child, animation) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-                child: switch (_currentIndex) {
-                  0 => Form(
-                      key: _checkPasswordFormKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            AppTexts.changePassword.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            AppTexts.changePassword.instructions,
-                          ),
-                          const SizedBox(height: 30),
-                          CustomPasswordField(
-                              label: AppTexts.changePassword.passwordLabel,
-                              hint: AppTexts.changePassword.passwordHint,
-                              controller: _passwordController,
-                              validator: Validators.isNotEmpty),
-                          if (changePasswordProvider.error != null) ...[
-                            SizedBox(height: 30),
-                            Text(
-                              changePasswordProvider.error!,
-                              style: const TextStyle(color: Colors.red),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                          const SizedBox(height: 30),
-                          CustomButton(
-                            text: 'Enviar',
-                            onPressed: changePasswordProvider.isLoading
-                                ? null
-                                : _submitCurrentPassword,
-                          ),
-                        ],
-                      ),
-                    ),
-                  1 => Form(
-                      key: _createPasswordFormKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            AppTexts.changePassword.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            AppTexts.changePassword.passwordInstructions,
-                            textAlign: TextAlign.justify,
-                          ),
-                          const SizedBox(height: 30),
-                          CustomPasswordField(
-                              label: AppTexts.changePassword.newPasswordLabel,
-                              hint: AppTexts.changePassword.newPasswordHint,
-                              controller: _newPasswordController,
-                              showPasswordStrength: true,
-                              validator: Validators.isValidPassword),
-                          const SizedBox(height: 12),
-                          CustomPasswordField(
-                            label:
-                                AppTexts.changePassword.confirmNewPasswordLabel,
-                            hint:
-                                AppTexts.changePassword.confirmNewPasswordHint,
-                            controller: _confirmNewPasswordController,
-                            validator: (value) => Validators.passwordsMatch(
-                              value,
-                              _newPasswordController.text,
+      body: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(color: Colors.transparent),
+          ),
+          Expanded(
+            flex: 99,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ModalWrapper(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      child: switch (_currentIndex) {
+                        0 => Form(
+                            key: _checkPasswordFormKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  AppTexts.changePassword.title,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  AppTexts.changePassword.instructions,
+                                ),
+                                const SizedBox(height: 30),
+                                CustomPasswordField(
+                                    label:
+                                        AppTexts.changePassword.passwordLabel,
+                                    hint: AppTexts.changePassword.passwordHint,
+                                    controller: _passwordController,
+                                    validator: Validators.isNotEmpty),
+                                if (changePasswordProvider.error != null) ...[
+                                  SizedBox(height: 30),
+                                  Text(
+                                    changePasswordProvider.error!,
+                                    style: const TextStyle(color: Colors.red),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                                const SizedBox(height: 30),
+                                CustomButton(
+                                  text: 'Enviar',
+                                  onPressed: changePasswordProvider.isLoading
+                                      ? null
+                                      : _submitCurrentPassword,
+                                ),
+                                const SizedBox(height: 8),
+                                CustomButton(
+                                  text: AppTexts.changePassword.cancel,
+                                  onPressed: () {
+                                    context.go('/perfil');
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                          if (changePasswordProvider.error != null) ...[
-                            const SizedBox(height: 30),
-                            Text(
-                              changePasswordProvider.error!,
-                              style: const TextStyle(color: Colors.red),
-                              textAlign: TextAlign.center,
+                        1 => Form(
+                            key: _createPasswordFormKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  AppTexts.changePassword.title,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  AppTexts.changePassword.passwordInstructions,
+                                  textAlign: TextAlign.justify,
+                                ),
+                                const SizedBox(height: 30),
+                                CustomPasswordField(
+                                    label: AppTexts
+                                        .changePassword.newPasswordLabel,
+                                    hint:
+                                        AppTexts.changePassword.newPasswordHint,
+                                    controller: _newPasswordController,
+                                    showPasswordStrength: true,
+                                    validator: Validators.isValidPassword),
+                                const SizedBox(height: 12),
+                                CustomPasswordField(
+                                  label: AppTexts
+                                      .changePassword.confirmNewPasswordLabel,
+                                  hint: AppTexts
+                                      .changePassword.confirmNewPasswordHint,
+                                  controller: _confirmNewPasswordController,
+                                  validator: (value) =>
+                                      Validators.passwordsMatch(
+                                    value,
+                                    _newPasswordController.text,
+                                  ),
+                                ),
+                                if (changePasswordProvider.error != null) ...[
+                                  const SizedBox(height: 30),
+                                  Text(
+                                    changePasswordProvider.error!,
+                                    style: const TextStyle(color: Colors.red),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                                const SizedBox(height: 30),
+                                CustomButton(
+                                  text: AppTexts
+                                      .changePassword.changePasswordButton,
+                                  onPressed: changePasswordProvider.isLoading
+                                      ? null
+                                      : _submitChangePassword,
+                                ),
+                                const SizedBox(height: 8),
+                                CustomButton(
+                                  text: AppTexts.changePassword.cancel,
+                                  onPressed: () {
+                                    context.go('/perfil');
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                          const SizedBox(height: 30),
-                          CustomButton(
-                            text: AppTexts.changePassword.changePasswordButton,
-                            onPressed: changePasswordProvider.isLoading
-                                ? null
-                                : _submitChangePassword,
                           ),
-                        ],
-                      ),
+                        _ => Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                AppTexts.changePassword.successMessage,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                AppTexts.changePassword.successDescription,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(height: 30),
+                              CustomButton(
+                                text: AppTexts.changePassword.backToHomeButton,
+                                onPressed: () => {context.go('/')},
+                              ),
+                            ],
+                          ),
+                      },
                     ),
-                  _ => Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          AppTexts.changePassword.successMessage,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          AppTexts.changePassword.successDescription,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          textAlign: TextAlign.justify,
-                        ),
-                        const SizedBox(height: 30),
-                        CustomButton(
-                          text: AppTexts.changePassword.backToHomeButton,
-                          onPressed: () => {context.go('/')},
-                        ),
-                      ],
-                    ),
-                },
+                  )
+                ],
               ),
             ),
-          ),
-        ),
+          )
+        ],
       ),
     );
   }

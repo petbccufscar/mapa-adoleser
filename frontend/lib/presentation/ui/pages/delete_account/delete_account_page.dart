@@ -164,303 +164,328 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: auth.isLoggedIn)
           : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: ResponsivePageWrapper(
-            child: ModalWrapper(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 400),
-                transitionBuilder: (child, animation) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-                child: switch (_currentIndex) {
-                  0 => Form(
-                      key: _checkAccountFormKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Título da página
-                          Text(
-                            AppTexts.deleteAccount.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-
-                          const SizedBox(height: 12),
-
-                          // Subtítulo
-                          Text(
-                            AppTexts.deleteAccount.confirmEmailAndPassword,
-                            textAlign: TextAlign.justify,
-                          ),
-
-                          const SizedBox(height: 30),
-
-                          // Campo de e-mail
-                          CustomTextField(
-                            label: AppTexts.deleteAccount.emailLabel,
-                            hint: AppTexts.deleteAccount.emailHint,
-                            controller: _emailController,
-                            textInputAction: TextInputAction.next,
-                            validator: Validators.isEmail,
-                          ),
-
-                          const SizedBox(height: 12),
-
-                          // Campo de senha
-                          CustomPasswordField(
-                            controller: _passwordController,
-                            label: AppTexts.deleteAccount.passwordLabel,
-                            hint: AppTexts.deleteAccount.passwordHint,
-                            textInputAction: TextInputAction.done,
-                            validator: Validators.isNotEmpty,
-                            onFieldSubmitted: (_) => _submitCheckAccount(),
-                          ),
-
-                          // Exibe erro vindo do DeleteAccountProvider, se existir
-                          if (deleteAccountProvider.error != null) ...[
-                            const SizedBox(height: 30),
-                            Text(
-                              deleteAccountProvider.error!,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(color: Color(0xFF4C5466)),
-                            ),
-                          ],
-
-                          const SizedBox(height: 30),
-
-                          CustomButton(
-                            text: AppTexts.deleteAccount.sendCodeButton,
-                            onPressed: deleteAccountProvider.isLoading
-                                ? null
-                                : _submitCheckAccount,
-                          ),
-
-                          const SizedBox(height: 12),
-
-                          CustomButton(
-                            text: AppTexts.deleteAccount.cancelButton,
-                            onPressed: () => {context.go('/perfil')},
-                          ),
-                        ],
-                      ),
-                    ),
-                  1 => Form(
-                      key: _codeFormKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            AppTexts.deleteAccount.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            AppTexts.deleteAccount.codeInstructions,
-                            textAlign: TextAlign.justify,
-                          ),
-                          const SizedBox(height: 30),
-                          Text(
-                            AppTexts.deleteAccount.codeLabel,
-                          ),
-                          const SizedBox(height: 12),
-                          Pinput(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            controller: _codeController,
-                            length: 6,
-                            defaultPinTheme: PinTheme(
-                              width: 56,
-                              height: 56,
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            errorPinTheme: PinTheme(
-                              width: 56,
-                              height: 56,
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.red,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.red),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            focusedPinTheme: PinTheme(
-                              width: 56,
-                              height: 56,
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2,
+      body: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(color: Colors.transparent),
+          ),
+          Expanded(
+            flex: 99,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ModalWrapper(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      child: switch (_currentIndex) {
+                        0 => Form(
+                            key: _checkAccountFormKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                // Título da página
+                                Text(
+                                  AppTexts.deleteAccount.title,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            submittedPinTheme: PinTheme(
-                              width: 56,
-                              height: 56,
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+
+                                const SizedBox(height: 12),
+
+                                // Subtítulo
+                                Text(
+                                  AppTexts
+                                      .deleteAccount.confirmEmailAndPassword,
+                                  textAlign: TextAlign.justify,
+                                ),
+
+                                const SizedBox(height: 30),
+
+                                // Campo de e-mail
+                                CustomTextField(
+                                  label: AppTexts.deleteAccount.emailLabel,
+                                  hint: AppTexts.deleteAccount.emailHint,
+                                  controller: _emailController,
+                                  textInputAction: TextInputAction.next,
+                                  validator: Validators.isEmail,
+                                ),
+
+                                const SizedBox(height: 12),
+
+                                // Campo de senha
+                                CustomPasswordField(
+                                  controller: _passwordController,
+                                  label: AppTexts.deleteAccount.passwordLabel,
+                                  hint: AppTexts.deleteAccount.passwordHint,
+                                  textInputAction: TextInputAction.done,
+                                  validator: Validators.isNotEmpty,
+                                  onFieldSubmitted: (_) =>
+                                      _submitCheckAccount(),
+                                ),
+
+                                // Exibe erro vindo do DeleteAccountProvider, se existir
+                                if (deleteAccountProvider.error != null) ...[
+                                  const SizedBox(height: 30),
+                                  Text(
+                                    deleteAccountProvider.error!,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: Color(0xFF4C5466)),
+                                  ),
+                                ],
+
+                                const SizedBox(height: 30),
+
+                                CustomButton(
+                                  text: AppTexts.deleteAccount.sendCodeButton,
+                                  onPressed: deleteAccountProvider.isLoading
+                                      ? null
+                                      : _submitCheckAccount,
+                                ),
+
+                                const SizedBox(height: 12),
+
+                                CustomButton(
+                                  text: AppTexts.deleteAccount.cancelButton,
+                                  onPressed: () => {context.go('/perfil')},
+                                ),
+                              ],
                             ),
                           ),
-                          if (deleteAccountProvider.error != null) ...[
-                            SizedBox(height: 30),
-                            Text(
-                              deleteAccountProvider.error!,
-                              style: const TextStyle(color: Colors.red),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                          const SizedBox(height: 30),
-                          ElevatedButton(
-                            onPressed: (_resendTimer == 0 &&
-                                    !deleteAccountProvider.isLoading)
-                                ? _resendCode
-                                : null,
-                            style: Theme.of(context)
-                                .elevatedButtonTheme
-                                .style
-                                ?.copyWith(
-                                  backgroundColor: WidgetStateProperty.all(
-                                    _resendTimer > 0
-                                        ? Colors.grey.shade300
-                                        : AppColors.pink,
+                        1 => Form(
+                            key: _codeFormKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  AppTexts.deleteAccount.title,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  AppTexts.deleteAccount.codeInstructions,
+                                  textAlign: TextAlign.justify,
+                                ),
+                                const SizedBox(height: 30),
+                                Text(
+                                  AppTexts.deleteAccount.codeLabel,
+                                ),
+                                const SizedBox(height: 12),
+                                Pinput(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  controller: _codeController,
+                                  length: 6,
+                                  defaultPinTheme: PinTheme(
+                                    width: 56,
+                                    height: 56,
+                                    textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                   ),
-                                  foregroundColor: WidgetStateProperty.all(
-                                    _resendTimer > 0
-                                        ? Colors.grey.shade600
-                                        : Colors.white,
+                                  errorPinTheme: PinTheme(
+                                    width: 56,
+                                    height: 56,
+                                    textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.red),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  focusedPinTheme: PinTheme(
+                                    width: 56,
+                                    height: 56,
+                                    textStyle: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  submittedPinTheme: PinTheme(
+                                    width: 56,
+                                    height: 56,
+                                    textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade100,
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                   ),
                                 ),
-                            child: Text(_timerText),
-                          ),
-                          const SizedBox(height: 12),
-                          CustomButton(
-                            text: AppTexts.deleteAccount.sendCodeButton,
-                            onPressed: _codeController.text.isNotEmpty &&
-                                    _codeController.text.length == 6 &&
-                                    !deleteAccountProvider.isLoading
-                                ? _submitCode
-                                : null,
-                          ),
-                          const SizedBox(height: 12),
-                          CustomButton(
-                            text: AppTexts.deleteAccount.cancelButton,
-                            onPressed: () => {context.go('/perfil')},
-                          ),
-                        ],
-                      ),
-                    ),
-                  2 => Form(
-                      key: _checkAccountFormKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Título da página
-                          Text(
-                            AppTexts.deleteAccount.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-
-                          const SizedBox(height: 30),
-
-                          // Subtítulo
-                          Text(
-                            AppTexts.deleteAccount.deleteConfirmation,
-                            textAlign: TextAlign.justify,
-                          ),
-
-                          // Exibe erro vindo do DeleteAccountProvider, se existir
-                          if (deleteAccountProvider.error != null) ...[
-                            const SizedBox(height: 30),
-                            Text(
-                              deleteAccountProvider.error!,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(color: Color(0xFF4C5466)),
-                            ),
-                          ],
-
-                          const SizedBox(height: 30),
-
-                          ElevatedButton(
-                            style: Theme.of(context)
-                                .elevatedButtonTheme
-                                .style
-                                ?.copyWith(
-                                  backgroundColor: WidgetStateProperty.all(
-                                      const Color.fromARGB(255, 255, 77, 77)),
-                                  foregroundColor:
-                                      WidgetStateProperty.all(Colors.white),
+                                if (deleteAccountProvider.error != null) ...[
+                                  SizedBox(height: 30),
+                                  Text(
+                                    deleteAccountProvider.error!,
+                                    style: const TextStyle(color: Colors.red),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                                const SizedBox(height: 30),
+                                ElevatedButton(
+                                  onPressed: (_resendTimer == 0 &&
+                                          !deleteAccountProvider.isLoading)
+                                      ? _resendCode
+                                      : null,
+                                  style: Theme.of(context)
+                                      .elevatedButtonTheme
+                                      .style
+                                      ?.copyWith(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                          _resendTimer > 0
+                                              ? Colors.grey.shade300
+                                              : AppColors.pink,
+                                        ),
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                          _resendTimer > 0
+                                              ? Colors.grey.shade600
+                                              : Colors.white,
+                                        ),
+                                      ),
+                                  child: Text(_timerText),
                                 ),
-                            onPressed: deleteAccountProvider.isLoading
-                                ? null
-                                : _deleteAccount,
-                            child: Text(
-                              AppTexts.deleteAccount.confirmButton,
+                                const SizedBox(height: 12),
+                                CustomButton(
+                                  text: AppTexts.deleteAccount.sendCodeButton,
+                                  onPressed: _codeController.text.isNotEmpty &&
+                                          _codeController.text.length == 6 &&
+                                          !deleteAccountProvider.isLoading
+                                      ? _submitCode
+                                      : null,
+                                ),
+                                const SizedBox(height: 12),
+                                CustomButton(
+                                  text: AppTexts.deleteAccount.cancelButton,
+                                  onPressed: () => {context.go('/perfil')},
+                                ),
+                              ],
                             ),
                           ),
+                        2 => Form(
+                            key: _checkAccountFormKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                // Título da página
+                                Text(
+                                  AppTexts.deleteAccount.title,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
 
-                          const SizedBox(height: 12),
+                                const SizedBox(height: 30),
 
-                          CustomButton(
-                            text: AppTexts.deleteAccount.cancelButton,
-                            onPressed: deleteAccountProvider.isLoading
-                                ? null
-                                : () {
-                                    if (mounted) {
-                                      context.go('/perfil');
-                                    }
-                                  },
+                                // Subtítulo
+                                Text(
+                                  AppTexts.deleteAccount.deleteConfirmation,
+                                  textAlign: TextAlign.justify,
+                                ),
+
+                                // Exibe erro vindo do DeleteAccountProvider, se existir
+                                if (deleteAccountProvider.error != null) ...[
+                                  const SizedBox(height: 30),
+                                  Text(
+                                    deleteAccountProvider.error!,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: Color(0xFF4C5466)),
+                                  ),
+                                ],
+
+                                const SizedBox(height: 30),
+
+                                ElevatedButton(
+                                  style: Theme.of(context)
+                                      .elevatedButtonTheme
+                                      .style
+                                      ?.copyWith(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                                const Color.fromARGB(
+                                                    255, 255, 77, 77)),
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.white),
+                                      ),
+                                  onPressed: deleteAccountProvider.isLoading
+                                      ? null
+                                      : _deleteAccount,
+                                  child: Text(
+                                    AppTexts.deleteAccount.confirmButton,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 12),
+
+                                CustomButton(
+                                  text: AppTexts.deleteAccount.cancelButton,
+                                  onPressed: deleteAccountProvider.isLoading
+                                      ? null
+                                      : () {
+                                          if (mounted) {
+                                            context.go('/perfil');
+                                          }
+                                        },
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        _ => Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  AppTexts.deleteAccount.title,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  AppTexts.deleteAccount.successMessage,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                const SizedBox(height: 30),
+                                CustomButton(
+                                  text: AppTexts.deleteAccount.returnHome,
+                                  onPressed: () => {context.go('/login')},
+                                ),
+                              ],
+                            ),
+                          )
+                      },
                     ),
-                  _ => Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            AppTexts.deleteAccount.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            AppTexts.deleteAccount.successMessage,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          const SizedBox(height: 30),
-                          CustomButton(
-                            text: AppTexts.deleteAccount.returnHome,
-                            onPressed: () => {context.go('/login')},
-                          ),
-                        ],
-                      ),
-                    )
-                },
+                  )
+                ],
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

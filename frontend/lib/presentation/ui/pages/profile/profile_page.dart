@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
+import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/domain/models/address_response_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
-import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
+import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/cep_text_field.dart';
@@ -117,64 +118,40 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
       endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
       body: SingleChildScrollView(
-        child: Center(
-          child: ResponsivePageWrapper(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
+        padding: ResponsiveUtils.pagePadding(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text('Meu Perfil',
+                style: Theme.of(context).textTheme.headlineLarge),
+            const SizedBox(height: 12),
+            Text(
+              'Gerencie suas informações pessoais, segurança e preferências de conta.',
+              style: Theme.of(context).textTheme.bodyMedium,
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(height: 30),
+            ModalWrapper(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    children: [
-                      Stack(
-                        children: [
-                          CircleAvatar(
-                            radius: 60,
-                            backgroundColor: AppColors.purple,
-                            child: const Icon(Icons.person_rounded,
-                                size: 60, color: Colors.white),
-                          ),
-                          if (isEditing)
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.purple,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(Icons.camera_alt,
-                                      color: Colors.white, size: 20),
-                                  onPressed: () {
-                                    // TODO: abrir seletor de imagem
-                                  },
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _usernameController.text,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 64),
+                  Text('Informações Pessoais',
+                      style: Theme.of(context).textTheme.headlineSmall),
+                  const SizedBox(height: 32),
                   Form(
                     key: _formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Suas informações",
-                            style: Theme.of(context).textTheme.headlineSmall),
-
-                        const SizedBox(height: 16),
-
-                        Wrap(
-                          runSpacing: 16,
-                          spacing: 16,
+                        GridView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 400, // máx. largura por coluna
+                            mainAxisSpacing: 24,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 4,
+                          ),
                           children: [
                             CustomTextField(
                                 enabled: false,
@@ -207,46 +184,41 @@ class _ProfilePageState extends State<ProfilePage> {
 
                         const SizedBox(height: 16),
 
-                        Wrap(
-                          runSpacing: 16,
-                          spacing: 16,
-                          children: [
-                            CepTextField(
-                              enabled: isEditing,
-                              controller: _cepController,
-                              onSearch: (AddressResponseModel? address) {
-                                if (address != null) {
-                                  _streetController.text = address.street;
-                                  _neighborhoodController.text =
-                                      address.neighborhood;
-                                  _cityController.text = address.city;
-                                  _stateController.text =
-                                      '${address.state} - ${address.uf}';
-                                } else {
-                                  log('deu erro');
-                                  profileProvider
-                                      .setError('Endereço não encontrado');
-                                }
-                              },
-                            ),
-                            CustomTextField(
-                                enabled: false,
-                                label: 'Rua',
-                                controller: _streetController),
-                            CustomTextField(
-                                enabled: false,
-                                label: 'Bairro',
-                                controller: _neighborhoodController),
-                            CustomTextField(
-                                enabled: false,
-                                label: 'Cidade',
-                                controller: _cityController),
-                            CustomTextField(
-                                enabled: false,
-                                label: 'Estado',
-                                controller: _stateController),
-                          ],
+                        CepTextField(
+                          enabled: isEditing,
+                          controller: _cepController,
+                          onSearch: (AddressResponseModel? address) {
+                            if (address != null) {
+                              _streetController.text = address.street;
+                              _neighborhoodController.text =
+                                  address.neighborhood;
+                              _cityController.text = address.city;
+                              _stateController.text =
+                                  '${address.state} - ${address.uf}';
+                            } else {
+                              log('deu erro');
+                              profileProvider
+                                  .setError('Endereço não encontrado');
+                            }
+                          },
                         ),
+
+                        CustomTextField(
+                            enabled: false,
+                            label: 'Rua',
+                            controller: _streetController),
+                        CustomTextField(
+                            enabled: false,
+                            label: 'Bairro',
+                            controller: _neighborhoodController),
+                        CustomTextField(
+                            enabled: false,
+                            label: 'Cidade',
+                            controller: _cityController),
+                        CustomTextField(
+                            enabled: false,
+                            label: 'Estado',
+                            controller: _stateController),
 
                         const SizedBox(height: 32),
 
@@ -287,45 +259,66 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
 
                         const SizedBox(height: 40),
-
-                        /// Seção de segurança
-                        Text("Segurança",
-                            style: Theme.of(context).textTheme.headlineSmall),
-                        const SizedBox(height: 16),
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 8,
-                          children: [
-                            ActionText(
-                                underlined: true,
-                                boldOnHover: true,
-                                text: 'Políticas de Privacidade',
-                                action: () {}),
-                            ActionText(
-                                underlined: true,
-                                boldOnHover: true,
-                                text: 'Alterar Senha',
-                                action: () {
-                                  context.go('/alterar-senha');
-                                }),
-                            ActionText(
-                                underlined: true,
-                                boldOnHover: true,
-                                text: 'Excluir conta',
-                                color: AppColors.warning,
-                                action: () {
-                                  context.go('/excluir-conta');
-                                }),
-                          ],
-                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-          ),
+            const SizedBox(height: 30),
+            ModalWrapper(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Segurança',
+                      style: Theme.of(context).textTheme.headlineSmall),
+                  const SizedBox(height: 30),
+                  ActionText(
+                    text: 'Alterar senha',
+                    color: AppColors.purpleLight,
+                    onTap: () {
+                      context.push('/alterar-senha');
+                    },
+                    underlined: true,
+                  ),
+                  const SizedBox(height: 12),
+                  ActionText(
+                    text: 'Política de Privacidade',
+                    color: AppColors.purpleLight,
+                    onTap: () {},
+                    underlined: true,
+                  ),
+                  const SizedBox(height: 12),
+                  ActionText(
+                    text: 'Termos de Uso',
+                    color: AppColors.purpleLight,
+                    onTap: () {},
+                    underlined: true,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
+            ModalWrapper(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Zona de Perigo',
+                      style: Theme.of(context).textTheme.headlineSmall),
+                  const SizedBox(height: 30),
+                  ActionText(
+                    text: 'Excluir minha conta',
+                    color: Colors.red,
+                    onTap: () {
+                      context.push('/excluir-conta');
+                    },
+                    underlined: true,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
         ),
       ),
     );

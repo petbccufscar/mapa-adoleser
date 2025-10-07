@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/constants.dart';
+import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/domain/models/subject_model.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
-import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_dropdown_field.dart';
@@ -92,68 +92,81 @@ class _ContactPageState extends State<ContactPage> {
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
       endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
-      body: Center(
-        child: SingleChildScrollView(
-          child: ResponsivePageWrapper(
-            child: ModalWrapper(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      AppTexts.help.title,
-                      style: Theme.of(context).textTheme.headlineSmall,
+      body: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(color: Colors.transparent),
+          ),
+          Expanded(
+            flex: 99,
+            child: SingleChildScrollView(
+              padding: ResponsiveUtils.pagePadding(context),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ModalWrapper(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            AppTexts.help.title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: 30),
+                          CustomTextField(
+                              label: AppTexts.help.emailLabel,
+                              hint: AppTexts.help.emailHint,
+                              controller: _emailController,
+                              textInputAction: TextInputAction.next,
+                              validator: Validators.isEmail),
+                          const SizedBox(height: 12),
+                          CustomTextField(
+                            label: AppTexts.help.nameLabel,
+                            hint: AppTexts.help.nameHint,
+                            controller: _nameController,
+                            textInputAction: TextInputAction.next,
+                            validator: Validators.isNotEmpty,
+                          ),
+                          const SizedBox(height: 12),
+                          CustomDropdownField<SubjectModel>(
+                            label: AppTexts.help.subjectLabel,
+                            hint: AppTexts.help.subjectHint,
+                            value: selectedSubject,
+                            items: subjects,
+                            onChanged: (SubjectModel? value) => {
+                              setState(() {
+                                selectedSubject = value;
+                              })
+                            },
+                            getLabel: (subject) => subject.label,
+                          ),
+                          const SizedBox(height: 12),
+                          CustomTextField(
+                            label: AppTexts.help.messageLabel,
+                            hint: AppTexts.help.messageHint,
+                            controller: _messageController,
+                            textInputAction: TextInputAction.next,
+                            maxLines: 8,
+                            keyboardType: TextInputType.multiline,
+                            validator: Validators.isNotEmpty,
+                          ),
+                          const SizedBox(height: 30),
+                          CustomButton(
+                            text: AppTexts.help.helpButton,
+                            onPressed: contact.isLoading ? null : _submit,
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 30),
-                    CustomTextField(
-                        label: AppTexts.help.emailLabel,
-                        hint: AppTexts.help.emailHint,
-                        controller: _emailController,
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.isEmail),
-                    const SizedBox(height: 12),
-                    CustomTextField(
-                      label: AppTexts.help.nameLabel,
-                      hint: AppTexts.help.nameHint,
-                      controller: _nameController,
-                      textInputAction: TextInputAction.next,
-                      validator: Validators.isNotEmpty,
-                    ),
-                    const SizedBox(height: 12),
-                    CustomDropdownField<SubjectModel>(
-                      label: AppTexts.help.subjectLabel,
-                      hint: AppTexts.help.subjectHint,
-                      value: selectedSubject,
-                      items: subjects,
-                      onChanged: (SubjectModel? value) => {
-                        setState(() {
-                          selectedSubject = value;
-                        })
-                      },
-                      getLabel: (subject) => subject.label,
-                    ),
-                    const SizedBox(height: 12),
-                    CustomTextField(
-                      label: AppTexts.help.messageLabel,
-                      hint: AppTexts.help.messageHint,
-                      controller: _messageController,
-                      textInputAction: TextInputAction.next,
-                      maxLines: 8,
-                      keyboardType: TextInputType.multiline,
-                      validator: Validators.isNotEmpty,
-                    ),
-                    const SizedBox(height: 30),
-                    CustomButton(
-                      text: AppTexts.help.helpButton,
-                      onPressed: contact.isLoading ? null : _submit,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ),
+          )
+        ],
       ),
     );
   }

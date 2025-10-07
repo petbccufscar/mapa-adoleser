@@ -99,8 +99,8 @@ class _LoginTexts {
   final welcome = 'Bem vindo de volta!';
   final welcomeSubtitle = 'Faça login com as suas credenciais para entrar!';
   final title = 'Entre com sua conta';
-  final usernameLabel = "Username";
-  final usernameHint = 'Digite seu username';
+  final emailLabel = "E-mail";
+  final emailHint = 'Digite seu e-mail';
   final passwordLabel = 'Senha';
   final passwordHint = 'Digite sua senha';
   final forgotPassword = 'Esqueceu a senha?';
@@ -147,6 +147,7 @@ class _ChangePasswordTexts {
       'Agora, crie uma nova senha para sua conta. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.';
   final passwordLabel = 'Senha Atual';
   final passwordHint = 'Digite sua senha atual';
+  final cancel = 'Cancelar';
   final newPasswordLabel = 'Nova Senha';
   final newPasswordHint = 'Digite sua nova senha';
   final confirmNewPasswordLabel = 'Confirme a Nova Senha';

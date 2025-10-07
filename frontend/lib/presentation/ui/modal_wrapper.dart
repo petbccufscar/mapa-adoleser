@@ -12,7 +12,6 @@ class ModalWrapper extends StatelessWidget {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 450),
       child: Container(
-        margin: EdgeInsetsGeometry.all(15),
         decoration: BoxDecoration(
           color: AppColors.backgroundWhite,
           borderRadius: BorderRadius.circular(8),

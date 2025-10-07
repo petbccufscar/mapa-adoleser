@@ -56,7 +56,9 @@ class DesktopAppBar extends StatelessWidget {
                     children: [
                       ActionText(
                           text: "Início",
-                          action: () => {context.go("/")},
+                          onTap: () {
+                            context.go("/");
+                          },
                           bold: currentRoute == "/",
                           boldOnHover: true,
                           color: currentRoute == "/" ? AppColors.purple : null,
@@ -64,7 +66,9 @@ class DesktopAppBar extends StatelessWidget {
                       const SizedBox(width: 15),
                       ActionText(
                           text: "Pesquisar",
-                          action: () => {context.go("/pesquisa")},
+                          onTap: () {
+                            context.go("/pesquisa");
+                          },
                           bold: currentRoute == "/pesquisa",
                           boldOnHover: true,
                           color: currentRoute == "/pesquisa"
@@ -74,7 +78,9 @@ class DesktopAppBar extends StatelessWidget {
                       const SizedBox(width: 15),
                       ActionText(
                           text: "Sobre",
-                          action: () => {context.go("/sobre")},
+                          onTap: () {
+                            context.go("/sobre");
+                          },
                           bold: currentRoute == "/sobre",
                           boldOnHover: true,
                           color: currentRoute == "/sobre"
@@ -84,7 +90,9 @@ class DesktopAppBar extends StatelessWidget {
                       const SizedBox(width: 15),
                       ActionText(
                           text: "Fale Conosco",
-                          action: () => {context.go("/contato")},
+                          onTap: () {
+                            context.go("/contato");
+                          },
                           bold: currentRoute == "/contato",
                           boldOnHover: true,
                           color: currentRoute == "/contato"
@@ -125,7 +133,9 @@ class DesktopAppBar extends StatelessWidget {
                 const Spacer(),
                 ActionText(
                     text: "Favoritos",
-                    action: () => {context.go("/favoritos")},
+                    onTap: () {
+                      context.go("/favoritos");
+                    },
                     bold: currentRoute == "/favoritos",
                     boldOnHover: true,
                     color: currentRoute == "/favoritos"
@@ -134,7 +144,9 @@ class DesktopAppBar extends StatelessWidget {
                 const SizedBox(width: 15),
                 ActionText(
                     text: "Perfil",
-                    action: () => {context.go("/perfil")},
+                    onTap: () {
+                      context.go("/perfil");
+                    },
                     bold: currentRoute == "/perfil",
                     boldOnHover: true,
                     color: currentRoute == "/perfil"
@@ -143,7 +155,7 @@ class DesktopAppBar extends StatelessWidget {
                 const SizedBox(width: 15),
                 ActionText(
                   text: "Sair",
-                  action: () async =>
+                  onTap: () async =>
                       {await context.read<AuthProvider>().logout()},
                   boldOnHover: true,
                   color: AppColors.textLight,

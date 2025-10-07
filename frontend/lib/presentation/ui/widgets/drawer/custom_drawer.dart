@@ -42,7 +42,9 @@ class CustomDrawer extends StatelessWidget {
             : null,
         child: ActionText(
           text: name,
-          action: () => {context.go(route)},
+          onTap: () {
+            context.go(route);
+          },
           bold: currentRoute == route,
           boldOnHover: true,
           color: currentRoute == route
@@ -69,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
                       children: [
                         ActionText(
                           text: "Entre",
-                          action: () {
+                          onTap: () {
                             context.go('/login');
                           },
                           underlined: true,
@@ -81,7 +83,7 @@ class CustomDrawer extends StatelessWidget {
                         ),
                         ActionText(
                           text: "crie sua conta",
-                          action: () {
+                          onTap: () {
                             context.go('/cadastro');
                           },
                           underlined: true,
@@ -147,11 +149,9 @@ class CustomDrawer extends StatelessWidget {
                                   vertical: 8, horizontal: 16),
                               child: ActionText(
                                   text: "Sair",
-                                  action: () async => {
-                                        await context
-                                            .read<AuthProvider>()
-                                            .logout()
-                                      },
+                                  onTap: () async {
+                                    await context.read<AuthProvider>().logout();
+                                  },
                                   boldOnHover: true,
                                   color: AppColors.textSecondary),
                             ),

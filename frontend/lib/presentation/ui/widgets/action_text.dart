@@ -3,7 +3,7 @@ import 'package:mapa_adoleser/core/theme/app_colors.dart';
 
 class ActionText extends StatefulWidget {
   final String text;
-  final VoidCallback? action; //ação de envio
+  final VoidCallback? onTap; //ação de envio
   final bool underlined;
   final bool underlinedOnHover;
   final bool bold;
@@ -16,11 +16,11 @@ class ActionText extends StatefulWidget {
   const ActionText(
       {super.key,
       required this.text,
-      required this.action,
+      required this.onTap,
       this.underlined = false,
       this.underlinedOnHover = false,
       this.bold = false,
-      this.boldOnHover = false,
+      this.boldOnHover = true,
       this.color = AppColors.textSecondary,
       this.colorOnHover,
       this.mouse = SystemMouseCursors.click,
@@ -42,7 +42,7 @@ class _ActionTextState extends State<ActionText> {
       onEnter: (_) => setState(() => _isHovering = true), // Ativa sublinhado
       onExit: (_) => setState(() => _isHovering = false), // Remove sublinhado
       child: InkWell(
-        onTap: widget.action,
+        onTap: widget.onTap,
         hoverColor: Colors.transparent, // Remove cor de hover
         splashColor: Colors.transparent, // Remove cor de splash
         highlightColor: Colors.transparent, // Remove cor de destaque

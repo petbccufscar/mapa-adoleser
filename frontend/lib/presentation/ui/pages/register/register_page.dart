@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
-import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
@@ -97,13 +96,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
-      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
-          : null,
+      endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
       body: Row(
         children: [
           if (ResponsiveBreakpoints.of(context).largerOrEqualTo('LARGE_TABLET'))
             Expanded(
+              flex: 99,
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -126,9 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 160,
                         width: 200,
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       Text(
                         AppTexts.register.welcome,
                         style: Theme.of(context)
@@ -136,9 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             .headlineLarge
                             ?.copyWith(color: AppColors.textLight),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
+                      const SizedBox(height: 5),
                       Text(
                         AppTexts.register.welcomeSubtitle,
                         style: Theme.of(context)
@@ -152,151 +146,153 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           Expanded(
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    if (ResponsiveBreakpoints.of(context)
-                        .largerOrEqualTo('LARGE_TABLET'))
-                      SizedBox(height: 100),
-                    ModalWrapper(
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(AppTexts.register.title,
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium),
-                            const SizedBox(height: 30),
-                            CustomTextField(
-                                label: AppTexts.register.usernameLabel,
-                                hint: AppTexts.register.usernameHint,
-                                controller: _usernameController,
-                                textInputAction: TextInputAction.next,
-                                validator: Validators.isNotEmpty),
-                            const SizedBox(height: 12),
-                            CustomTextField(
-                                label: AppTexts.register.emailLabel,
-                                hint: AppTexts.register.emailHint,
-                                keyboardType: TextInputType.emailAddress,
-                                controller: _emailController,
-                                textInputAction: TextInputAction.next,
-                                validator: Validators.isEmail),
-                            const SizedBox(height: 12),
-                            CustomTextField(
-                                label: AppTexts.register.nameLabel,
-                                hint: AppTexts.register.nameHint,
-                                keyboardType: TextInputType.name,
-                                controller: _nameController,
-                                textInputAction: TextInputAction.next,
-                                validator: Validators.isNotEmpty),
-                            const SizedBox(height: 12),
-                            CustomDateField(
-                              label: AppTexts.register.birthDateLabel,
-                              hint: AppTexts.register.birthDateHint,
-                              controller: _birthDateController,
+            flex: 1,
+            child: Container(color: Colors.transparent),
+          ),
+          Expanded(
+            flex: 99,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ModalWrapper(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(AppTexts.register.title,
+                              style:
+                                  Theme.of(context).textTheme.headlineMedium),
+                          const SizedBox(height: 30),
+                          CustomTextField(
+                              label: AppTexts.register.usernameLabel,
+                              hint: AppTexts.register.usernameHint,
+                              controller: _usernameController,
                               textInputAction: TextInputAction.next,
-                              validator: Validators.isValidDayMonthYear,
+                              validator: Validators.isNotEmpty),
+                          const SizedBox(height: 12),
+                          CustomTextField(
+                              label: AppTexts.register.emailLabel,
+                              hint: AppTexts.register.emailHint,
+                              keyboardType: TextInputType.emailAddress,
+                              controller: _emailController,
+                              textInputAction: TextInputAction.next,
+                              validator: Validators.isEmail),
+                          const SizedBox(height: 12),
+                          CustomTextField(
+                              label: AppTexts.register.nameLabel,
+                              hint: AppTexts.register.nameHint,
+                              keyboardType: TextInputType.name,
+                              controller: _nameController,
+                              textInputAction: TextInputAction.next,
+                              validator: Validators.isNotEmpty),
+                          const SizedBox(height: 12),
+                          CustomDateField(
+                            label: AppTexts.register.birthDateLabel,
+                            hint: AppTexts.register.birthDateHint,
+                            controller: _birthDateController,
+                            textInputAction: TextInputAction.next,
+                            validator: Validators.isValidDayMonthYear,
+                          ),
+                          const SizedBox(height: 12),
+                          CustomPasswordField(
+                            label: AppTexts.register.passwordLabel,
+                            hint: AppTexts.register.passwordHint,
+                            controller: _passwordController,
+                            textInputAction: TextInputAction.next,
+                            showPasswordStrength: true,
+                            validator: Validators.isValidPassword,
+                          ),
+                          const SizedBox(height: 12),
+                          CustomPasswordField(
+                            label: AppTexts.register.confirmPasswordLabel,
+                            hint: AppTexts.register.confirmPasswordHint,
+                            controller: _confirmPasswordController,
+                            textInputAction: TextInputAction.next,
+                            validator: (value) => Validators.passwordsMatch(
+                              value,
+                              _passwordController.text,
                             ),
-                            const SizedBox(height: 12),
-                            CustomPasswordField(
-                              label: AppTexts.register.passwordLabel,
-                              hint: AppTexts.register.passwordHint,
-                              controller: _passwordController,
-                              textInputAction: TextInputAction.next,
-                              showPasswordStrength: true,
-                              validator: Validators.isValidPassword,
-                            ),
-                            const SizedBox(height: 12),
-                            CustomPasswordField(
-                              label: AppTexts.register.confirmPasswordLabel,
-                              hint: AppTexts.register.confirmPasswordHint,
-                              controller: _confirmPasswordController,
-                              textInputAction: TextInputAction.next,
-                              validator: (value) => Validators.passwordsMatch(
-                                value,
-                                _passwordController.text,
+                            onFieldSubmitted: (_) => _submit(),
+                          ),
+                          const SizedBox(height: 30),
+                          CustomCheckbox(
+                            value: acceptTerms,
+                            label: Expanded(
+                              child: Wrap(
+                                children: [
+                                  Text(AppTexts.register.checkBoxText),
+                                ],
                               ),
-                              onFieldSubmitted: (_) => _submit(),
                             ),
-                            const SizedBox(height: 30),
-                            CustomCheckbox(
-                              value: acceptTerms,
-                              label: Expanded(
-                                child: Wrap(
-                                  children: [
-                                    Text(AppTexts.register.checkBoxText),
-                                  ],
-                                ),
+                            onChanged: (val) {
+                              setState(() {
+                                acceptTerms = val;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 15,
+                            runSpacing: 10,
+                            direction: Axis.horizontal,
+                            children: [
+                              ActionText(
+                                text: AppTexts.register.checkBoxTextTerms,
+                                onTap: () {
+                                  context.go('/');
+                                },
+                                underlined: true,
+                                boldOnHover: true,
                               ),
-                              onChanged: (val) {
-                                setState(() {
-                                  acceptTerms = val;
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 12),
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              spacing: 15,
-                              runSpacing: 10,
-                              direction: Axis.horizontal,
-                              children: [
-                                ActionText(
-                                  text: AppTexts.register.checkBoxTextTerms,
-                                  action: () {
-                                    context.go('/');
-                                  },
-                                  underlined: true,
-                                  boldOnHover: true,
-                                ),
-                                ActionText(
-                                  text: AppTexts.register.checkBoxTextPolicy,
-                                  action: () {
-                                    context.go('/');
-                                  },
-                                  underlined: true,
-                                  boldOnHover: true,
-                                ),
-                              ],
-                            ),
-                            if (registerProvider.error != null) ...[
-                              const SizedBox(height: 30),
-                              Text(
-                                registerProvider.error!,
-                                style: const TextStyle(color: Colors.red),
-                                textAlign: TextAlign.center,
+                              ActionText(
+                                text: AppTexts.register.checkBoxTextPolicy,
+                                onTap: () {
+                                  context.go('/');
+                                },
+                                underlined: true,
+                                boldOnHover: true,
                               ),
                             ],
+                          ),
+                          if (registerProvider.error != null) ...[
                             const SizedBox(height: 30),
-                            CustomButton(
-                              text: AppTexts.register.registerButton,
-                              onPressed:
-                                  registerProvider.isLoading ? null : _submit,
-                            ),
-                            SizedBox(height: 30),
-                            Wrap(
-                              spacing: 5,
-                              alignment: WrapAlignment.center,
-                              children: [
-                                Text(AppTexts.register.registered),
-                                ActionText(
-                                  text: AppTexts.register.loginAccount,
-                                  action: () => {context.go("/login")},
-                                  underlined: true,
-                                  boldOnHover: true,
-                                  color: AppColors.purpleLight,
-                                ),
-                              ],
+                            Text(
+                              registerProvider.error!,
+                              style: const TextStyle(color: Colors.red),
+                              textAlign: TextAlign.center,
                             ),
                           ],
-                        ),
+                          const SizedBox(height: 30),
+                          CustomButton(
+                            text: AppTexts.register.registerButton,
+                            onPressed:
+                                registerProvider.isLoading ? null : _submit,
+                          ),
+                          SizedBox(height: 30),
+                          Wrap(
+                            spacing: 5,
+                            alignment: WrapAlignment.center,
+                            children: [
+                              Text(AppTexts.register.registered),
+                              ActionText(
+                                text: AppTexts.register.loginAccount,
+                                onTap: () {
+                                  context.go("/login");
+                                },
+                                underlined: true,
+                                boldOnHover: true,
+                                color: AppColors.purpleLight,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 100),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

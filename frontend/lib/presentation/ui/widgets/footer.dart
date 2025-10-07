@@ -106,7 +106,7 @@ class Footer extends StatelessWidget {
                       children: [
                         ActionText(
                           text: "Segurança",
-                          action: () {
+                          onTap: () {
                             context.go("/contato");
                           },
                           underlinedOnHover: true,
@@ -114,7 +114,7 @@ class Footer extends StatelessWidget {
                         ),
                         ActionText(
                           text: "Acessibilidade",
-                          action: () {
+                          onTap: () {
                             context.go("/pesquisa");
                           },
                           underlinedOnHover: true,
@@ -122,7 +122,7 @@ class Footer extends StatelessWidget {
                         ),
                         ActionText(
                           text: "Cookies",
-                          action: () {
+                          onTap: () {
                             context.go("/sobre");
                           },
                           underlinedOnHover: true,

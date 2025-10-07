@@ -5,6 +5,13 @@ import 'package:mapa_adoleser/core/constants.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class ResponsiveUtils {
+  static EdgeInsetsGeometry pagePadding(BuildContext context) {
+    return EdgeInsets.symmetric(
+      horizontal: horizontalPadding(context),
+      vertical: verticalPadding(context),
+    );
+  }
+
   static double modalHorizontalPadding(BuildContext context) {
     final responsive = ResponsiveBreakpoints.of(context);
 
