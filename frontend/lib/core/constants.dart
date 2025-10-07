@@ -19,10 +19,10 @@ class ResponsivePaddings {
   static const double horizontalDesktopLarge = 320.0;
 
   static const double verticalPhone = 16.0;
-  static const double verticalTablet = 16.0;
+  static const double verticalTablet = 32.0;
   static const double verticalTableLarge = 32.0;
   static const double verticalDesktop = 32.0;
-  static const double verticalDesktopLarge = 32.0;
+  static const double verticalDesktopLarge = 64.0;
 }
 
 class AppDimensions {

@@ -65,6 +65,24 @@ class Validators {
     return null;
   }
 
+  static String? isValidCep(String? cep) {
+    if (cep == null || cep.trim().isEmpty) {
+      return null;
+    }
+
+    final digits = cep.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (digits.length != 8) {
+      return 'CEP deve ter 8 dígitos';
+    }
+
+    if (RegExp(r'^(\d)\1{7}$').hasMatch(digits)) {
+      return 'CEP inválido';
+    }
+
+    return null; // válido
+  }
+
   static String? isValidUsername(String? value) {
     if (value == null || value.isEmpty) {
       return 'O campo é obrigatório';

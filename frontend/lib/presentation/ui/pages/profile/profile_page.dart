@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
@@ -53,6 +51,8 @@ class _ProfilePageState extends State<ProfilePage> {
     _emailController = TextEditingController();
     _usernameController = TextEditingController();
 
+    _formKey.currentState?.reset();
+
     super.initState();
   }
 
@@ -67,6 +67,8 @@ class _ProfilePageState extends State<ProfilePage> {
     _nameController.dispose();
     _emailController.dispose();
     _usernameController.dispose();
+
+    _formKey.currentState?.reset();
 
     super.dispose();
   }
@@ -132,58 +134,49 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 30),
             ModalWrapper(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Informações Pessoais',
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  const SizedBox(height: 32),
-                  Form(
-                    key: _formKey,
-                    child: Column(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Informações Pessoais',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+
+                    const SizedBox(height: 30),
+                    GridView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent:
+                                  450, // máx. largura por coluna
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
+                              childAspectRatio: 4,
+                              mainAxisExtent: 94),
                       children: [
-                        GridView(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 400, // máx. largura por coluna
-                            mainAxisSpacing: 24,
-                            crossAxisSpacing: 16,
-                            childAspectRatio: 4,
-                          ),
-                          children: [
-                            CustomTextField(
-                                enabled: false,
-                                label: 'Usuário',
-                                controller: _usernameController),
-                            CustomTextField(
-                                enabled: false,
-                                label: 'E-mail',
-                                hint: 'Digite seu e-mail',
-                                controller: _emailController),
-                            CustomTextField(
-                                enabled: isEditing,
-                                label: 'Nome',
-                                hint: 'Digite seu nome',
-                                keyboardType: TextInputType.name,
-                                validator: Validators.isNotEmpty,
-                                controller: _nameController),
-                            CustomDateField(
-                                enabled: isEditing,
-                                label: 'Data de Nascimento',
-                                controller: _birthDateController,
-                                validator: Validators.isValidDayMonthYear),
-                          ],
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        Text("Endereço",
-                            style: Theme.of(context).textTheme.headlineSmall),
-
-                        const SizedBox(height: 16),
-
+                        CustomTextField(
+                            enabled: false,
+                            label: 'Usuário',
+                            controller: _usernameController),
+                        CustomTextField(
+                            enabled: false,
+                            label: 'E-mail',
+                            controller: _emailController),
+                        CustomTextField(
+                            enabled: isEditing,
+                            label: 'Nome',
+                            hint: 'Digite seu nome',
+                            keyboardType: TextInputType.name,
+                            validator: Validators.isNotEmpty,
+                            controller: _nameController),
+                        CustomDateField(
+                            enabled: isEditing,
+                            label: 'Data de Nascimento',
+                            controller: _birthDateController,
+                            validator: Validators.isValidDayMonthYear),
                         CepTextField(
                           enabled: isEditing,
                           controller: _cepController,
@@ -196,73 +189,82 @@ class _ProfilePageState extends State<ProfilePage> {
                               _stateController.text =
                                   '${address.state} - ${address.uf}';
                             } else {
-                              log('deu erro');
-                              profileProvider
-                                  .setError('Endereço não encontrado');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Endereço não encontrado'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                             }
                           },
                         ),
-
                         CustomTextField(
-                            enabled: false,
-                            label: 'Rua',
-                            controller: _streetController),
-                        CustomTextField(
-                            enabled: false,
-                            label: 'Bairro',
-                            controller: _neighborhoodController),
-                        CustomTextField(
-                            enabled: false,
-                            label: 'Cidade',
-                            controller: _cityController),
-                        CustomTextField(
-                            enabled: false,
-                            label: 'Estado',
-                            controller: _stateController),
-
-                        const SizedBox(height: 32),
-
-                        if (profileProvider.error != null)
-                          Text(
-                            profileProvider.error!,
-                            style: const TextStyle(color: Colors.red),
-                          ),
-
-                        /// Botões de ação
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          spacing: 16,
-                          children: [
-                            CustomButton(
-                              text: isEditing ? "Cancelar" : "Editar",
-                              onPressed: () {
-                                setState(() {
-                                  if (isEditing) {
-                                    // Cancelar edição - reverter alterações
-                                    _formKey.currentState?.reset();
-                                  }
-
-                                  isEditing = !isEditing;
-                                });
-                              },
-                            ),
-                            if (isEditing)
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  foregroundColor: Colors.white,
-                                ),
-                                onPressed: () => _submit(),
-                                child: const Text("Salvar"),
-                              ),
-                          ],
+                          enabled: false,
+                          label: 'Rua',
+                          controller: _streetController,
+                          validator: Validators.isNotEmpty,
                         ),
-
-                        const SizedBox(height: 40),
+                        CustomTextField(
+                          enabled: false,
+                          label: 'Bairro',
+                          controller: _neighborhoodController,
+                          validator: Validators.isNotEmpty,
+                        ),
+                        CustomTextField(
+                          enabled: false,
+                          label: 'Cidade',
+                          controller: _cityController,
+                          validator: Validators.isNotEmpty,
+                        ),
+                        CustomTextField(
+                          enabled: false,
+                          label: 'Estado',
+                          controller: _stateController,
+                          validator: Validators.isNotEmpty,
+                        ),
                       ],
                     ),
-                  ),
-                ],
+
+                    if (profileProvider.error != null) ...[
+                      const SizedBox(height: 32),
+                      Text(
+                        profileProvider.error!,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ],
+
+                    const SizedBox(height: 32),
+
+                    /// Botões de ação
+                    Wrap(
+                      spacing: 16,
+                      children: [
+                        CustomButton(
+                          text: isEditing ? "Cancelar" : "Editar",
+                          onPressed: () {
+                            setState(() {
+                              if (isEditing) {
+                                // Cancelar edição - reverter alterações
+                                _formKey.currentState?.reset();
+                              }
+
+                              isEditing = !isEditing;
+                            });
+                          },
+                        ),
+                        if (isEditing)
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                            onPressed: () => _submit(),
+                            child: const Text("Salvar"),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 30),

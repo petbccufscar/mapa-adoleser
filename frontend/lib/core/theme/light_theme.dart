@@ -19,8 +19,19 @@ ThemeData lightTheme = ThemeData(
       error: AppColors.warning,
       onError: AppColors.textPrimary,
     ),
-    inputDecorationTheme: const InputDecorationTheme(
-      fillColor: AppColors.inputBackground,
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: WidgetStateColor.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return AppColors.inputBackgroundDisabled; // fundo desabilitado
+        }
+
+        if (states.contains(WidgetState.focused)) {
+          return AppColors.inputBackgroundFocused; // fundo quando focado
+        }
+
+        return AppColors.inputBackground; // fundo normal (habilitado)
+      }),
       errorStyle: TextStyle(
         color: Colors.red,
         fontSize: 12,
@@ -66,23 +77,29 @@ ThemeData lightTheme = ThemeData(
     ),
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
-          color: AppColors.purple, fontSize: 32, fontWeight: FontWeight.w700),
+        color: AppColors.purple,
+        fontSize: 32,
+        fontWeight: FontWeight.w700,
+      ),
       headlineMedium: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 24,
-          fontWeight: FontWeight.w700),
+        color: AppColors.textPrimary,
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+      ),
       headlineSmall: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 20,
-          fontWeight: FontWeight.w700),
+        color: AppColors.textPrimary,
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+      ),
       labelSmall: TextStyle(
         color: AppColors.textSecondary,
         fontSize: 12,
       ),
       labelMedium: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 14,
-          fontWeight: FontWeight.w500),
+        color: AppColors.textPrimary,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
       bodyLarge: TextStyle(
         color: AppColors.textPrimary,
         fontSize: 16,

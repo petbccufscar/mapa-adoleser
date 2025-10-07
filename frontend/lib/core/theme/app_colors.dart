@@ -36,9 +36,11 @@ class AppColors {
   static const iconDark = Color(0xFF2E1B47);
 
   // Input
-  static const inputBackground = Color(0xFFFFFFFF);
+  static const inputBackgroundFocused = Color(0xEAF1F1F1);
+  static const inputBackgroundDisabled = Color(0xEAF6F6F6);
+  static const inputBackground = Color(0xEAFDFDFD);
   static const inputPlaceholder = Color(0xFFBCBCBC);
   static const inputBorder = Color(0xFFEAEAEA);
-  static const inputBorderFocus = Color(0xFF687082);
+  static const inputBorderFocused = Color(0xFF687082);
   static const inputBorderDisabled = Color(0xFFE0E0E0);
 }

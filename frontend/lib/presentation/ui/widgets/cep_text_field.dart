@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/data/services/address_service.dart';
@@ -12,11 +10,12 @@ class CepTextField extends StatefulWidget {
   final TextEditingController controller;
   final void Function(AddressResponseModel?) onSearch;
 
-  const CepTextField(
-      {super.key,
-      required this.enabled,
-      required this.controller,
-      required this.onSearch});
+  const CepTextField({
+    super.key,
+    required this.enabled,
+    required this.controller,
+    required this.onSearch,
+  });
 
   @override
   State<CepTextField> createState() => _CepTextFieldState();
@@ -47,7 +46,6 @@ class _CepTextFieldState extends State<CepTextField> {
         widget.onSearch(address);
       });
     } catch (e) {
-      log('Erro ao buscar endereço: $e');
       widget.onSearch(null);
     }
   }
@@ -58,7 +56,7 @@ class _CepTextFieldState extends State<CepTextField> {
       enabled: widget.enabled,
       label: 'CEP',
       controller: widget.controller,
-      validator: Validators.isNotEmpty,
+      validator: Validators.isValidCep,
       hint: '00000-000',
       keyboardType: TextInputType.number,
       inputFormatters: [_maskFormatter],
