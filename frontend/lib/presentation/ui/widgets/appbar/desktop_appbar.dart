@@ -16,13 +16,17 @@ class DesktopAppBar extends StatelessWidget {
     final currentRoute =
         GoRouter.of(context).routeInformationProvider.value.uri.toString();
 
-    final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
-    final userName = context.watch<AuthProvider>().user?.name;
+    final authProvider = context.watch<AuthProvider>();
 
-    return Column(children: [
-      Container(
+    final isLoggedIn = authProvider.isLoggedIn;
+    final userName = authProvider.user?.name;
+
+    return Column(
+      children: [
+        Container(
+          color: AppColors.backgroundWhite,
+          width: MediaQuery.of(context).size.width,
           height: AppDimensions.loggedOutAppBarHeight,
-          color: AppColors.backgroundSmoke,
           padding: EdgeInsets.symmetric(
               vertical: 10,
               horizontal: ResponsiveUtils.horizontalPadding(context)),
@@ -36,53 +40,82 @@ class DesktopAppBar extends StatelessWidget {
                   },
                   child: Image.asset(
                     'images/ADOLESER.png',
+                    height: 40,
                     width: 160,
                   ),
                 ),
               ),
-              const Spacer(),
-              ActionText(
-                  text: "Início",
-                  action: () => {context.go("/")},
-                  bold: currentRoute == "/",
-                  boldOnHover: true,
-                  color: currentRoute == "/" ? AppColors.purple : null,
-                  colorOnHover: AppColors.purple),
-              const SizedBox(width: 15),
-              ActionText(
-                  text: "Pesquisar",
-                  action: () => {context.go("/pesquisa")},
-                  bold: currentRoute == "/pesquisa",
-                  boldOnHover: true,
-                  color: currentRoute == "/pesquisa" ? AppColors.purple : null,
-                  colorOnHover: AppColors.purple),
-              const SizedBox(width: 15),
-              ActionText(
-                  text: "Sobre",
-                  action: () => {context.go("/sobre")},
-                  bold: currentRoute == "/sobre",
-                  boldOnHover: true,
-                  color: currentRoute == "/sobre" ? AppColors.purple : null,
-                  colorOnHover: AppColors.purple),
-              const SizedBox(width: 15),
-              ActionText(
-                  text: "Ajuda",
-                  action: () => {context.go("/ajuda")},
-                  bold: currentRoute == "/ajuda",
-                  boldOnHover: true,
-                  color: currentRoute == "/ajuda" ? AppColors.purple : null,
-                  colorOnHover: AppColors.purple),
-              if (!isLoggedIn && currentRoute != "/login") ...[
-                const SizedBox(width: 10),
-                const Text('•'),
-                const SizedBox(width: 12),
-                CustomButton(
-                    text: 'Entrar', onPressed: () => context.go('/login'))
-              ]
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Wrap(
+                    alignment: WrapAlignment.end,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 5,
+                    runSpacing: 8,
+                    children: [
+                      ActionText(
+                          text: "Início",
+                          onTap: () {
+                            context.go("/");
+                          },
+                          bold: currentRoute == "/",
+                          boldOnHover: true,
+                          color: currentRoute == "/" ? AppColors.purple : null,
+                          colorOnHover: AppColors.purple),
+                      const SizedBox(width: 15),
+                      ActionText(
+                          text: "Pesquisar",
+                          onTap: () {
+                            context.go("/pesquisa");
+                          },
+                          bold: currentRoute == "/pesquisa",
+                          boldOnHover: true,
+                          color: currentRoute == "/pesquisa"
+                              ? AppColors.purple
+                              : null,
+                          colorOnHover: AppColors.purple),
+                      const SizedBox(width: 15),
+                      ActionText(
+                          text: "Sobre",
+                          onTap: () {
+                            context.go("/sobre");
+                          },
+                          bold: currentRoute == "/sobre",
+                          boldOnHover: true,
+                          color: currentRoute == "/sobre"
+                              ? AppColors.purple
+                              : null,
+                          colorOnHover: AppColors.purple),
+                      const SizedBox(width: 15),
+                      ActionText(
+                          text: "Fale Conosco",
+                          onTap: () {
+                            context.go("/contato");
+                          },
+                          bold: currentRoute == "/contato",
+                          boldOnHover: true,
+                          color: currentRoute == "/contato"
+                              ? AppColors.purple
+                              : null,
+                          colorOnHover: AppColors.purple),
+                      if (!isLoggedIn && currentRoute != "/login") ...[
+                        const SizedBox(width: 10),
+                        const Text('•'),
+                        const SizedBox(width: 12),
+                        CustomButton(
+                            text: 'Entrar',
+                            onPressed: () => context.go('/login'))
+                      ]
+                    ],
+                  ),
+                ),
+              ),
             ],
-          )),
-      if (isLoggedIn)
-        Container(
+          ),
+        ),
+        if (isLoggedIn)
+          Container(
             height: AppDimensions.appBarSecondaryHeight,
             color: AppColors.purple,
             padding: EdgeInsets.symmetric(
@@ -100,32 +133,38 @@ class DesktopAppBar extends StatelessWidget {
                 const Spacer(),
                 ActionText(
                     text: "Favoritos",
-                    action: () => {context.go("/favoritos")},
+                    onTap: () {
+                      context.go("/favoritos");
+                    },
                     bold: currentRoute == "/favoritos",
                     boldOnHover: true,
                     color: currentRoute == "/favoritos"
-                        ? AppColors.textSecondary
+                        ? AppColors.textLight
                         : AppColors.textLight),
                 const SizedBox(width: 15),
                 ActionText(
                     text: "Perfil",
-                    action: () => {context.go("/perfil")},
+                    onTap: () {
+                      context.go("/perfil");
+                    },
                     bold: currentRoute == "/perfil",
                     boldOnHover: true,
                     color: currentRoute == "/perfil"
-                        ? AppColors.textSecondary
+                        ? AppColors.textLight
                         : AppColors.textLight),
                 const SizedBox(width: 15),
                 ActionText(
                   text: "Sair",
-                  action: () async =>
+                  onTap: () async =>
                       {await context.read<AuthProvider>().logout()},
                   boldOnHover: true,
                   color: AppColors.textLight,
-                  colorOnHover: AppColors.textPrimary,
+                  colorOnHover: AppColors.warning,
                 ),
               ],
-            ))
-    ]);
+            ),
+          )
+      ],
+    );
   }
 }

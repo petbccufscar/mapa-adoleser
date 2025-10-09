@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/constants.dart';
-import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/carousel.dart';
@@ -20,18 +19,13 @@ class HomePage extends StatelessWidget {
     // final themeProvider = Provider.of<ThemeProvider>(context);
     // final isDark = themeProvider.themeMode == ThemeMode.dark;
 
-    final auth = context.watch<AuthProvider>();
-
-    final isLoggedIn = auth.isLoggedIn;
+    final authProvider = context.watch<AuthProvider>();
 
     return Scaffold(
-      appBar: CustomAppBar(isLoggedIn: isLoggedIn),
-      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: isLoggedIn)
-          : null,
+      appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
+      endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
       body: SingleChildScrollView(
         child: Column(
-          spacing: 20,
           children: [
             Carousel(),
             ResponsivePageWrapper(
@@ -72,7 +66,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            Footer()
+            const Footer(),
           ],
         ),
       ),

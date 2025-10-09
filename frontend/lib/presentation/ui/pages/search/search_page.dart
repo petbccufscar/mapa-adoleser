@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
@@ -10,15 +9,11 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthProvider>();
-
-    final isLoggedIn = auth.isLoggedIn;
+    final authProvider = context.watch<AuthProvider>();
 
     return Scaffold(
-      appBar: CustomAppBar(isLoggedIn: isLoggedIn),
-      endDrawer: ResponsiveUtils.shouldShowDrawer(context)
-          ? CustomDrawer(isLoggedIn: isLoggedIn)
-          : null,
+      appBar: CustomAppBar(isLoggedIn: authProvider.isLoggedIn),
+      endDrawer: CustomDrawer(isLoggedIn: authProvider.isLoggedIn),
       body: const Center(
         child: Text(
           'Busca!',
