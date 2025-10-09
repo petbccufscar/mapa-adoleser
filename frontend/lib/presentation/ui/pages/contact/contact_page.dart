@@ -112,28 +112,28 @@ class _ContactPageState extends State<ContactPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            AppTexts.help.title,
+                            AppTexts.contact.title,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 30),
                           CustomTextField(
-                              label: AppTexts.help.emailLabel,
-                              hint: AppTexts.help.emailHint,
+                              label: AppTexts.contact.emailLabel,
+                              hint: AppTexts.contact.emailHint,
                               controller: _emailController,
                               textInputAction: TextInputAction.next,
                               validator: Validators.isEmail),
                           const SizedBox(height: 12),
                           CustomTextField(
-                            label: AppTexts.help.nameLabel,
-                            hint: AppTexts.help.nameHint,
+                            label: AppTexts.contact.nameLabel,
+                            hint: AppTexts.contact.nameHint,
                             controller: _nameController,
                             textInputAction: TextInputAction.next,
                             validator: Validators.isNotEmpty,
                           ),
                           const SizedBox(height: 12),
                           CustomDropdownField<SubjectModel>(
-                            label: AppTexts.help.subjectLabel,
-                            hint: AppTexts.help.subjectHint,
+                            label: AppTexts.contact.subjectLabel,
+                            hint: AppTexts.contact.subjectHint,
                             value: selectedSubject,
                             items: subjects,
                             onChanged: (SubjectModel? value) => {
@@ -145,8 +145,8 @@ class _ContactPageState extends State<ContactPage> {
                           ),
                           const SizedBox(height: 12),
                           CustomTextField(
-                            label: AppTexts.help.messageLabel,
-                            hint: AppTexts.help.messageHint,
+                            label: AppTexts.contact.messageLabel,
+                            hint: AppTexts.contact.messageHint,
                             controller: _messageController,
                             textInputAction: TextInputAction.next,
                             maxLines: 8,
@@ -155,7 +155,7 @@ class _ContactPageState extends State<ContactPage> {
                           ),
                           const SizedBox(height: 30),
                           CustomButton(
-                            text: AppTexts.help.helpButton,
+                            text: AppTexts.contact.sendButtonText,
                             onPressed: contact.isLoading ? null : _submit,
                           ),
                         ],

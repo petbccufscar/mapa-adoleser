@@ -23,7 +23,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<UserModel?> updateProfile(
-      String name, DateTime birthDate, String cep) async {
+      String username, String name, DateTime birthDate) async {
     _loading = true;
     _error = null;
     _success = false;
@@ -33,10 +33,11 @@ class ProfileProvider extends ChangeNotifier {
 
     try {
       final request = UpdateProfileRequestModel(
+        username: username,
         name: name,
         birthDate: birthDate,
-        cep: cep,
       );
+
       user = await _profileService.updateProfile(request);
 
       _success = true;

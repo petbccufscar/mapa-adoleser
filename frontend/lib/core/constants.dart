@@ -20,8 +20,8 @@ class ResponsivePaddings {
 
   static const double verticalPhone = 16.0;
   static const double verticalTablet = 32.0;
-  static const double verticalTableLarge = 32.0;
-  static const double verticalDesktop = 32.0;
+  static const double verticalTableLarge = 48.0;
+  static const double verticalDesktop = 64.0;
   static const double verticalDesktopLarge = 64.0;
 }
 
@@ -48,144 +48,249 @@ class AppTexts {
   static const login = _LoginTexts();
   static const home = _HomeTexts();
   static const register = _RegisterTexts();
-  static const help = _HelpTexts();
+  static const contact = _ContactTexts();
   static const recoveryPassword = _RecoveryPasswordTexts();
   static const changePassword = _ChangePasswordTexts();
   static const about = _AboutTexts();
   static const deleteAccount = _DeleteAccountTexts();
+  static const profile = _ProfileTexts();
+}
+
+class _ProfileTexts {
+  const _ProfileTexts();
+
+  // Títulos e descrições gerais
+  final title = 'Meu Perfil';
+  final subtitle =
+      'Gerencie suas informações pessoais, segurança e preferências da conta';
+
+  // Seção: Informações pessoais
+  final personalInfoTitle = 'Informações Pessoais';
+  final emailLabel = 'E-mail';
+  final usernameLabel = 'Usuário';
+  final usernameHint = 'Digite seu nome de usuário';
+  final nameLabel = 'Nome completo';
+  final nameHint = 'Digite seu nome completo';
+  final birthDateLabel = 'Data de Nascimento';
+  final birthDateHint = 'dd/mm/aaaa';
+
+  // Botões de edição
+  final editButtonText = 'Editar';
+  final cancelButtonText = 'Cancelar';
+  final saveButtonText = 'Salvar';
+
+  // Mensagens de feedback
+  final saveErrorMessage = 'Falha ao salvar suas informações';
+  final saveSuccessMessage = 'Informações atualizadas com sucesso';
+
+  // Seção: Segurança
+  final securityTitle = 'Segurança';
+  final changePasswordLabel = 'Alterar senha';
+  final privacyPolicyLabel = 'Política de Privacidade';
+  final termsOfUseLabel = 'Termos de Uso';
+
+  // Seção: Zona de perigo
+  final dangerZoneTitle = 'Zona de Perigo';
+  final deleteAccountLabel = 'Excluir minha conta';
 }
 
 class _DeleteAccountTexts {
   const _DeleteAccountTexts();
 
+  // Título e instruções iniciais
   final title = 'Excluir conta';
-  final confirmEmailAndPassword =
-      "Confirme seu e-mail e senha para receber um código de confirmação.";
+  final confirmCredentialsMessage =
+      'Confirme seu e-mail e senha para receber um código de confirmação.';
+
+  // Campos de autenticação
   final emailLabel = 'E-mail';
   final emailHint = 'Digite seu e-mail';
   final passwordLabel = 'Senha';
   final passwordHint = 'Digite sua senha';
-  final sendCodeButton = 'Enviar';
-  final codeResendSuccess = 'Código enviado com sucesso!';
-  final cancelButton = 'Cancelar';
-  final codeInstructions =
+
+  // Ações e botões
+  final sendCodeButtonText = 'Enviar';
+  final cancelButtonText = 'Cancelar';
+  final confirmButtonText = 'Deletar';
+  final returnHomeButtonText = 'Voltar para a página inicial';
+
+  // Mensagens de feedback
+  final codeSentSuccessMessage = 'Código enviado com sucesso!';
+  final deleteSuccessMessage = 'Sua conta foi excluída com sucesso!';
+
+  // Instruções sobre o código de confirmação
+  final codeInstructionsMessage =
       'Um código de confirmação foi enviado para o seu e-mail. Insira o código abaixo para continuar.';
-  final deleteConfirmation =
-      'Deseja excluir sua conta? Seus dados não serão salvos e não será possível recuperá-la.';
-  final confirmButton = 'Confirmar';
   final codeLabel = 'Código de 6 dígitos';
-  final successMessage = 'Sua conta foi excluída com sucesso!';
-  final returnHome = 'Voltar para a página inicial';
+
+  // Confirmação de exclusão
+  final deleteConfirmationMessage =
+      'Deseja realmente excluir sua conta? Seus dados serão permanentemente apagados e não poderão ser recuperados.';
 }
 
-class _HelpTexts {
-  const _HelpTexts();
+class _ContactTexts {
+  const _ContactTexts();
 
+  // Título
   final title = 'Envie sua mensagem';
+
+  // Campos do formulário
   final emailLabel = 'E-mail';
   final emailHint = 'Digite seu e-mail';
+
   final nameLabel = 'Nome';
   final nameHint = 'Digite seu nome';
+
   final subjectLabel = 'Assunto';
   final subjectHint = 'Selecione o assunto do contato';
+
   final messageLabel = 'Mensagem';
-  final messageHint = 'Digite aqui sua mensagem';
-  final helpButton = 'Enviar';
+  final messageHint = 'Digite sua mensagem aqui';
+
+  // Botão
+  final sendButtonText = 'Enviar';
 }
 
 class _LoginTexts {
   const _LoginTexts();
 
-  final welcome = 'Bem vindo de volta!';
-  final welcomeSubtitle = 'Faça login com as suas credenciais para entrar!';
-  final title = 'Entre com sua conta';
-  final emailLabel = "E-mail";
+  // Mensagens de boas-vindas
+  final welcomeMessage = 'Bem-vindo de volta!';
+  final welcomeSubtitle =
+      'Faça login com suas credenciais para acessar sua conta.';
+
+  // Título
+  final title = 'Entrar na conta';
+
+  // Campos do formulário
+  final emailLabel = 'E-mail';
   final emailHint = 'Digite seu e-mail';
+
   final passwordLabel = 'Senha';
   final passwordHint = 'Digite sua senha';
-  final forgotPassword = 'Esqueceu a senha?';
-  final rememberMe = 'Lembrar de mim';
-  final loginButton = 'Entrar';
-  final unregistered = "Ainda não tem uma conta?";
-  final createAccount = 'Crie uma!';
+
+  // Opções adicionais
+  final forgotPasswordText = 'Esqueceu sua senha?';
+  final rememberMeLabel = 'Lembrar de mim';
+
+  // Botões e navegação
+  final loginButtonText = 'Entrar';
+  final noAccountMessage = 'Ainda não tem uma conta?';
+  final createAccountButtonText = 'Criar conta';
 }
 
 class _RecoveryPasswordTexts {
   const _RecoveryPasswordTexts();
 
-  final title = 'Recuperar sua senha';
-  final instructions =
-      'Digite seu e-mail para receber um código de confirmação';
-  final emailLabel = 'Digite seu e-mail';
+  // Título e instruções iniciais
+  final title = 'Recuperar senha';
+  final emailInstructions =
+      'Digite seu e-mail para receber um código de confirmação.';
+
+  // Campo de e-mail
+  final emailLabel = 'E-mail';
   final emailHint = 'Digite seu e-mail';
-  final emailSubmit = 'Enviar';
-  final cancel = 'Cancelar';
-  final codeLabel = 'Digite o código de 6 dígitos recebido';
+
+  // Botões iniciais
+  final sendCodeButtonText = 'Enviar';
+  final cancelButtonText = 'Cancelar';
+
+  // Código de verificação
+  final codeLabel = 'Código de 6 dígitos';
   final codeInstructions =
-      'Insira o código que enviamos para o seu e-mail para continuar com a recuperação da senha.';
-  final codeValidate = 'Validar';
-  final codeResend = 'Reenviar';
-  final codeResendSuccess = 'Código enviado com sucesso!';
-  final passwordInstructions =
-      'Crie uma nova senha para sua conta. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.';
-  final passwordLabel = "Nova senha";
-  final newPassword = "Digite sua nova senha";
-  final passwordAgainLabel = "Confirme a nova senha";
-  final newPasswordAgain = "Digite novamente sua nova senha";
+      'Insira o código que enviamos para o seu e-mail para continuar a recuperação da senha.';
+  final validateCodeButtonText = 'Validar';
+  final resendCodeButtonText = 'Reenviar código';
+  final codeResentSuccessMessage = 'Código reenviado com sucesso!';
+
+  // Nova senha
+  final newPasswordInstructions =
+      'Crie uma nova senha para sua conta. Ela deve conter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.';
+  final newPasswordLabel = 'Nova senha';
+  final newPasswordHint = 'Digite sua nova senha';
+  final confirmNewPasswordLabel = 'Confirmar nova senha';
+  final confirmNewPasswordHint = 'Repita sua nova senha';
+
+  // Mensagens de sucesso
   final successMessage =
-      "Senha alterada com sucesso! Faça login novamente com sua nova senha.";
-  final backToLogin = "Retornar para o login";
+      'Senha alterada com sucesso! Faça login novamente com sua nova senha.';
+  final backToLoginButtonText = 'Voltar para o login';
 }
 
 class _ChangePasswordTexts {
   const _ChangePasswordTexts();
 
-  final title = 'Alterar sua senha';
-  final instructions =
+  // Título e instruções
+  final title = 'Alterar senha';
+  final currentPasswordInstructions =
       'Para alterar sua senha, primeiro confirme sua senha atual.';
-  final passwordInstructions =
-      'Agora, crie uma nova senha para sua conta. Ela deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.';
-  final passwordLabel = 'Senha Atual';
-  final passwordHint = 'Digite sua senha atual';
-  final cancel = 'Cancelar';
-  final newPasswordLabel = 'Nova Senha';
+  final newPasswordInstructions =
+      'Agora, crie uma nova senha para sua conta. Ela deve conter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.';
+
+  // Campos do formulário
+  final currentPasswordLabel = 'Senha atual';
+  final currentPasswordHint = 'Digite sua senha atual';
+
+  final newPasswordLabel = 'Nova senha';
   final newPasswordHint = 'Digite sua nova senha';
-  final confirmNewPasswordLabel = 'Confirme a Nova Senha';
-  final confirmNewPasswordHint = 'Digite novamente sua nova senha';
-  final changePasswordButton = 'Enviar';
+
+  final confirmNewPasswordLabel = 'Confirmar nova senha';
+  final confirmNewPasswordHint = 'Repita sua nova senha';
+
+  // Botões
+  final cancelButtonText = 'Cancelar';
+  final changePasswordButtonText = 'Alterar senha';
+  final backToHomeButtonText = 'Voltar para a página inicial';
+
+  // Mensagens de feedback
   final successMessage = 'Senha alterada com sucesso!';
   final successDescription =
-      'Sua senha foi alterada com sucesso. Use sua nova senha na próxima vez que fizer login.';
-  final backToHomeButton = 'Retornar para a página inicial';
+      'Sua senha foi atualizada com sucesso. Use a nova senha na próxima vez que fizer login.';
 }
 
 class _RegisterTexts {
   const _RegisterTexts();
 
-  final welcome = 'Faça seu cadastro!';
-  final welcomeSubtitle = 'Preencha os campos para fazer seu cadastro!';
-  final successMessage = 'Conta criada com com sucesso!';
-  final title = 'Crie sua conta';
+  // Mensagens de boas-vindas
+  final welcomeMessage = 'Faça seu cadastro!';
+  final welcomeSubtitle = 'Preencha os campos abaixo para criar sua conta.';
+
+  // Título
+  final title = 'Criar conta';
+
+  // Mensagens de feedback
+  final successMessage = 'Conta criada com sucesso!';
+
+  // Campos do formulário
   final nameLabel = 'Nome completo';
   final nameHint = 'Digite seu nome completo';
+
   final emailLabel = 'E-mail';
   final emailHint = 'Digite seu e-mail';
-  final usernameLabel = "Username";
-  final usernameHint = 'Digite seu username';
-  final birthDateLabel = 'Data de Nascimento';
+
+  final usernameLabel = 'Nome de usuário';
+  final usernameHint = 'Digite seu nome de usuário';
+
+  final birthDateLabel = 'Data de nascimento';
   final birthDateHint = 'dd/mm/aaaa';
+
   final passwordLabel = 'Senha';
   final passwordHint = 'Crie sua senha';
-  final confirmPasswordLabel = 'Confirme sua senha';
-  final confirmPasswordHint = 'Confirme sua senha';
-  final forgotPassword = 'Esqueceu a senha?';
-  final registerButton = 'Criar minha conta';
-  final registered = 'Ja tem uma conta?';
-  final loginAccount = 'Faça login!';
-  final checkBoxText =
-      'Ao marcar esta caixa, você concorda com nossos Termos de Uso e Políticas de Privacidade';
-  final checkBoxTextTerms = 'Termos de Uso';
-  final checkBoxTextPolicy = 'Políticas de Privacidade';
+
+  final confirmPasswordLabel = 'Confirmar senha';
+  final confirmPasswordHint = 'Repita sua senha';
+
+  // Ações e botões
+  final registerButtonText = 'Criar minha conta';
+  final forgotPasswordText = 'Esqueceu sua senha?';
+  final alreadyHaveAccountMessage = 'Já tem uma conta?';
+  final loginButtonText = 'Fazer login';
+
+  // Termos e políticas
+  final termsAgreementText =
+      'Ao marcar esta caixa, você concorda com nossos Termos de Uso e Política de Privacidade.';
+  final termsOfUseLabel = 'Termos de Uso';
+  final privacyPolicyLabel = 'Política de Privacidade';
 }
 
 class _HomeTexts {

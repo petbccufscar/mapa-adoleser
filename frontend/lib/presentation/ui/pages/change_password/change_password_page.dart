@@ -123,13 +123,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  AppTexts.changePassword.instructions,
+                                  AppTexts.changePassword
+                                      .currentPasswordInstructions,
                                 ),
                                 const SizedBox(height: 30),
                                 CustomPasswordField(
-                                    label:
-                                        AppTexts.changePassword.passwordLabel,
-                                    hint: AppTexts.changePassword.passwordHint,
+                                    label: AppTexts
+                                        .changePassword.currentPasswordLabel,
+                                    hint: AppTexts
+                                        .changePassword.currentPasswordHint,
                                     controller: _passwordController,
                                     validator: Validators.isNotEmpty),
                                 if (changePasswordProvider.error != null) ...[
@@ -149,7 +151,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 ),
                                 const SizedBox(height: 8),
                                 CustomButton(
-                                  text: AppTexts.changePassword.cancel,
+                                  text:
+                                      AppTexts.changePassword.cancelButtonText,
                                   onPressed: () {
                                     context.go('/perfil');
                                   },
@@ -169,7 +172,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  AppTexts.changePassword.passwordInstructions,
+                                  AppTexts
+                                      .changePassword.newPasswordInstructions,
                                   textAlign: TextAlign.justify,
                                 ),
                                 const SizedBox(height: 30),
@@ -205,14 +209,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 const SizedBox(height: 30),
                                 CustomButton(
                                   text: AppTexts
-                                      .changePassword.changePasswordButton,
+                                      .changePassword.changePasswordButtonText,
                                   onPressed: changePasswordProvider.isLoading
                                       ? null
                                       : _submitChangePassword,
                                 ),
                                 const SizedBox(height: 8),
                                 CustomButton(
-                                  text: AppTexts.changePassword.cancel,
+                                  text:
+                                      AppTexts.changePassword.cancelButtonText,
                                   onPressed: () {
                                     context.go('/perfil');
                                   },
@@ -236,7 +241,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               ),
                               const SizedBox(height: 30),
                               CustomButton(
-                                text: AppTexts.changePassword.backToHomeButton,
+                                text: AppTexts
+                                    .changePassword.backToHomeButtonText,
                                 onPressed: () => {context.go('/')},
                               ),
                             ],

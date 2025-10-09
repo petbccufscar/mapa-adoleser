@@ -118,7 +118,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppTexts.deleteAccount.codeResendSuccess),
+            content: Text(AppTexts.deleteAccount.codeSentSuccessMessage),
             backgroundColor: Colors.green,
           ),
         );
@@ -201,7 +201,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                 // Subtítulo
                                 Text(
                                   AppTexts
-                                      .deleteAccount.confirmEmailAndPassword,
+                                      .deleteAccount.confirmCredentialsMessage,
                                   textAlign: TextAlign.justify,
                                 ),
 
@@ -243,7 +243,8 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                 const SizedBox(height: 30),
 
                                 CustomButton(
-                                  text: AppTexts.deleteAccount.sendCodeButton,
+                                  text:
+                                      AppTexts.deleteAccount.sendCodeButtonText,
                                   onPressed: deleteAccountProvider.isLoading
                                       ? null
                                       : _submitCheckAccount,
@@ -252,7 +253,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                 const SizedBox(height: 12),
 
                                 CustomButton(
-                                  text: AppTexts.deleteAccount.cancelButton,
+                                  text: AppTexts.deleteAccount.cancelButtonText,
                                   onPressed: () => {context.go('/perfil')},
                                 ),
                               ],
@@ -270,7 +271,8 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  AppTexts.deleteAccount.codeInstructions,
+                                  AppTexts
+                                      .deleteAccount.codeInstructionsMessage,
                                   textAlign: TextAlign.justify,
                                 ),
                                 const SizedBox(height: 30),
@@ -371,7 +373,8 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                 ),
                                 const SizedBox(height: 12),
                                 CustomButton(
-                                  text: AppTexts.deleteAccount.sendCodeButton,
+                                  text:
+                                      AppTexts.deleteAccount.sendCodeButtonText,
                                   onPressed: _codeController.text.isNotEmpty &&
                                           _codeController.text.length == 6 &&
                                           !deleteAccountProvider.isLoading
@@ -380,7 +383,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                 ),
                                 const SizedBox(height: 12),
                                 CustomButton(
-                                  text: AppTexts.deleteAccount.cancelButton,
+                                  text: AppTexts.deleteAccount.cancelButtonText,
                                   onPressed: () => {context.go('/perfil')},
                                 ),
                               ],
@@ -402,7 +405,8 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
                                 // Subtítulo
                                 Text(
-                                  AppTexts.deleteAccount.deleteConfirmation,
+                                  AppTexts
+                                      .deleteAccount.deleteConfirmationMessage,
                                   textAlign: TextAlign.justify,
                                 ),
 
@@ -436,14 +440,14 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                       ? null
                                       : _deleteAccount,
                                   child: Text(
-                                    AppTexts.deleteAccount.confirmButton,
+                                    AppTexts.deleteAccount.confirmButtonText,
                                   ),
                                 ),
 
                                 const SizedBox(height: 12),
 
                                 CustomButton(
-                                  text: AppTexts.deleteAccount.cancelButton,
+                                  text: AppTexts.deleteAccount.cancelButtonText,
                                   onPressed: deleteAccountProvider.isLoading
                                       ? null
                                       : () {
@@ -466,13 +470,16 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  AppTexts.deleteAccount.successMessage,
+                                  AppTexts.deleteAccount.deleteSuccessMessage,
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 const SizedBox(height: 30),
                                 CustomButton(
-                                  text: AppTexts.deleteAccount.returnHome,
-                                  onPressed: () => {context.go('/login')},
+                                  text: AppTexts
+                                      .deleteAccount.returnHomeButtonText,
+                                  onPressed: () {
+                                    context.go('/login');
+                                  },
                                 ),
                               ],
                             ),

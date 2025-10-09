@@ -21,7 +21,6 @@ class ProfileService {
       'username': 'coutrims',
       'email': 'vini.cotrim@hotmail.com',
       'birthDate': data.birthDate.toIso8601String(),
-      'cep': data.cep,
       'role': 'admin',
       'avatar_url': null,
       'token': 'abc.def.ghi',

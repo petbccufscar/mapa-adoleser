@@ -111,7 +111,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppTexts.recoveryPassword.codeResendSuccess),
+            content: Text(AppTexts.recoveryPassword.codeResentSuccessMessage),
             backgroundColor: Colors.green,
           ),
         );
@@ -193,7 +193,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  AppTexts.recoveryPassword.instructions,
+                                  AppTexts.recoveryPassword.emailInstructions,
                                   textAlign: TextAlign.justify,
                                 ),
                                 const SizedBox(height: 30),
@@ -214,14 +214,16 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 ],
                                 SizedBox(height: 30),
                                 CustomButton(
-                                  text: AppTexts.recoveryPassword.emailSubmit,
+                                  text: AppTexts
+                                      .recoveryPassword.sendCodeButtonText,
                                   onPressed: recoveryPasswordProvider.isLoading
                                       ? null
                                       : _submitEmail,
                                 ),
                                 SizedBox(height: 8),
                                 CustomButton(
-                                  text: AppTexts.recoveryPassword.cancel,
+                                  text: AppTexts
+                                      .recoveryPassword.cancelButtonText,
                                   onPressed: () => {context.go('/login')},
                                 ),
                               ],
@@ -338,7 +340,8 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 ),
                                 SizedBox(height: 8),
                                 CustomButton(
-                                    text: AppTexts.recoveryPassword.emailSubmit,
+                                    text: AppTexts.recoveryPassword
+                                        .validateCodeButtonText,
                                     onPressed: _codeController
                                                 .text.isNotEmpty &&
                                             _codeController.text.length == 6 &&
@@ -347,7 +350,8 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                         : null),
                                 SizedBox(height: 8),
                                 CustomButton(
-                                  text: AppTexts.recoveryPassword.cancel,
+                                  text: AppTexts
+                                      .recoveryPassword.cancelButtonText,
                                   onPressed: () => {context.go('/login')},
                                 ),
                               ],
@@ -366,14 +370,15 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 const SizedBox(height: 12),
                                 Text(
                                   AppTexts
-                                      .recoveryPassword.passwordInstructions,
+                                      .recoveryPassword.newPasswordInstructions,
                                   textAlign: TextAlign.justify,
                                 ),
                                 const SizedBox(height: 30),
                                 CustomPasswordField(
-                                  label:
-                                      AppTexts.recoveryPassword.passwordLabel,
-                                  hint: AppTexts.recoveryPassword.newPassword,
+                                  label: AppTexts
+                                      .recoveryPassword.newPasswordLabel,
+                                  hint:
+                                      AppTexts.recoveryPassword.newPasswordHint,
                                   controller: _passwordController,
                                   textInputAction: TextInputAction.next,
                                   showPasswordStrength: true,
@@ -382,9 +387,9 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 const SizedBox(height: 12),
                                 CustomPasswordField(
                                   label: AppTexts
-                                      .recoveryPassword.passwordAgainLabel,
+                                      .recoveryPassword.confirmNewPasswordLabel,
                                   hint: AppTexts
-                                      .recoveryPassword.newPasswordAgain,
+                                      .recoveryPassword.confirmNewPasswordHint,
                                   controller: _confirmPasswordController,
                                   textInputAction: TextInputAction.done,
                                   validator: (value) =>
@@ -403,14 +408,16 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 ],
                                 SizedBox(height: 30),
                                 CustomButton(
-                                  text: AppTexts.recoveryPassword.emailSubmit,
+                                  text: AppTexts
+                                      .recoveryPassword.sendCodeButtonText,
                                   onPressed: recoveryPasswordProvider.isLoading
                                       ? null
                                       : _submitNewPassword,
                                 ),
                                 SizedBox(height: 12),
                                 CustomButton(
-                                  text: AppTexts.recoveryPassword.cancel,
+                                  text: AppTexts
+                                      .recoveryPassword.cancelButtonText,
                                   onPressed: () => {context.go('/login')},
                                 ),
                               ],
@@ -431,7 +438,8 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               ),
                               const SizedBox(height: 30),
                               CustomButton(
-                                text: AppTexts.recoveryPassword.backToLogin,
+                                text: AppTexts
+                                    .recoveryPassword.backToLoginButtonText,
                                 onPressed: () => {context.go('/login')},
                               ),
                             ],

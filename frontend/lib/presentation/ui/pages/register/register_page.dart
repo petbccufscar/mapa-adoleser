@@ -126,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        AppTexts.register.welcome,
+                        AppTexts.register.welcomeMessage,
                         style: Theme.of(context)
                             .textTheme
                             .headlineLarge
@@ -166,19 +166,19 @@ class _RegisterPageState extends State<RegisterPage> {
                                   Theme.of(context).textTheme.headlineMedium),
                           const SizedBox(height: 30),
                           CustomTextField(
-                              label: AppTexts.register.usernameLabel,
-                              hint: AppTexts.register.usernameHint,
-                              controller: _usernameController,
-                              textInputAction: TextInputAction.next,
-                              validator: Validators.isNotEmpty),
-                          const SizedBox(height: 12),
-                          CustomTextField(
                               label: AppTexts.register.emailLabel,
                               hint: AppTexts.register.emailHint,
                               keyboardType: TextInputType.emailAddress,
                               controller: _emailController,
                               textInputAction: TextInputAction.next,
                               validator: Validators.isEmail),
+                          const SizedBox(height: 12),
+                          CustomTextField(
+                              label: AppTexts.register.usernameLabel,
+                              hint: AppTexts.register.usernameHint,
+                              controller: _usernameController,
+                              textInputAction: TextInputAction.next,
+                              validator: Validators.isNotEmpty),
                           const SizedBox(height: 12),
                           CustomTextField(
                               label: AppTexts.register.nameLabel,
@@ -222,7 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             label: Expanded(
                               child: Wrap(
                                 children: [
-                                  Text(AppTexts.register.checkBoxText),
+                                  Text(AppTexts.register.termsAgreementText),
                                 ],
                               ),
                             ),
@@ -240,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             direction: Axis.horizontal,
                             children: [
                               ActionText(
-                                text: AppTexts.register.checkBoxTextTerms,
+                                text: AppTexts.register.termsOfUseLabel,
                                 onTap: () {
                                   context.go('/');
                                 },
@@ -248,7 +248,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 boldOnHover: true,
                               ),
                               ActionText(
-                                text: AppTexts.register.checkBoxTextPolicy,
+                                text: AppTexts.register.privacyPolicyLabel,
                                 onTap: () {
                                   context.go('/');
                                 },
@@ -267,7 +267,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ],
                           const SizedBox(height: 30),
                           CustomButton(
-                            text: AppTexts.register.registerButton,
+                            text: AppTexts.register.registerButtonText,
                             onPressed:
                                 registerProvider.isLoading ? null : _submit,
                           ),
@@ -276,9 +276,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             spacing: 5,
                             alignment: WrapAlignment.center,
                             children: [
-                              Text(AppTexts.register.registered),
+                              Text(AppTexts.register.alreadyHaveAccountMessage),
                               ActionText(
-                                text: AppTexts.register.loginAccount,
+                                text: AppTexts.register.loginButtonText,
                                 onTap: () {
                                   context.go("/login");
                                 },

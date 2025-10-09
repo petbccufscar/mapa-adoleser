@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        AppTexts.login.welcome,
+                        AppTexts.login.welcomeMessage,
                         style: Theme.of(context)
                             .textTheme
                             .headlineLarge
@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               CustomCheckbox(
                                 value: rememberMe,
-                                label: Text(AppTexts.login.rememberMe),
+                                label: Text(AppTexts.login.rememberMeLabel),
                                 onChanged: (val) {
                                   setState(() {
                                     rememberMe = val;
@@ -175,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                               ),
                               ActionText(
-                                text: AppTexts.login.forgotPassword,
+                                text: AppTexts.login.forgotPasswordText,
                                 onTap: () {
                                   context.go("/recuperar-senha");
                                 },
@@ -195,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                           const SizedBox(height: 30),
                           CustomButton(
-                            text: AppTexts.login.loginButton,
+                            text: AppTexts.login.loginButtonText,
                             onPressed: loginProvider.isLoading ? null : _submit,
                           ),
                           const SizedBox(height: 30),
@@ -204,9 +204,9 @@ class _LoginPageState extends State<LoginPage> {
                             alignment: WrapAlignment.center,
                             spacing: 5,
                             children: [
-                              Text(AppTexts.login.unregistered),
+                              Text(AppTexts.login.noAccountMessage),
                               ActionText(
-                                text: AppTexts.login.createAccount,
+                                text: AppTexts.login.createAccountButtonText,
                                 onTap: () {
                                   context.go("/cadastro");
                                 },
