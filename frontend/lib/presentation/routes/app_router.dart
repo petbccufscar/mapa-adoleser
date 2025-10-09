@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/presentation/routes/guards.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/about/about_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/activity/activity_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/change_password/change_password_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/contact/contact_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/delete_account/delete_account_page.dart';
@@ -28,7 +29,7 @@ GoRouter createRouter(AuthProvider auth) {
     // TODO: oq é isso?
     refreshListenable: auth,
     debugLogDiagnostics: true,
-    initialLocation: '/perfil',
+    initialLocation: '/atividade/1',
     //errorBuilder: (context, state) => const ErrorPage(),
     redirect: (context, state) => authGuard(auth, state),
     routes: [
@@ -60,6 +61,20 @@ GoRouter createRouter(AuthProvider auth) {
             child: ChangeNotifierProvider(
               create: (_) => ContactProvider(),
               child: const ContactPage(),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        name: 'Atividade',
+        path: '/atividade/:id',
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['id']!;
+
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              create: (_) => ContactProvider(),
+              child: ActivityPage(id: id),
             ),
           );
         },

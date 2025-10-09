@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/carousel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class ActivityDetailPage extends StatelessWidget {
   const ActivityDetailPage({super.key});

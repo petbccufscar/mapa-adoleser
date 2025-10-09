@@ -5,13 +5,14 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed; //ação de envio
   final bool enabled; //botão habilitado ou desabilitado
+  final IconData? icon;
 
-  const CustomButton({
-    super.key,
-    required this.text,
-    this.onPressed,
-    this.enabled = true,
-  });
+  const CustomButton(
+      {super.key,
+      required this.text,
+      this.onPressed,
+      this.icon,
+      this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,14 @@ class CustomButton extends StatelessWidget {
       onPressed: enabled
           ? onPressed
           : null, //ação será feita apenas se o botão estiver habilitado
-      child: Text(text),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        spacing: 10,
+        children: [
+          if (icon != null) Icon(icon),
+          Text(text),
+        ],
+      ),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/carousel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
@@ -33,6 +35,11 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 20,
                 children: [
+                  ActionText(
+                      text: 'Atividade',
+                      onTap: () {
+                        context.go('/atividade/1');
+                      }),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12,
