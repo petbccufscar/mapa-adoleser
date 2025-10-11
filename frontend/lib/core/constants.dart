@@ -20,9 +20,9 @@ class ResponsivePaddings {
 
   static const double verticalPhone = 16.0;
   static const double verticalTablet = 32.0;
-  static const double verticalTableLarge = 48.0;
-  static const double verticalDesktop = 64.0;
-  static const double verticalDesktopLarge = 64.0;
+  static const double verticalTableLarge = 32.0;
+  static const double verticalDesktop = 48.0;
+  static const double verticalDesktopLarge = 48.0;
 }
 
 class AppDimensions {
@@ -238,6 +238,7 @@ class _ChangePasswordTexts {
   final confirmNewPasswordHint = 'Repita sua nova senha';
 
   // Botões
+  final verifyPasswordButtonText = 'Enviar';
   final cancelButtonText = 'Cancelar';
   final changePasswordButtonText = 'Alterar senha';
   final backToHomeButtonText = 'Voltar para a página inicial';

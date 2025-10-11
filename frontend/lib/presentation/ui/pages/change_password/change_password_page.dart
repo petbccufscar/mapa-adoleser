@@ -5,7 +5,6 @@ import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
@@ -143,19 +142,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                   ),
                                 ],
                                 const SizedBox(height: 30),
-                                CustomButton(
-                                  text: 'Enviar',
+                                FilledButton(
                                   onPressed: changePasswordProvider.isLoading
                                       ? null
                                       : _submitCurrentPassword,
+                                  child: Text(
+                                    AppTexts.changePassword
+                                        .verifyPasswordButtonText,
+                                  ),
                                 ),
                                 const SizedBox(height: 8),
-                                CustomButton(
-                                  text:
-                                      AppTexts.changePassword.cancelButtonText,
+                                FilledButton(
                                   onPressed: () {
                                     context.go('/perfil');
                                   },
+                                  child: Text(
+                                    AppTexts.changePassword.cancelButtonText,
+                                  ),
                                 ),
                               ],
                             ),
@@ -207,20 +210,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                   ),
                                 ],
                                 const SizedBox(height: 30),
-                                CustomButton(
-                                  text: AppTexts
-                                      .changePassword.changePasswordButtonText,
+                                FilledButton(
                                   onPressed: changePasswordProvider.isLoading
                                       ? null
                                       : _submitChangePassword,
+                                  child: Text(
+                                    AppTexts.changePassword
+                                        .changePasswordButtonText,
+                                  ),
                                 ),
                                 const SizedBox(height: 8),
-                                CustomButton(
-                                  text:
-                                      AppTexts.changePassword.cancelButtonText,
+                                FilledButton(
                                   onPressed: () {
                                     context.go('/perfil');
                                   },
+                                  child: Text(
+                                    AppTexts.changePassword.cancelButtonText,
+                                  ),
                                 ),
                               ],
                             ),
@@ -240,10 +246,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 textAlign: TextAlign.justify,
                               ),
                               const SizedBox(height: 30),
-                              CustomButton(
-                                text: AppTexts
-                                    .changePassword.backToHomeButtonText,
-                                onPressed: () => {context.go('/')},
+                              FilledButton(
+                                onPressed: () {
+                                  context.go('/');
+                                },
+                                child: Text(
+                                  AppTexts.changePassword.backToHomeButtonText,
+                                ),
                               ),
                             ],
                           ),

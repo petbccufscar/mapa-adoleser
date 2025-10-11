@@ -7,7 +7,6 @@ import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/check_box.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_date_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
@@ -266,10 +265,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ],
                           const SizedBox(height: 30),
-                          CustomButton(
-                            text: AppTexts.register.registerButtonText,
+                          FilledButton(
                             onPressed:
                                 registerProvider.isLoading ? null : _submit,
+                            child: Text(AppTexts.register.registerButtonText),
                           ),
                           SizedBox(height: 30),
                           Wrap(

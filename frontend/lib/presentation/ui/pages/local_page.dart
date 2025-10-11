@@ -248,9 +248,9 @@ class ActivityDetailPage extends StatelessWidget {
                             ),
                             const SizedBox(
                                 width: 16), // espaço entre título e botão
-                            ElevatedButton.icon(
+                            FilledButton.icon(
                               onPressed: () {},
-                              style: ElevatedButton.styleFrom(
+                              style: FilledButton.styleFrom(
                                 backgroundColor: const Color(0xFFAEE3C9),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),

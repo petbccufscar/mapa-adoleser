@@ -8,7 +8,6 @@ import 'package:mapa_adoleser/domain/models/user_model.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_date_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
@@ -251,10 +250,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Wrap(
                       spacing: 16,
                       children: [
-                        CustomButton(
-                          text: isEditing
-                              ? AppTexts.profile.cancelButtonText
-                              : AppTexts.profile.editButtonText,
+                        FilledButton(
                           onPressed: () {
                             setState(() {
                               if (isEditing) {
@@ -265,10 +261,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               isEditing = !isEditing;
                             });
                           },
+                          child: Text(isEditing
+                              ? AppTexts.profile.cancelButtonText
+                              : AppTexts.profile.editButtonText),
                         ),
                         if (isEditing)
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
+                          FilledButton(
+                            style: FilledButton.styleFrom(
                               backgroundColor: Colors.green,
                               foregroundColor: Colors.white,
                             ),
