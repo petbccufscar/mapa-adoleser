@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:mapa_adoleser/core/theme/app_button_styles.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/carousel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
+import 'package:mapa_adoleser/providers/activity_provider.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-class ActivityPage extends StatelessWidget {
+class ActivityPage extends StatefulWidget {
   final String id;
 
   const ActivityPage({
-    super.key,
     required this.id,
+    super.key,
   });
 
+  @override
+  State<ActivityPage> createState() => _ActivityPageState();
+}
+
+class _ActivityPageState extends State<ActivityPage> {
   // helper para tags (chips coloridos sem ícone)
   Widget _tag(BuildContext context, String label, Color bgColor) {
     return Container(
@@ -319,8 +324,26 @@ class ActivityPage extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    context.read<ActivityProvider>().getActivityById(widget.id);
+  }
+
+  @override
+  void didUpdateWidget(covariant ActivityPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // se o :id mudar sem desmontar a página, recarrega
+    if (oldWidget.id != widget.id) {
+      context.read<ActivityProvider>().getActivityById(widget.id);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final activityProvider = context.watch<ActivityProvider>();
 
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: auth.isLoggedIn),
@@ -345,7 +368,8 @@ class ActivityPage extends StatelessWidget {
                         children: [
                           // título e endereço
                           Text(
-                            "Praça do Kartódromo",
+                            activityProvider.activity?.name ??
+                                'Nome da Atividade',
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineMedium

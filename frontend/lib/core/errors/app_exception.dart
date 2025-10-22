@@ -8,6 +8,14 @@ abstract class AppException implements Exception {
   String toString() => message;
 }
 
+class InvalidParameterException extends AppException {
+  InvalidParameterException([super.message = 'Parâmetro inválido']);
+}
+
+class FetchDataException extends AppException {
+  FetchDataException([super.message = 'Erro ao buscar dados']);
+}
+
 class ContactException extends AppException {
   ContactException([super.message = 'Erro ao enviar seu contato :(']);
 }
