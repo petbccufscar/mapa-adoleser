@@ -1,16 +1,16 @@
 /// Contém constantes reutilizáveis na aplicação, como strings, tamanhos, margens, etc.
 class ResponsivePaddings {
-  static const double modalHorizontalPhone = 20.0;
-  static const double modalHorizontalTablet = 30.0;
-  static const double modalHorizontalTableLarge = 30.0;
-  static const double modalHorizontalDesktop = 30.0;
-  static const double modalHorizontalDesktopLarge = 30.0;
+  static const double modalHorizontalPhone = 16.0;
+  static const double modalHorizontalTablet = 32.0;
+  static const double modalHorizontalTableLarge = 32.0;
+  static const double modalHorizontalDesktop = 32.0;
+  static const double modalHorizontalDesktopLarge = 32.0;
 
-  static const double modalVerticalPhone = 35.0;
-  static const double modalVerticalTablet = 35.0;
-  static const double modalVerticalTableLarge = 35.0;
-  static const double modalVerticalDesktop = 35.0;
-  static const double modalVerticalDesktopLarge = 35.0;
+  static const double modalVerticalPhone = 20.0;
+  static const double modalVerticalTablet = 32.0;
+  static const double modalVerticalTableLarge = 32.0;
+  static const double modalVerticalDesktop = 32.0;
+  static const double modalVerticalDesktopLarge = 32.0;
 
   static const double horizontalPhone = 16.0;
   static const double horizontalTablet = 32.0;
@@ -21,8 +21,8 @@ class ResponsivePaddings {
   static const double verticalPhone = 16.0;
   static const double verticalTablet = 32.0;
   static const double verticalTableLarge = 32.0;
-  static const double verticalDesktop = 48.0;
-  static const double verticalDesktopLarge = 48.0;
+  static const double verticalDesktop = 32.0;
+  static const double verticalDesktopLarge = 32.0;
 }
 
 class AppDimensions {
@@ -290,8 +290,7 @@ class _RegisterTexts {
   // Termos e políticas
   final termsAgreementText =
       'Ao marcar esta caixa, você concorda com nossos Termos de Uso e Política de Privacidade.';
-  final termsOfUseLabel = 'Termos de Uso';
-  final privacyPolicyLabel = 'Política de Privacidade';
+  final termsLabel = 'Termos de Uso e Política de Privacidade';
 }
 
 class _HomeTexts {

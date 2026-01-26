@@ -19,57 +19,48 @@ class AboutPage extends StatelessWidget {
       endDrawer: ResponsiveUtils.shouldShowDrawer(context)
           ? CustomDrawer(isLoggedIn: authProvider.isLoggedIn)
           : null,
-      body: Center(
-        child: SingleChildScrollView(
-          child: ResponsivePageWrapper(
-            child: Wrap(
-              spacing: 100,
-              runSpacing: 50,
+      body: SingleChildScrollView(
+        padding: ResponsiveUtils.pagePadding(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 450),
-                  child: Column(
-                    spacing: 20,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        AppTexts.about.aboutAdoleserTitle,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      Text(
-                        AppTexts.about.aboutAdoleserParagraph,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textAlign: TextAlign.justify,
-                      ),
-                      SizedBox(height: 10),
-                      Image.asset(
-                        'assets/images/megafonetexto.png',
-                        height: 200,
-                      ),
-                    ],
-                  ),
+                Text(
+                  AppTexts.about.aboutAdoleserTitle,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 450),
-                  child: Column(
-                    spacing: 20,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        AppTexts.about.aboutPETBCCTitle,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      Text(
-                        AppTexts.about.aboutPETBCCParagraph,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textAlign: TextAlign.justify,
-                      ),
-                    ],
-                  ),
+                const SizedBox(height: 15),
+                SelectableText(
+                  AppTexts.about.aboutAdoleserParagraph,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.justify,
+                ),
+                const SizedBox(height: 10),
+                Image.asset(
+                  'assets/images/megafonetexto.png',
+                  height: 200,
                 ),
               ],
             ),
-          ),
+            const SizedBox(height: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  AppTexts.about.aboutPETBCCTitle,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 15),
+                SelectableText(
+                  AppTexts.about.aboutPETBCCParagraph,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.justify,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

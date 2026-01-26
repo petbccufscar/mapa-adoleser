@@ -126,17 +126,22 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              AppTexts.profile.title,
-              style: Theme.of(context).textTheme.headlineLarge,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  AppTexts.profile.title,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  AppTexts.profile.subtitle,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.start,
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            Text(
-              AppTexts.profile.subtitle,
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.start,
-            ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
             ModalWrapper(
               child: Form(
                 key: _formKey,
@@ -280,7 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             ModalWrapper(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -289,6 +294,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 30),
                   ActionText(
+                    text: 'Termos de Uso e Política de Privacidade',
+                    color: AppColors.purpleLight,
+                    onTap: () {},
+                    underlined: true,
+                  ),
+                  const SizedBox(height: 12),
+                  ActionText(
                     text: 'Alterar senha',
                     color: AppColors.purpleLight,
                     onTap: () {
@@ -296,24 +308,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     underlined: true,
                   ),
-                  const SizedBox(height: 12),
-                  ActionText(
-                    text: 'Política de Privacidade',
-                    color: AppColors.purpleLight,
-                    onTap: () {},
-                    underlined: true,
-                  ),
-                  const SizedBox(height: 12),
-                  ActionText(
-                    text: 'Termos de Uso',
-                    color: AppColors.purpleLight,
-                    onTap: () {},
-                    underlined: true,
-                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             ModalWrapper(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -332,7 +330,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-            const SizedBox(height: 30),
           ],
         ),
       ),

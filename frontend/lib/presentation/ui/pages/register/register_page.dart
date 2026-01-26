@@ -232,29 +232,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           ),
                           const SizedBox(height: 12),
-                          Wrap(
-                            alignment: WrapAlignment.center,
-                            spacing: 15,
-                            runSpacing: 10,
-                            direction: Axis.horizontal,
-                            children: [
-                              ActionText(
-                                text: AppTexts.register.termsOfUseLabel,
-                                onTap: () {
-                                  context.go('/');
-                                },
-                                underlined: true,
-                                boldOnHover: true,
-                              ),
-                              ActionText(
-                                text: AppTexts.register.privacyPolicyLabel,
-                                onTap: () {
-                                  context.go('/');
-                                },
-                                underlined: true,
-                                boldOnHover: true,
-                              ),
-                            ],
+                          ActionText(
+                            alignment: TextAlign.center,
+                            text: AppTexts.register.termsLabel,
+                            onTap: () {
+                              context.go('/');
+                            },
+                            underlined: true,
+                            boldOnHover: true,
                           ),
                           if (registerProvider.error != null) ...[
                             const SizedBox(height: 30),
