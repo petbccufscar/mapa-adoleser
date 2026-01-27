@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/profile_service.dart';
-import 'package:mapa_adoleser/domain/models/delete_account_check_account_request_model.dart';
-import 'package:mapa_adoleser/domain/models/delete_account_check_code_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/delete_account_check_account_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/delete_account_check_code_request_model.dart';
 
 class DeleteAccountProvider extends ChangeNotifier {
   final ProfileService _profileService = ProfileService();

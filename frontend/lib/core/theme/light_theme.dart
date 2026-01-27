@@ -79,12 +79,12 @@ ThemeData lightTheme = ThemeData(
     headlineLarge: TextStyle(
       color: AppColors.purple,
       fontSize: 32,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w900,
     ),
     headlineMedium: TextStyle(
       color: AppColors.textPrimary,
       fontSize: 24,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w900,
     ),
     headlineSmall: TextStyle(
       color: AppColors.textPrimary,
@@ -101,12 +101,12 @@ ThemeData lightTheme = ThemeData(
       fontWeight: FontWeight.w500,
     ),
     bodyLarge: TextStyle(
-      color: AppColors.textPrimary,
+      color: AppColors.textSecondary,
       fontSize: 16,
       fontWeight: FontWeight.w400,
     ),
     bodyMedium: TextStyle(
-      color: AppColors.textPrimary,
+      color: AppColors.textSecondary,
       fontSize: 14,
       fontWeight: FontWeight.w400,
     ),

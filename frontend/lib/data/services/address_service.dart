@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:mapa_adoleser/domain/models/address_response_model.dart';
+import 'package:mapa_adoleser/domain/responses/address_response_model.dart';
 
 class AddressService {
   Future<AddressResponseModel> searchCEP(String cep) async {

@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/auth_service.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_check_code_request_model.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
-import 'package:mapa_adoleser/domain/models/reset_password_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/forgot_password_check_code_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/forgot_password_email_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/reset_password_request_model.dart';
 
 class RecoveryPasswordProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();

@@ -1,6 +1,6 @@
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
-import 'package:mapa_adoleser/domain/models/contact_request_model.dart';
-import 'package:mapa_adoleser/domain/models/contact_response_model.dart';
+import 'package:mapa_adoleser/domain/requests/contact_request_model.dart';
+import 'package:mapa_adoleser/domain/responses/contact_response_model.dart';
 import 'package:mapa_adoleser/domain/models/subject_model.dart';
 
 class ContactService {

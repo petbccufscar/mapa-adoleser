@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/contact_service.dart';
-import 'package:mapa_adoleser/domain/models/contact_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/contact_request_model.dart';
 import 'package:mapa_adoleser/domain/models/subject_model.dart';
 
 class ContactProvider extends ChangeNotifier {

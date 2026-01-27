@@ -1,15 +1,15 @@
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
-import 'package:mapa_adoleser/domain/models/change_password_request_model.dart';
-import 'package:mapa_adoleser/domain/models/change_password_response_model.dart';
-import 'package:mapa_adoleser/domain/models/check_current_password_response_model.dart';
-import 'package:mapa_adoleser/domain/models/check_current_password_resquest_model.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_check_code_request_model.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_check_code_response_model.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_email_request_model.dart';
-import 'package:mapa_adoleser/domain/models/login_request_model.dart';
-import 'package:mapa_adoleser/domain/models/register_request_model.dart';
-import 'package:mapa_adoleser/domain/models/forgot_password_email_response_model.dart';
-import 'package:mapa_adoleser/domain/models/reset_password_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/change_password_request_model.dart';
+import 'package:mapa_adoleser/domain/responses/change_password_response_model.dart';
+import 'package:mapa_adoleser/domain/responses/check_current_password_response_model.dart';
+import 'package:mapa_adoleser/domain/requests/check_current_password_resquest_model.dart';
+import 'package:mapa_adoleser/domain/requests/forgot_password_check_code_request_model.dart';
+import 'package:mapa_adoleser/domain/responses/forgot_password_check_code_response_model.dart';
+import 'package:mapa_adoleser/domain/requests/forgot_password_email_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/login_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/register_request_model.dart';
+import 'package:mapa_adoleser/domain/responses/forgot_password_email_response_model.dart';
+import 'package:mapa_adoleser/domain/requests/reset_password_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
 
 class AuthService {

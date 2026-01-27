@@ -1,9 +1,9 @@
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
-import 'package:mapa_adoleser/domain/models/delete_account_check_account_request_model.dart';
-import 'package:mapa_adoleser/domain/models/delete_account_check_account_response_model.dart';
-import 'package:mapa_adoleser/domain/models/delete_account_check_code_request_model.dart';
-import 'package:mapa_adoleser/domain/models/delete_account_check_code_response_model.dart';
-import 'package:mapa_adoleser/domain/models/update_profile_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/delete_account_check_account_request_model.dart';
+import 'package:mapa_adoleser/domain/responses/delete_account_check_account_response_model.dart';
+import 'package:mapa_adoleser/domain/requests/delete_account_check_code_request_model.dart';
+import 'package:mapa_adoleser/domain/responses/delete_account_check_code_response_model.dart';
+import 'package:mapa_adoleser/domain/requests/update_profile_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
 
 class ProfileService {

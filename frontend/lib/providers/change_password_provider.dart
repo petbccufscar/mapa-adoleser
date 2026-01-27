@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/auth_service.dart';
-import 'package:mapa_adoleser/domain/models/change_password_request_model.dart';
-import 'package:mapa_adoleser/domain/models/change_password_response_model.dart';
-import 'package:mapa_adoleser/domain/models/check_current_password_response_model.dart';
-import 'package:mapa_adoleser/domain/models/check_current_password_resquest_model.dart';
+import 'package:mapa_adoleser/domain/requests/change_password_request_model.dart';
+import 'package:mapa_adoleser/domain/responses/change_password_response_model.dart';
+import 'package:mapa_adoleser/domain/responses/check_current_password_response_model.dart';
+import 'package:mapa_adoleser/domain/requests/check_current_password_resquest_model.dart';
 
 class ChangePasswordProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
