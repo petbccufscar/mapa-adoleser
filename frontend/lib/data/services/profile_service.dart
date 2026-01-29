@@ -5,6 +5,7 @@ import 'package:mapa_adoleser/domain/requests/delete_account_check_code_request_
 import 'package:mapa_adoleser/domain/responses/delete_account_check_code_response_model.dart';
 import 'package:mapa_adoleser/domain/requests/update_profile_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
+import 'package:mapa_adoleser/domain/responses/delete_account_response_model.dart';
 
 class ProfileService {
   Future<UserModel> updateProfile(UpdateProfileRequestModel data) async {
@@ -59,5 +60,20 @@ class ProfileService {
     };
 
     return DeleteAccountCheckCodeResponseModel.fromJson(mockResponse);
+  }
+
+  Future<DeleteAccountResponseModel?> deleteAccount(String id) async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (id != "123456") {
+      throw AuthException('Erro ao excluir a conta!');
+    }
+
+    // Simulando resposta da API
+    final mockResponse = {
+      'success': true,
+    };
+
+    return DeleteAccountResponseModel.fromJson(mockResponse);
   }
 }

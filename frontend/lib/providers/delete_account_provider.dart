@@ -4,6 +4,7 @@ import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/profile_service.dart';
 import 'package:mapa_adoleser/domain/requests/delete_account_check_account_request_model.dart';
 import 'package:mapa_adoleser/domain/requests/delete_account_check_code_request_model.dart';
+import 'package:mapa_adoleser/domain/responses/delete_account_response_model.dart';
 
 class DeleteAccountProvider extends ChangeNotifier {
   final ProfileService _profileService = ProfileService();
@@ -80,15 +81,16 @@ class DeleteAccountProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteAccount(String code) async {
+  Future<bool> deleteAccount(String id) async {
     _loading = true;
     _error = null;
 
     notifyListeners();
 
+    DeleteAccountResponseModel? result;
+
     try {
-      // TODO: Implementar a lógica de exclusão de conta
-      //await _authService.deleteAccount(request);
+      result = await _profileService.deleteAccount(id);
     } catch (e) {
       _error = parseException(e);
     }
@@ -96,5 +98,7 @@ class DeleteAccountProvider extends ChangeNotifier {
     _loading = false;
 
     notifyListeners();
+
+    result?.success ?? false;
   }
 }

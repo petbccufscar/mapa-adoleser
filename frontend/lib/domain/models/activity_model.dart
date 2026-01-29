@@ -13,6 +13,7 @@ class ActivityModel {
   final String name;
   final String address;
   final String description;
+  final String contact;
 
   final List<CategoryModel> categories;
   final List<ReviewModel> reviews;
@@ -24,20 +25,16 @@ class ActivityModel {
 
   final String accessibility;
 
-  final String phone;
-  final String website;
-
   ActivityModel({
     required this.id,
     required this.name,
     required this.address,
     required this.description,
+    required this.contact,
     required this.categories,
     required this.operatingHours,
     required this.ageRange,
     required this.accessibility,
-    required this.phone,
-    required this.website,
     required this.reviews,
     required this.instances,
     required this.related,
@@ -68,6 +65,7 @@ class ActivityModel {
       name: response.name,
       address: response.address,
       description: response.description,
+      contact: response.contact,
       categories: categoryModels,
       reviews: reviewModels,
       instances: instanceModels,
@@ -82,8 +80,6 @@ class ActivityModel {
         end: response.ageRangeEnd,
       ),
       accessibility: response.accessibility,
-      phone: response.phone,
-      website: response.website,
     );
   }
 }

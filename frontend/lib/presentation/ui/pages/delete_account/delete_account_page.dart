@@ -144,11 +144,15 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
     await deleteAccountProvider.deleteAccount(_codeController.text);
 
-    if (mounted && deleteAccountProvider.error == null) {
-      setState(() {
-        _currentIndex = 3;
-      });
-    }
+    await deleteAccountProvider
+        .deleteAccount(_passwordController.text)
+        .then((bool? success) {
+      if (success != null && mounted && success) {
+        setState(() {
+          _currentIndex = 3;
+        });
+      }
+    });
   }
 
   @override

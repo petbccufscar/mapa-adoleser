@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/colors_utils.dart';
 import 'package:mapa_adoleser/domain/models/activity_model.dart';
 import 'package:mapa_adoleser/domain/models/category_model.dart';
 import 'package:mapa_adoleser/domain/models/instance_activity_model.dart';
+import 'package:mapa_adoleser/domain/models/related_activity_model.dart';
 import 'package:mapa_adoleser/domain/models/review_model.dart';
 import 'package:mapa_adoleser/presentation/ui/responsive_page_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/carousel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
+import 'package:mapa_adoleser/presentation/ui/widgets/horizontal_arrow_list.dart';
 import 'package:mapa_adoleser/providers/activity_provider.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +48,7 @@ class _CategoryChip extends StatelessWidget {
       ),
       child: Text(
         category.name,
-        style: Theme.of(context).textTheme.bodyMedium,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }
@@ -61,16 +64,80 @@ class _InstanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundWhite, // fundo claro do card
+    return Material(
+      color: AppColors.backgroundWhite,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        border: BoxBorder.all(color: AppColors.border, width: 1),
+        onTap: () {
+          context.go('/instanscia/${instance.id}');
+        },
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppColors.border,
+              width: 1,
+            ),
+          ),
+          child: Text(
+            instance.name,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
       ),
-      child: Text(
-        instance.name,
-        style: Theme.of(context).textTheme.bodyMedium,
+    );
+  }
+}
+
+class _RelatedActivityCard extends StatelessWidget {
+  final RelatedActivityModel activity;
+
+  const _RelatedActivityCard({
+    required this.activity,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.backgroundWhite,
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () {
+          context.go('/atividade/${activity.id}');
+        },
+        child: Container(
+          height: double.infinity,
+          width: 220,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColors.border),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                activity.name,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  const Icon(Icons.star_rounded, color: Colors.amber, size: 16),
+                  const SizedBox(width: 2),
+                  Text(
+                    "${activity.averageRating} - (${activity.ratingCount} avaliações)",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -87,50 +154,50 @@ class _ReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+      width: 350,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.backgroundWhite, // fundo claro do card
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         border: BoxBorder.all(color: AppColors.border, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(review.name, style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(width: 8),
+              Text(
+                review.name,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(width: 10),
               Row(
                 children: List.generate(
                   5,
                   (i) => Icon(
                     i < review.rating.floor()
-                        ? Icons.star
+                        ? Icons.star_rounded
                         : (i < review.rating
-                            ? Icons.star_half
-                            : Icons.star_border),
+                            ? Icons.star_half_rounded
+                            : Icons.star_border_rounded),
                     color: Colors.amber,
                     size: 18,
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
-              Text(
-                '${review.rating.toStringAsFixed(1)} / 5',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Há 2 dias',
-                style: Theme.of(context).textTheme.bodySmall,
+              Expanded(
+                child: Text(
+                  textAlign: TextAlign.end,
+                  'Há 2 dias',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 10),
           Text(
             review.comment,
-            maxLines: 4,
+            maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context)
                 .textTheme
@@ -150,6 +217,49 @@ class _MainColumn extends StatelessWidget {
     required this.activity,
   });
 
+  double calculateAverageRating(List<ReviewModel> reviews) {
+    if (reviews.isEmpty) return 0;
+
+    final total = reviews.fold<double>(
+      0,
+      (sum, review) => sum + review.rating,
+    );
+
+    return total / reviews.length;
+  }
+
+  List<Widget> buildStars(double average) {
+    const totalStars = 5;
+
+    final fullStars = average.floor();
+    final decimal = average - fullStars;
+
+    final hasHalfStar = decimal >= 0.25 && decimal < 0.75;
+    final extraFullStar = decimal >= 0.75 ? 1 : 0;
+
+    final filledStars = fullStars + extraFullStar;
+    final emptyStars = totalStars - filledStars - (hasHalfStar ? 1 : 0);
+
+    return [
+      // estrelas cheias
+      ...List.generate(
+        filledStars,
+        (_) => const Icon(Icons.star_rounded, color: Colors.amber, size: 18),
+      ),
+
+      // meia estrela
+      if (hasHalfStar)
+        const Icon(Icons.star_half_rounded, color: Colors.amber, size: 18),
+
+      // estrelas vazias
+      ...List.generate(
+        emptyStars,
+        (_) => const Icon(Icons.star_border_rounded,
+            color: Colors.amber, size: 18),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -164,7 +274,7 @@ class _MainColumn extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 20),
-            Text(
+            SelectableText(
               activity?.description ?? "-",
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.justify,
@@ -183,19 +293,17 @@ class _MainColumn extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 20),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: activity?.instances.map(
-                    (instance) {
-                      return _InstanceCard(
-                        key: ValueKey(instance.id),
-                        instance: instance,
-                      );
-                    },
-                  ).toList() ??
-                  [],
-            ),
+            if (activity != null)
+              HorizontalArrowList(
+                height: 60,
+                itemCount: activity!.instances.length,
+                itemBuilder: (context, index) {
+                  return _InstanceCard(
+                    instance: activity!.instances[index],
+                    key: ValueKey(activity!.instances[index].id),
+                  );
+                },
+              )
           ],
         ),
 
@@ -220,41 +328,32 @@ class _MainColumn extends StatelessWidget {
                 )
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Row(
               children: [
-                ...List.generate(
-                    5,
-                    (idx) =>
-                        const Icon(Icons.star, color: Colors.amber, size: 20)),
-                if (5 - 1 > 0)
-                  const Icon(Icons.star_half, color: Colors.amber, size: 20),
-                ...List.generate(
-                    0,
-                    (idx) => const Icon(Icons.star_border,
-                        color: Colors.amber, size: 20)),
+                Text(
+                  'Média: ${calculateAverageRating(activity!.reviews).toStringAsFixed(1)}',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 const SizedBox(width: 12),
-                Expanded(
-                  child: Text("Quantidade: 5 avaliações Média: 58"),
-                )
+                Text(
+                  'Quantidade: ${activity!.reviews.length}',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ],
             ),
             const SizedBox(height: 20),
-
-            // cards de avaliações
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: activity?.reviews.map(
-                    (review) {
-                      return _ReviewCard(
-                        key: ValueKey(review.id),
-                        review: review,
-                      );
-                    },
-                  ).toList() ??
-                  [],
-            ),
+            if (activity != null)
+              HorizontalArrowList(
+                height: 135,
+                itemCount: activity!.reviews.length,
+                itemBuilder: (context, index) {
+                  return _ReviewCard(
+                    review: activity!.reviews[index],
+                    key: ValueKey(activity!.reviews[index].id),
+                  );
+                },
+              )
           ],
         ),
 
@@ -269,18 +368,17 @@ class _MainColumn extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 20),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: activity?.related.map(
-                    (realted) {
-                      return Text(
-                        realted.name,
-                      );
-                    },
-                  ).toList() ??
-                  [],
-            ),
+            if (activity != null)
+              HorizontalArrowList(
+                height: 250,
+                itemCount: activity!.related.length,
+                itemBuilder: (context, index) {
+                  return _RelatedActivityCard(
+                    activity: activity!.related[index],
+                    key: ValueKey(activity!.related[index].id),
+                  );
+                },
+              )
           ],
         )
       ],
@@ -320,7 +418,7 @@ class _SideColumn extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 5),
-            Text(
+            SelectableText(
               activity?.operatingHours.displayText ?? "-",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -330,7 +428,7 @@ class _SideColumn extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 5),
-            Text(
+            SelectableText(
               activity?.ageRange.displayText ?? "-",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -340,34 +438,20 @@ class _SideColumn extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 5),
-            Text(
+            SelectableText(
               activity?.accessibility ?? "-",
               style: Theme.of(context).textTheme.bodyMedium,
-            )
-          ],
-        ),
-        const SizedBox(height: 30),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              "Contato",
-              style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 20),
-            FilledButton(
-              onPressed: activity == null ? null : () {},
-              child: Text(
-                activity?.phone ?? "-",
-              ),
+            Text(
+              'Contato',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 5),
-            FilledButton(
-              onPressed: activity == null ? null : () {},
-              child: Text(
-                activity?.website ?? "-",
-              ),
-            ),
+            SelectableText(
+              activity?.contact ?? "-",
+              style: Theme.of(context).textTheme.bodyMedium,
+            )
           ],
         ),
         const SizedBox(height: 30),
@@ -422,13 +506,15 @@ class _ActivityPageState extends State<ActivityPage> {
     return Scaffold(
       appBar: CustomAppBar(isLoggedIn: auth.isLoggedIn),
       endDrawer: CustomDrawer(isLoggedIn: auth.isLoggedIn),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Carrossel com imagens da atividade
-            Carousel(),
+      body: CustomScrollView(
+        slivers: [
+          // Carrossel com imagens da atividade
+          SliverToBoxAdapter(
+            child: Carousel(),
+          ),
 
-            ResponsivePageWrapper(
+          SliverToBoxAdapter(
+            child: ResponsivePageWrapper(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -441,7 +527,7 @@ class _ActivityPageState extends State<ActivityPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // título e endereço
-                          Text(
+                          SelectableText(
                             activityProvider.activity?.name ??
                                 'Nome da Atividade',
                             style: Theme.of(context).textTheme.headlineMedium,
@@ -449,7 +535,7 @@ class _ActivityPageState extends State<ActivityPage> {
 
                           const SizedBox(height: 10),
 
-                          Text(
+                          SelectableText(
                             activityProvider.activity?.address ??
                                 'Endereço da Atividade',
                             style: Theme.of(context).textTheme.bodyLarge,
@@ -528,8 +614,8 @@ class _ActivityPageState extends State<ActivityPage> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

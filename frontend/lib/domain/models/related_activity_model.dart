@@ -3,14 +3,12 @@ import 'package:mapa_adoleser/domain/responses/related_activity_response_model.d
 class RelatedActivityModel {
   final String id;
   final String name;
-  final String address;
   final double averageRating;
   final int ratingCount;
 
   RelatedActivityModel({
     required this.id,
     required this.name,
-    required this.address,
     required this.averageRating,
     required this.ratingCount,
   });
@@ -19,7 +17,6 @@ class RelatedActivityModel {
     return RelatedActivityModel(
       id: json['id'],
       name: json['name'],
-      address: json['address'],
       averageRating: (json['averageRating'] as num).toDouble(),
       ratingCount: json['ratingCount'],
     );
@@ -30,7 +27,6 @@ class RelatedActivityModel {
     return RelatedActivityModel(
         id: response.id,
         name: response.name,
-        address: response.address,
         averageRating: response.averageRating,
         ratingCount: response.ratingCount);
   }

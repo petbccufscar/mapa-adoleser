@@ -4,8 +4,6 @@ import 'package:mapa_adoleser/domain/responses/category_response_model.dart';
 class CategoryService {
   Future<List<CategoryResponseModel>> getCategoriesByActivityId(
       String id) async {
-    await Future.delayed(const Duration(seconds: 2));
-
     if (id.trim().isEmpty) {
       throw InvalidParameterException('ID da instância não pode ser vazio');
     }
@@ -38,8 +36,6 @@ class CategoryService {
 
   Future<List<CategoryResponseModel>> getCategoriesByInstanceId(
       String id) async {
-    await Future.delayed(const Duration(seconds: 2));
-
     if (id.trim().isEmpty) {
       throw InvalidParameterException('ID da instância não pode ser vazio');
     }
