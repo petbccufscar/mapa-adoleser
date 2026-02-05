@@ -61,7 +61,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ('email', 'name', 'birth_date')
+        fields = ('email', 'name', 'birth_date', 'username')
         extra_kwargs = {
             'email': {'required': False},
             'name': {'required': False},
@@ -107,16 +107,24 @@ class ActivitySerializer(serializers.ModelSerializer):
         model = Activity
         fields = ['id', 'name', 'description', 'nota', 'location', 'horario']
 
-        def validate_nota(self, value):
-            if value < 0 or value > 10:
-                raise serializers.ValidationError("The grade needs to be between 0 and 10.")
-            return value
+    def validate_nota(self, value):
+        if value < 0 or value > 10:
+            raise serializers.ValidationError("The grade needs to be between 0 and 10.")
+        return value
         
-        def validate_horario(self, value):
-            if value and value < timezone.now():
-                raise serializers.ValidationError("The start time cannot be in the past.")
-            return value
+    def validate_horario(self, value):
+        if value and value < timezone.now():
+            raise serializers.ValidationError("The start time cannot be in the past.")
+        return value
 
+
+
+
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['new_password'])
+        instance.save()
+        return instance
 
 class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
