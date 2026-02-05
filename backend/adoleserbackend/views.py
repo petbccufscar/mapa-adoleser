@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
 
-from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
 
 from .models import User, Location,  LocationReview, Activity, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
@@ -78,6 +78,26 @@ class ActivityViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)  # Define o usuário logado como autor da atividade
+
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    model = User
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer( instance=self.object, data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response({"detail": "Senha atualizada com sucesso."}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PasswordResetRequestView(GenericAPIView):
     permission_classes = [AllowAny]
