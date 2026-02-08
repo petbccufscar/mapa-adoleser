@@ -10,7 +10,8 @@ from .views import (
     PasswordResetConfirmView,
     ActivityViewSet,
     LocationReviewViewSet,
-    ActivityReviewViewSet
+    ActivityReviewViewSet,
+    CategoryListView
 )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -28,6 +29,7 @@ urlpatterns = [
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),    # Refresh token
     path('logout/', LogoutView.as_view(), name='user_logout'),
     path('profile/', UserProfileView.as_view(), name='user_profile'),
+    path('categories/', CategoryListView.as_view(), name='category-list'),
     
     # Recuperação de senha
     path('password-reset/request/', PasswordResetRequestView.as_view(), name='password_reset_request'),

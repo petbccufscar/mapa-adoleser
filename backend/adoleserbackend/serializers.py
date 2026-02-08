@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
-from .models import User, Location, LocationReview, Activity, ActivityReview
+from .models import User, Location, LocationReview, Category, Activity, ActivityReview
 from .utils import (
     set_password_reset_code,
     send_password_reset_email,
@@ -101,11 +101,24 @@ class LocationSerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError("Address cannot be empty.")
         return value
-    
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
+
+
 class ActivitySerializer(serializers.ModelSerializer):
+
+    #SlugRelatdField:
+        #GET envia nome da da categoria
+        #POST recebe nome e transforma em id da categoria
+    categories = serializers.SlugRelatedField(many=True, queryset=Category.objects.all(), slug_field='name')
     class Meta:
         model = Activity
-        fields = ['id', 'name', 'description', 'nota', 'location', 'horario']
+        fields = ['id', 'name', 'description', 'nota', 'location', 'horario', 'categories',
+                  'registration_mode', 'contact_email', 'contact_phone', 'contact_socialnetwork',]
 
         def validate_nota(self, value):
             if value < 0 or value > 10:
@@ -116,6 +129,7 @@ class ActivitySerializer(serializers.ModelSerializer):
             if value and value < timezone.now():
                 raise serializers.ValidationError("The start time cannot be in the past.")
             return value
+
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):
@@ -189,4 +203,5 @@ class ActivityReviewSerializer(serializers.ModelSerializer):
         if not 0 <= value <= 10:
             raise serializers.ValidationError("The grade needs to be between 0 and 10.")
         return value
+
 

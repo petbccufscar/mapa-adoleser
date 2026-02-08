@@ -54,6 +54,14 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Activity(models.Model):
     id = models.UUIDField(primary_key=True,
         default=uuid.uuid4, editable=False)
@@ -62,6 +70,13 @@ class Activity(models.Model):
     nota = models.FloatField(default=0.0, editable=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     horario = models.DateTimeField("Start Time", default=timezone.now)
+    categories = models.ManyToManyField(Category, related_name='activities', blank=True)   #tags
+    registration_mode = models.TextField(max_length=255, blank=True, null=True)
+
+    contact_email = models.EmailField(blank=True, null=True, verbose_name="Email para contato")
+    contact_phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Telefone / Whatsapp")
+    contact_socialnetwork = models.CharField(max_length=50, blank=True, null=True, verbose_name="Rede Social")
+
     created_by = models.ForeignKey(  # Se o usuário for deletado, o campo fica nulo
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,  # Se o usuário for deletado, o campo fica nulo
@@ -94,3 +109,5 @@ class LocationReview(Review):  # Herda da classe abstrata Review
 # descomentar quando model activity for implementado
 class ActivityReview(Review):  # Herda da classe abstrata Review
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+
+
