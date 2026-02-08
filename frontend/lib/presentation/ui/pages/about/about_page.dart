@@ -64,6 +64,28 @@ class AboutPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                         textAlign: TextAlign.justify,
                       ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Image.asset(
+                              'assets/images/logo_ufscar.png',
+                              height: 125,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Flexible(
+                            child: Image.asset(
+                              'assets/images/pet_logo_azul.png',
+                              height: 225,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ],
+                      ),
+
                     ],
                   ),
                 ),
