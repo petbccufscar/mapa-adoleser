@@ -6,9 +6,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
 
-from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
 
-from .models import User, Location,  LocationReview, Activity, ActivityReview
+
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, CategorySerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
+
+
+from .models import User, Location,  LocationReview, Category, Activity, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
 
 
@@ -99,6 +102,7 @@ class ChangePasswordView(generics.UpdateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PasswordResetRequestView(GenericAPIView):
     permission_classes = [AllowAny]
     serializer_class = PasswordResetRequestSerializer
@@ -144,3 +148,9 @@ class ActivityReviewViewSet(viewsets.ModelViewSet):
     # # salva automaticamente o usuário logado como o autor na review
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class CategoryListView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
