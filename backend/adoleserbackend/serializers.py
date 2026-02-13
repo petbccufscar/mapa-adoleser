@@ -61,7 +61,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ('email', 'name', 'birth_date')
+        fields = ('email', 'name', 'birth_date', 'username')
         extra_kwargs = {
             'email': {'required': False},
             'name': {'required': False},
@@ -120,16 +120,34 @@ class ActivitySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'nota', 'location', 'horario', 'categories',
                   'registration_mode', 'contact_email', 'contact_phone', 'contact_socialnetwork',]
 
-        def validate_nota(self, value):
-            if value < 0 or value > 10:
-                raise serializers.ValidationError("The grade needs to be between 0 and 10.")
-            return value
+    def validate_nota(self, value):
+        if value < 0 or value > 10:
+            raise serializers.ValidationError("The grade needs to be between 0 and 10.")
+        return value
         
-        def validate_horario(self, value):
-            if value and value < timezone.now():
-                raise serializers.ValidationError("The start time cannot be in the past.")
-            return value
+    def validate_horario(self, value):
+        if value and value < timezone.now():
+            raise serializers.ValidationError("The start time cannot be in the past.")
+        return value
 
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, validators=[validate_password])
+
+    def validate_old_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Senha antiga incorreta")
+        return value
+
+
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['new_password'])
+        instance.save()
+        return instance
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):

@@ -6,6 +6,7 @@ from .views import (
     UserProfileView,
     CustomTokenObtainPairView,
     LocationViewSet,
+    ChangePasswordView,
     PasswordResetRequestView,
     PasswordResetConfirmView,
     ActivityViewSet,
@@ -30,6 +31,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='user_logout'),
     path('profile/', UserProfileView.as_view(), name='user_profile'),
     path('categories/', CategoryListView.as_view(), name='category-list'),
+    path('password-change/', ChangePasswordView.as_view(), name='password_change'),
+
     
     # Recuperação de senha
     path('password-reset/request/', PasswordResetRequestView.as_view(), name='password_reset_request'),
