@@ -6,12 +6,13 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
 
-from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
 
 from .models import User, Location,  LocationReview, Activity, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
-from .permissions import IsSuper, IsOwnerReviewOrReadOnly, IsOwnerLocationOrReadOnly
 
+
+from .permissions import IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
@@ -47,7 +48,7 @@ class LogoutView(views.APIView):
         except Exception as e:
             return Response({"error": "Logout failed.", "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-class UserProfileView(generics.RetrieveUpdateAPIView):
+class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
@@ -64,17 +65,39 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
     queryset = Location.objects.all()  # Define o conjunto de dados base
     serializer_class = LocationSerializer # Especifica o serializer que esta view usará
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerLocationOrReadOnly | IsSuper] # Exemplo de permissão
-    # IsAuthenticatedOrReadOnly: Qualquer um pode ler, mas apenas usuários autenticados podem escrever.
-    # Outras opções: permissions.AllowAny, permissions.IsAuthenticated, etc.
+    permission_classes = [IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly] # Exemplo de permissão
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerReviewOrReadOnly | IsSuper]
+    permission_classes = [IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly]
+
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)  # Define o usuário logado como autor da atividade
+        serializer.save(created_by=self.request.user)  # Define o usuário logado como autor da atividade
+
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    model = User
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer( instance=self.object, data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response({"detail": "Senha atualizada com sucesso."}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PasswordResetRequestView(GenericAPIView):
     permission_classes = [AllowAny]
@@ -106,7 +129,7 @@ class PasswordResetConfirmView(GenericAPIView):
 class LocationReviewViewSet(viewsets.ModelViewSet):
     queryset = LocationReview.objects.all()
     serializer_class = LocationReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrSuperOrReadOnly]
 
     #salva automaticamente o usuário logado como o autor na review
     def perform_create(self, serializer):
@@ -116,7 +139,7 @@ class LocationReviewViewSet(viewsets.ModelViewSet):
 class ActivityReviewViewSet(viewsets.ModelViewSet):
     queryset = ActivityReview.objects.all()
     serializer_class = ActivityReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrSuperOrReadOnly]
 
     # # salva automaticamente o usuário logado como o autor na review
     def perform_create(self, serializer):
