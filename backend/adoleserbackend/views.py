@@ -8,10 +8,10 @@ from rest_framework.generics import GenericAPIView
 
 
 
-from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, CategorySerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, CategorySerializer, InstanceSerializer, ActivitySerializer, InstanceReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
 
 
-from .models import User, Location,  LocationReview, Category, Activity, ActivityReview
+from .models import User, Instance,  InstanceReview, Category, Activity, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
 
 
@@ -65,9 +65,9 @@ class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
         return UserSerializer
 
 
-class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
-    queryset = Location.objects.all()  # Define o conjunto de dados base
-    serializer_class = LocationSerializer # Especifica o serializer que esta view usará
+class InstanceViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
+    queryset = Instance.objects.all()  # Define o conjunto de dados base
+    serializer_class = InstanceSerializer # Especifica o serializer que esta view usará
     permission_classes = [IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly] # Exemplo de permissão
 
     def perform_create(self, serializer):
@@ -130,9 +130,9 @@ class PasswordResetConfirmView(GenericAPIView):
             status=status.HTTP_200_OK
         )
 
-class LocationReviewViewSet(viewsets.ModelViewSet):
-    queryset = LocationReview.objects.all()
-    serializer_class = LocationReviewSerializer
+class InstanceReviewViewSet(viewsets.ModelViewSet):
+    queryset = InstanceReview.objects.all()
+    serializer_class = InstanceReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrSuperOrReadOnly]
 
     #salva automaticamente o usuário logado como o autor na review
