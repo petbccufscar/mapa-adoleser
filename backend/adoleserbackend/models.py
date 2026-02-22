@@ -106,7 +106,7 @@ class Review(models.Model):
 class InstanceReview(Review):  # Herda da classe abstrata Review
     instance = models.ForeignKey(Instance, on_delete=models.CASCADE)
 
-# descomentar quando model activity for implementado
+
 class ActivityReview(Review):  # Herda da classe abstrata Review
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
 
