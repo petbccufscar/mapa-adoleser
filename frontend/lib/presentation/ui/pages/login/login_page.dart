@@ -8,7 +8,6 @@ import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/check_box.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
@@ -194,9 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                           const SizedBox(height: 30),
-                          CustomButton(
-                            text: AppTexts.login.loginButtonText,
+                          FilledButton(
                             onPressed: loginProvider.isLoading ? null : _submit,
+                            child: Text(AppTexts.login.loginButtonText),
                           ),
                           const SizedBox(height: 30),
                           Wrap(

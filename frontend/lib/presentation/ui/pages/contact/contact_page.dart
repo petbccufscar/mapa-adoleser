@@ -5,7 +5,6 @@ import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/domain/models/subject_model.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_dropdown_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
@@ -154,9 +153,9 @@ class _ContactPageState extends State<ContactPage> {
                             validator: Validators.isNotEmpty,
                           ),
                           const SizedBox(height: 30),
-                          CustomButton(
-                            text: AppTexts.contact.sendButtonText,
+                          FilledButton(
                             onPressed: contact.isLoading ? null : _submit,
+                            child: Text(AppTexts.contact.sendButtonText),
                           ),
                         ],
                       ),

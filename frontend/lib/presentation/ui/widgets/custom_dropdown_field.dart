@@ -33,7 +33,7 @@ class CustomDropdownField<T> extends StatelessWidget {
           ),
           DropdownButtonFormField<T>(
             icon: const Icon(Icons.keyboard_arrow_down),
-            value: value,
+            initialValue: value,
             items: items.map((item) {
               return DropdownMenuItem<T>(
                 value: item,

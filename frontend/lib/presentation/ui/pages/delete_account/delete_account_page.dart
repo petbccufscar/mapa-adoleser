@@ -8,7 +8,6 @@ import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
@@ -145,11 +144,15 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
     await deleteAccountProvider.deleteAccount(_codeController.text);
 
-    if (mounted && deleteAccountProvider.error == null) {
-      setState(() {
-        _currentIndex = 3;
-      });
-    }
+    await deleteAccountProvider
+        .deleteAccount(_passwordController.text)
+        .then((bool? success) {
+      if (success != null && mounted && success) {
+        setState(() {
+          _currentIndex = 3;
+        });
+      }
+    });
   }
 
   @override
@@ -242,19 +245,23 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
                                 const SizedBox(height: 30),
 
-                                CustomButton(
-                                  text:
-                                      AppTexts.deleteAccount.sendCodeButtonText,
+                                FilledButton(
                                   onPressed: deleteAccountProvider.isLoading
                                       ? null
                                       : _submitCheckAccount,
+                                  child: Text(AppTexts
+                                      .deleteAccount.sendCodeButtonText),
                                 ),
 
                                 const SizedBox(height: 12),
 
-                                CustomButton(
-                                  text: AppTexts.deleteAccount.cancelButtonText,
-                                  onPressed: () => {context.go('/perfil')},
+                                FilledButton(
+                                  onPressed: () {
+                                    context.go('/perfil');
+                                  },
+                                  child: Text(
+                                    AppTexts.deleteAccount.cancelButtonText,
+                                  ),
                                 ),
                               ],
                             ),
@@ -347,7 +354,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                   ),
                                 ],
                                 const SizedBox(height: 30),
-                                ElevatedButton(
+                                FilledButton(
                                   onPressed: (_resendTimer == 0 &&
                                           !deleteAccountProvider.isLoading)
                                       ? _resendCode
@@ -372,19 +379,24 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                   child: Text(_timerText),
                                 ),
                                 const SizedBox(height: 12),
-                                CustomButton(
-                                  text:
-                                      AppTexts.deleteAccount.sendCodeButtonText,
+                                FilledButton(
                                   onPressed: _codeController.text.isNotEmpty &&
                                           _codeController.text.length == 6 &&
                                           !deleteAccountProvider.isLoading
                                       ? _submitCode
                                       : null,
+                                  child: Text(
+                                    AppTexts.deleteAccount.sendCodeButtonText,
+                                  ),
                                 ),
                                 const SizedBox(height: 12),
-                                CustomButton(
-                                  text: AppTexts.deleteAccount.cancelButtonText,
-                                  onPressed: () => {context.go('/perfil')},
+                                FilledButton(
+                                  onPressed: () {
+                                    context.go('/perfil');
+                                  },
+                                  child: Text(
+                                    AppTexts.deleteAccount.cancelButtonText,
+                                  ),
                                 ),
                               ],
                             ),
@@ -423,7 +435,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
                                 const SizedBox(height: 30),
 
-                                ElevatedButton(
+                                FilledButton(
                                   style: Theme.of(context)
                                       .elevatedButtonTheme
                                       .style
@@ -446,8 +458,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
                                 const SizedBox(height: 12),
 
-                                CustomButton(
-                                  text: AppTexts.deleteAccount.cancelButtonText,
+                                FilledButton(
                                   onPressed: deleteAccountProvider.isLoading
                                       ? null
                                       : () {
@@ -455,6 +466,9 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                             context.go('/perfil');
                                           }
                                         },
+                                  child: Text(
+                                    AppTexts.deleteAccount.cancelButtonText,
+                                  ),
                                 ),
                               ],
                             ),
@@ -474,12 +488,12 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 const SizedBox(height: 30),
-                                CustomButton(
-                                  text: AppTexts
-                                      .deleteAccount.returnHomeButtonText,
+                                FilledButton(
                                   onPressed: () {
                                     context.go('/login');
                                   },
+                                  child: Text(AppTexts
+                                      .deleteAccount.returnHomeButtonText),
                                 ),
                               ],
                             ),

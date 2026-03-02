@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/presentation/routes/guards.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/about/about_page.dart';
+import 'package:mapa_adoleser/presentation/ui/pages/activity/activity_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/change_password/change_password_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/contact/contact_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/delete_account/delete_account_page.dart';
@@ -11,6 +13,7 @@ import 'package:mapa_adoleser/presentation/ui/pages/profile/profile_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/recovery_passoword/recovery_password_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/register/register_page.dart';
 import 'package:mapa_adoleser/presentation/ui/pages/search/search_page.dart';
+import 'package:mapa_adoleser/providers/activity_provider.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:mapa_adoleser/providers/change_password_provider.dart';
 import 'package:mapa_adoleser/providers/contact_provider.dart';
@@ -28,7 +31,7 @@ GoRouter createRouter(AuthProvider auth) {
     // TODO: oq é isso?
     refreshListenable: auth,
     debugLogDiagnostics: true,
-    initialLocation: '/perfil',
+    initialLocation: '/atividade/1',
     //errorBuilder: (context, state) => const ErrorPage(),
     redirect: (context, state) => authGuard(auth, state),
     routes: [
@@ -60,6 +63,21 @@ GoRouter createRouter(AuthProvider auth) {
             child: ChangeNotifierProvider(
               create: (_) => ContactProvider(),
               child: const ContactPage(),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        name: 'Atividade',
+        path: '/atividade/:id',
+        pageBuilder: (context, state) {
+          final String id = state.pathParameters['id']!;
+
+          return NoTransitionPage(
+            child: ChangeNotifierProvider(
+              key: ValueKey('activity:$id'),
+              create: (_) => ActivityProvider(),
+              child: ActivityPage(id: id),
             ),
           );
         },

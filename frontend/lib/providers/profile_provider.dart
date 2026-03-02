@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/profile_service.dart';
-import 'package:mapa_adoleser/domain/models/update_profile_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/update_profile_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
 
 class ProfileProvider extends ChangeNotifier {

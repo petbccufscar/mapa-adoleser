@@ -31,6 +31,9 @@ class AppColors {
   static const backgroundSmoke = Color(0xFFEFF2F0);
   static const backgroundWhite = Color(0xFFFDFDFD);
 
+  // Border
+  static const border = Color(0xFFE5E5E5);
+
   // Icon
   static const iconLight = Color(0xFFF6F6F6);
   static const iconDark = Color(0xFF2E1B47);
