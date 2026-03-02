@@ -30,7 +30,7 @@ class User(AbstractUser):
         return self.username
 
 
-class Location(models.Model):
+class Instance(models.Model):
     id = models.UUIDField(primary_key=True,
         default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
@@ -38,7 +38,7 @@ class Location(models.Model):
     nota = models.FloatField(default=0.0, editable=False)
 
     
-    # Adding coordinates and address for the location
+    # Adding coordinates and address for the instance
     address = models.CharField(max_length=500, blank=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=8, null=True, blank=True)
     longitude = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
@@ -47,7 +47,7 @@ class Location(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,   # Se o usuário for deletado, o campo fica nulo
         null=True,
-        related_name='locations'
+        related_name='instances'
     )
 
 
@@ -68,7 +68,7 @@ class Activity(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(max_length=1023)
     nota = models.FloatField(default=0.0, editable=False)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    instance = models.ForeignKey(Instance, on_delete=models.CASCADE)
     horario = models.DateTimeField("Start Time", default=timezone.now)
     categories = models.ManyToManyField(Category, related_name='activities', blank=True)   #tags
     registration_mode = models.TextField(max_length=255, blank=True, null=True)
@@ -103,10 +103,10 @@ class Review(models.Model):
         return f"{self.name} {self.nota}"
 
 
-class LocationReview(Review):  # Herda da classe abstrata Review
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+class InstanceReview(Review):  # Herda da classe abstrata Review
+    instance = models.ForeignKey(Instance, on_delete=models.CASCADE)
 
-# descomentar quando model activity for implementado
+
 class ActivityReview(Review):  # Herda da classe abstrata Review
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
 

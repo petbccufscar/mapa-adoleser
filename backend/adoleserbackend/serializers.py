@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
-from .models import User, Location, LocationReview, Category, Activity, ActivityReview
+from .models import User, Instance, InstanceReview, Category, Activity, ActivityReview
 from .utils import (
     set_password_reset_code,
     send_password_reset_email,
@@ -75,9 +75,9 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         return value
 
 
-class LocationSerializer(serializers.ModelSerializer):
+class InstanceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Location
+        model = Instance
         fields = ['id', 'name', 'description', 'nota', 'address', 'latitude', 'longitude']
 
     def validate_nota(self, value):
@@ -117,7 +117,7 @@ class ActivitySerializer(serializers.ModelSerializer):
     categories = serializers.SlugRelatedField(many=True, queryset=Category.objects.all(), slug_field='name')
     class Meta:
         model = Activity
-        fields = ['id', 'name', 'description', 'nota', 'location', 'horario', 'categories',
+        fields = ['id', 'name', 'description', 'nota', 'instance', 'horario', 'categories',
                   'registration_mode', 'contact_email', 'contact_phone', 'contact_socialnetwork',]
 
     def validate_nota(self, value):
@@ -197,12 +197,12 @@ class PasswordResetSerializer(serializers.Serializer):
         user.save()
         return user
       
-class LocationReviewSerializer(serializers.ModelSerializer):
+class InstanceReviewSerializer(serializers.ModelSerializer):
     #campo user não é enviado por POST, é pego diretamente pelo back (pela funcao implementada na view)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
-        model = LocationReview
-        fields = ['id', 'name', 'description', 'nota', 'user', 'location']
+        model = InstanceReview
+        fields = ['id', 'name', 'description', 'nota', 'user', 'instance']
 
     def validate_nota(self, value):
         if not 0 <= value <= 10:
