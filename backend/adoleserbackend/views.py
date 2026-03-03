@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
 from rest_framework.decorators import action
+from django.db.models import Count
 
 
 
@@ -128,8 +129,25 @@ class ActivityViewSet(viewsets.ModelViewSet):
         serializer = ActivityReviewSerializer(reviews_da_atividade, many=True)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['get'])
+    def related(self, request, pk=None):
+        # recomendações se baseiam unicamente no n° de categorias em comum (desempate segundo nota da atividade)
+        target_activity = self.get_object()
+        target_categories = target_activity.categories.all()
+
+        related_qs = Activity.objects.exclude(id=target_activity.id) \
+            .filter(categories__in=target_categories).annotate(shared_count=Count('categories')) \
+            .order_by('-shared_count', '-nota')[:10]
+
+        serializer = self.get_serializer(related_qs, many=True)
+        return Response(serializer.data)
+
+
+
+
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)  # Define o usuário logado como autor da atividade
+
 
 
 
