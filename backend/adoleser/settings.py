@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django_extensions',
     'drf_yasg',
+    'corsheaders',
     'adoleserbackend',
 ]
 
@@ -51,7 +52,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+""""
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:80",
+]
+
+"""
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

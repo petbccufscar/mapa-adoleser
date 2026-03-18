@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                               hint: AppTexts.login.emailHint,
                               controller: _emailController,
                               textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.emailAddress,
+                              keyboardType: TextInputType.text,
                               validator: Validators.isNotEmpty),
                           const SizedBox(height: 12),
                           CustomPasswordField(
