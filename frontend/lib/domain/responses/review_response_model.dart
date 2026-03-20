@@ -15,11 +15,11 @@ class ReviewResponseModel {
 
   factory ReviewResponseModel.fromJson(Map<String, dynamic> json) {
     return ReviewResponseModel(
-      id: json['id'],
-      name: json['name'],
-      comment: json['comment'],
-      rating: (json['rating'] as num).toDouble(),
-      date: DateTime.parse(json['date']),
+      id: json['id']?.toString() ?? "",
+      name: json['name'] ?? "",
+      comment: json['description'] ?? "",
+      rating: (json['nota'] as num?)?.toDouble() ?? 0.0,
+      date: json['created_at'] != null ? DateTime.tryParse(json['created_at']) ?? DateTime.now() : DateTime.now(),
     );
   }
 }

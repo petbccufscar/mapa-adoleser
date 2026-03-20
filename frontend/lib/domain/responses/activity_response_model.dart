@@ -30,17 +30,18 @@ class ActivityResponseModel {
 
   factory ActivityResponseModel.fromJson(Map<String, dynamic> json) {
     return ActivityResponseModel(
-      id: json['id'],
+      id: json['id'] ?? "",
       name: json['name'] ?? "",
       address: json['address'] ?? "",
       description: json['description'] ?? "",
-      contact: json['contact'] ?? "",
-      operatingStart: json['operatingStart'] ?? "",
-      operatingEnd: json['operatingEnd'] ?? "",
-      operatingDays: List<String>.from(json['operatingDays']),
+      contact: json['contact_phone'] ?? json['contact_email'] ?? json['contact_socialnetwork'] ?? "",
+      operatingStart: json['horario'] != null ? json['horario'].toString().split('T').last.split('.').first : "",
+      operatingEnd: "",
+      operatingDays: [],
       ageRangeStart: json['ageRangeStart'] ?? 0,
       ageRangeEnd: json['ageRangeEnd'] ?? 0,
       accessibility: json['accessibility'] ?? "",
     );
   }
 }
+
