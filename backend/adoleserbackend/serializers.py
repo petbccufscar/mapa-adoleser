@@ -1,3 +1,4 @@
+import re
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
@@ -13,11 +14,17 @@ from .utils import (
 
 UserModel = get_user_model()
 
+# Função que serve para prevenir que o back receba tags como <script> / <h1> / etc
+def validate_no_html_tags(value):
+    if isinstance(value, str) and re.search(r'<[^>]*>', value):
+        raise serializers.ValidationError("Caracteres inválidos detectados. Tags HTML e scripts não são permitidos.")
+    return value
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True, label="Confirm password")
     email = serializers.EmailField(required=True)
-    name = serializers.CharField(required=True)
+    name = serializers.CharField(required=True, validators=[validate_no_html_tags])
 
     class Meta:
         model = UserModel
@@ -59,12 +66,14 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'role', 'date_joined', 'last_login')
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    # protegendo o nome na atualização de perfil
+    name = serializers.CharField(required=False, validators=[validate_no_html_tags])
+
     class Meta:
         model = UserModel
         fields = ('email', 'name', 'birth_date', 'username')
         extra_kwargs = {
             'email': {'required': False},
-            'name': {'required': False},
             'birth_date': {'required': False},
         }
 
@@ -82,7 +91,12 @@ class AddressSerializer(serializers.ModelSerializer):
 
 
 class InstanceSerializer(serializers.ModelSerializer):
+    ## new composite address still need a validator
     address = AddressSerializer()
+    # protegendo os campos de texto da Instância
+    name = serializers.CharField(validators=[validate_no_html_tags])
+    description = serializers.CharField(validators=[validate_no_html_tags])
+    address = serializers.CharField(validators=[validate_no_html_tags])
 
     class Meta:
         model = Instance
@@ -134,16 +148,25 @@ class InstanceSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    #protegendo o campo de texto das Categorias
+    name = serializers.CharField(validators=[validate_no_html_tags])
+
     class Meta:
         model = Category
         fields = ['id', 'name']
 
 
 class ActivitySerializer(serializers.ModelSerializer):
+    # protegendo os campos de texto da Atividade
+    name = serializers.CharField(validators=[validate_no_html_tags])
+    description = serializers.CharField(validators=[validate_no_html_tags])
+    
+    # adicionando validação para os campos de contato (assumindo que possam ser texto livre)
+    registration_mode = serializers.CharField(validators=[validate_no_html_tags], required=False, allow_blank=True, allow_null=True)
+    contact_phone = serializers.CharField(validators=[validate_no_html_tags], required=False, allow_blank=True, allow_null=True)
+    contact_socialnetwork = serializers.CharField(validators=[validate_no_html_tags], required=False, allow_blank=True, allow_null=True)
 
-    #SlugRelatdField:
-        #GET envia nome da da categoria
-        #POST recebe nome e transforma em id da categoria
+
     categories = serializers.SlugRelatedField(many=True, queryset=Category.objects.all(), slug_field='name')
     
     # Read-only attributes for map integration mapping directly from Instance
@@ -177,7 +200,6 @@ class ActivitySerializer(serializers.ModelSerializer):
         return value
 
 
-
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True, validators=[validate_password])
@@ -187,8 +209,6 @@ class ChangePasswordSerializer(serializers.Serializer):
         if not user.check_password(value):
             raise serializers.ValidationError("Senha antiga incorreta")
         return value
-
-
 
     def update(self, instance, validated_data):
         instance.set_password(validated_data['new_password'])
@@ -244,7 +264,10 @@ class PasswordResetSerializer(serializers.Serializer):
         return user
       
 class InstanceReviewSerializer(serializers.ModelSerializer):
-    #campo user não é enviado por POST, é pego diretamente pelo back (pela funcao implementada na view)
+    # protegendo os campos de texto da Review de Instância
+    name = serializers.CharField(validators=[validate_no_html_tags])
+    description = serializers.CharField(validators=[validate_no_html_tags])
+    
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = InstanceReview
@@ -255,9 +278,11 @@ class InstanceReviewSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("The grade needs to be between 0 and 10.")
         return value
 
-# descomentar quando model activity for implementado
 class ActivityReviewSerializer(serializers.ModelSerializer):
-#campo user não é enviado por POST, é pego diretamente pelo back (pela funcao implementada na view)
+    # protegendo os campos de texto da Review de Atividade
+    name = serializers.CharField(validators=[validate_no_html_tags])
+    description = serializers.CharField(validators=[validate_no_html_tags])
+    
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = ActivityReview
@@ -267,5 +292,3 @@ class ActivityReviewSerializer(serializers.ModelSerializer):
         if not 0 <= value <= 10:
             raise serializers.ValidationError("The grade needs to be between 0 and 10.")
         return value
-
-
