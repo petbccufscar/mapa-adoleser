@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:mapa_adoleser/core/api_constants.dart';
 import 'package:mapa_adoleser/core/errors/app_exception.dart';
 import 'package:mapa_adoleser/domain/responses/instance_response_model.dart';
 import 'package:mapa_adoleser/domain/responses/instece_activity_response_model.dart';
@@ -8,50 +11,32 @@ class InstanceService {
       throw InvalidParameterException('ID da instância não pode ser vazio');
     }
 
-    if (id == "UUID_INVALIDO") {
+    final response = await http.get(Uri.parse(ApiConstants.instanceById(id)));
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body) as Map<String, dynamic>;
+      return InstanceResponseModel.fromJson(body);
+    } else if (response.statusCode == 404) {
       throw FetchDataException('Instância não encontrada');
+    } else {
+      throw FetchDataException('Erro ao buscar a instância');
     }
-
-    final instance = InstanceResponseModel(
-      id: 'inst-001',
-      name: 'Morning Yoga Session',
-      address: 'R. Dr. Donato dos Santos, 397 - São Carlos - SP',
-      description: 'Guided yoga session focused on flexibility and breathing.',
-      operatingStart: '08:00',
-      operatingEnd: '09:30',
-      operatingDays: ['Monday', 'Wednesday', 'Friday'],
-      ageRangeStart: 16,
-      ageRangeEnd: 65,
-      accessibility: 'Wheelchair access',
-      contactPhone: '+55 16 99999-9999',
-      website: 'https://example.com/yoga',
-    );
-
-    return instance;
   }
 
-  Future<List<InstanceActivityResponseModel>> getInstancesByActivityId(
-      String id) async {
+  Future<List<InstanceActivityResponseModel>> getInstancesByActivityId(String id) async {
     if (id.trim().isEmpty) {
-      throw InvalidParameterException('ID da instância não pode ser vazio');
+      throw InvalidParameterException('ID da atividade não pode ser vazio');
     }
 
-    if (id == "UUID_INVALIDO") {
-      throw FetchDataException('Instância não encontrada');
+    final response = await http.get(Uri.parse('${ApiConstants.activityById(id)}instances/'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> body = jsonDecode(response.body);
+      return body.map((json) => InstanceActivityResponseModel.fromJson(json)).toList();
+    } else if (response.statusCode == 404) {
+      throw FetchDataException('Atividade não encontrada');
+    } else {
+      throw FetchDataException('Erro ao buscar as instâncias da atividade');
     }
-
-    final List<InstanceActivityResponseModel> instenceList =
-        <InstanceActivityResponseModel>[
-      InstanceActivityResponseModel(
-        id: "1",
-        name: "Prefeitura de São Carlos",
-      ),
-      InstanceActivityResponseModel(
-        id: "3",
-        name: "Coletivo de Esportes de São Carlos",
-      ),
-    ];
-
-    return instenceList;
   }
 }

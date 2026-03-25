@@ -30,6 +30,16 @@ class User(AbstractUser):
         return self.username
 
 
+class Address(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    cep = models.CharField(max_length=20, blank=True, null=True)
+    street = models.CharField(max_length=255, blank=True, null=True)
+    number = models.CharField(max_length=20, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.street}, {self.number} - {self.cep}"
+
+
 class Instance(models.Model):
     id = models.UUIDField(primary_key=True,
         default=uuid.uuid4, editable=False)
@@ -37,9 +47,8 @@ class Instance(models.Model):
     description = models.TextField(max_length=1023)
     nota = models.FloatField(default=0.0, editable=False)
 
-    
     # Adding coordinates and address for the instance
-    address = models.CharField(max_length=500, blank=True)
+    address = models.OneToOneField(Address, on_delete=models.SET_NULL, null=True, blank=True, related_name='instance')
     latitude = models.DecimalField(max_digits=10, decimal_places=8, null=True, blank=True)
     longitude = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
 
@@ -72,6 +81,7 @@ class Activity(models.Model):
     horario = models.DateTimeField("Start Time", default=timezone.now)
     categories = models.ManyToManyField(Category, related_name='activities', blank=True)   #tags
     registration_mode = models.TextField(max_length=255, blank=True, null=True)
+    target_age = models.IntegerField("Target Age", blank=True, null=True)
 
     contact_email = models.EmailField(blank=True, null=True, verbose_name="Email para contato")
     contact_phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Telefone / Whatsapp")

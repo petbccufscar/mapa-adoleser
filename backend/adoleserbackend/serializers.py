@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
-from .models import User, Instance, InstanceReview, Category, Activity, ActivityReview
+from .models import User, Address, Instance, InstanceReview, Category, Activity, ActivityReview
 from .utils import (
     set_password_reset_code,
     send_password_reset_email,
@@ -84,7 +84,15 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         return value
 
 
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = ['id', 'cep', 'street', 'number']
+
+
 class InstanceSerializer(serializers.ModelSerializer):
+    ## new composite address still need a validator
+    address = AddressSerializer()
     # protegendo os campos de texto da Instância
     name = serializers.CharField(validators=[validate_no_html_tags])
     description = serializers.CharField(validators=[validate_no_html_tags])
@@ -93,6 +101,27 @@ class InstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Instance
         fields = ['id', 'name', 'description', 'nota', 'address', 'latitude', 'longitude']
+
+    def create(self, validated_data):
+        address_data = validated_data.pop('address', None)
+        address = Address.objects.create(**address_data) if address_data else None
+        instance = Instance.objects.create(address=address, **validated_data)
+        return instance
+
+    def update(self, instance, validated_data):
+        address_data = validated_data.pop('address', None)
+        if address_data:
+            if instance.address:
+                for attr, value in address_data.items():
+                    setattr(instance.address, attr, value)
+                instance.address.save()
+            else:
+                instance.address = Address.objects.create(**address_data)
+        
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
     def validate_nota(self, value):
         if value < 0 or value > 10:
@@ -112,8 +141,9 @@ class InstanceSerializer(serializers.ModelSerializer):
         return value
 
     def validate_address(self, value):
-        if not value or value.strip() == "":
-            raise serializers.ValidationError("Address cannot be empty.")
+        # We now validate the nested AddressSerializer instead of a simple string
+        if not value:
+            raise serializers.ValidationError("Address details cannot be empty.")
         return value
 
 
@@ -138,10 +168,26 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 
     categories = serializers.SlugRelatedField(many=True, queryset=Category.objects.all(), slug_field='name')
+    
+    # Read-only attributes for map integration mapping directly from Instance
+    latitude = serializers.DecimalField(source='instance.latitude', max_digits=10, decimal_places=8, read_only=True)
+    longitude = serializers.DecimalField(source='instance.longitude', max_digits=11, decimal_places=8, read_only=True)
+    instance_name = serializers.CharField(source='instance.name', read_only=True)
+    
+    # Custom read-only field for address details from Instance -> Address
+    instance_address = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Activity
-        fields = ['id', 'name', 'description', 'nota', 'instance', 'horario', 'categories',
-                  'registration_mode', 'contact_email', 'contact_phone', 'contact_socialnetwork',]
+        fields = ['id', 'name', 'description', 'nota', 'instance', 'instance_name', 'horario', 'categories',
+                  'registration_mode', 'target_age', 'contact_email', 'contact_phone', 'contact_socialnetwork', 
+                  'latitude', 'longitude', 'instance_address']
+
+    def get_instance_address(self, obj):
+        if obj.instance and obj.instance.address:
+            addr = obj.instance.address
+            return f"{addr.street or ''}, {addr.number or ''} - {addr.cep or ''}".strip(' ,-')
+        return ""
 
     def validate_nota(self, value):
         if value < 0 or value > 10:
