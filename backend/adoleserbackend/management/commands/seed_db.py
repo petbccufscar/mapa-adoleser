@@ -2,7 +2,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from datetime import timedelta
-from adoleserbackend.models import User, Instance, Category, Activity, Role
+from adoleserbackend.models import User, Instance, Category, Activity, Role, Address
 
 class Command(BaseCommand):
     help = 'Seed the database with test data for São Carlos - SP'
@@ -81,11 +81,16 @@ class Command(BaseCommand):
 
         instances = []
         for loc in locations_data:
+            addr_instance, _ = Address.objects.get_or_create(
+                cep='00000-000',
+                street=loc['address'],
+                number='S/N'
+            )
             instance, loc_created = Instance.objects.get_or_create(
                 name=loc['name'],
                 defaults={
                     'description': loc['description'],
-                    'address': loc['address'],
+                    'address': addr_instance,
                     'latitude': loc['latitude'],
                     'longitude': loc['longitude'],
                     'created_by': user
@@ -137,7 +142,8 @@ class Command(BaseCommand):
                 'description': 'Trilha super legal para quem gosta da natureza e animais.',
                 'instance': instances[5], # Parque Ecológico
                 'categories': [categories['Lazer'], categories['Educação']],
-                'delta_days': 4
+                'delta_days': 4,
+                'target_age': 10
             }
         ]
 
@@ -151,6 +157,7 @@ class Command(BaseCommand):
                     'horario': horario,
                     'created_by': user,
                     'contact_email': 'contato@saocarlos.exemplo.com',
+                    'target_age': act.get('target_age', 12)  # Defaulting 12 if not customized
                 }
             )
             if act_created:

@@ -70,7 +70,7 @@ class _InstanceCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          context.go('/instanscia/${instance.id}');
+          context.go('/instancia/${instance.id}');
         },
         child: Container(
           padding: const EdgeInsets.all(20),

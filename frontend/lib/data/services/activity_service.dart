@@ -23,6 +23,21 @@ class ActivityService {
     }
   }
 
+  Future<List<ActivityResponseModel>> getActivities({Map<String, String>? filters}) async {
+    Uri uri = Uri.parse(ApiConstants.activities);
+    if (filters != null && filters.isNotEmpty) {
+      uri = uri.replace(queryParameters: filters);
+    }
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> body = jsonDecode(response.body);
+      return body.map((json) => ActivityResponseModel.fromJson(json)).toList();
+    } else {
+      throw FetchDataException('Erro ao buscar as atividades');
+    }
+  }
+
   Future<List<RelatedActivityResponseModel>> getRelatedActivitiesById(
       String id) async {
     if (id.trim().isEmpty) {
