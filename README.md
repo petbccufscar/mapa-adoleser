@@ -15,6 +15,27 @@ Ao facilitar o acesso à informação, o Mapa Adoleser contribui para a promoç�
   
 - **docs:** Documentação relacionada ao projeto, explicando a estrutura do código, padrões adotados e qualquer informação relevante.
 
+## Como executar o projeto  
+
+### Utilizando docker (maneira recomendada)
+- O nosso `docker-compose.yml` contém todas as instruções necessárias para rodar o banco de dados, backend e frontend localmente.
+- Requisitos: docker e docker-compose instalados.
+- Executar tudo:
+```bash
+docker-compose up --build  
+```
+- Executar apenas o backend:
+```bash
+docker-compose up --build backend
+```
+- Executar apenas o frontend:
+```bash
+docker-compose up --build frontend
+```
+- Executar apenas o banco de dados:
+```bash
+docker-compose up --build database
+```
 
 ## Como Contribuir
 
