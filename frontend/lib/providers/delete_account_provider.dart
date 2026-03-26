@@ -99,6 +99,6 @@ class DeleteAccountProvider extends ChangeNotifier {
 
     notifyListeners();
 
-    result?.success ?? false;
+    return result?.success ?? false;
   }
 }

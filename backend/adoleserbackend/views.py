@@ -6,7 +6,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
 from rest_framework.decorators import action
-from django.db.models import Count
+from django.db.models import Count, Q
+from django.db.models.functions import ExtractHour
 
 
 
@@ -104,6 +105,42 @@ class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     permission_classes = [IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        search_query = self.request.query_params.get('search', None)
+        target_age = self.request.query_params.get('target_age', None)
+        cep = self.request.query_params.get('cep', None)
+        period = self.request.query_params.get('period', None)
+        category = self.request.query_params.get('category', None)
+
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) | Q(description__icontains=search_query)
+            )
+        
+        if target_age and target_age.isdigit():
+            # In a real scenario you might have min_age and max_age.
+            # Assuming an exact match or target check for now.
+            queryset = queryset.filter(target_age=int(target_age))
+            
+        if cep:
+            queryset = queryset.filter(instance__address__cep__icontains=cep)
+            
+        if category:
+            queryset = queryset.filter(categories__name__iexact=category)
+            
+        if period:
+            period = period.lower()
+            if period == 'manha':
+                queryset = queryset.filter(horario__hour__gte=6, horario__hour__lt=12)
+            elif period == 'tarde':
+                queryset = queryset.filter(horario__hour__gte=12, horario__hour__lt=18)
+            elif period == 'noite':
+                queryset = queryset.filter(horario__hour__gte=18, horario__hour__lt=24)
+
+        return queryset.distinct()
 
     @action(detail=True, methods=['get'])
     def instances(self, request, pk=None):

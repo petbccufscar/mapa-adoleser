@@ -25,6 +25,11 @@ class ActivityModel {
 
   final String accessibility;
 
+  final double latitude;
+  final double longitude;
+  final String instanceName;
+  final String instanceAddress;
+
   ActivityModel({
     required this.id,
     required this.name,
@@ -38,6 +43,10 @@ class ActivityModel {
     required this.reviews,
     required this.instances,
     required this.related,
+    required this.latitude,
+    required this.longitude,
+    required this.instanceName,
+    required this.instanceAddress,
   });
 
   /// Mapper: ActivityResponseModel -> ActivityModel
@@ -80,6 +89,10 @@ class ActivityModel {
         end: response.ageRangeEnd,
       ),
       accessibility: response.accessibility,
+      latitude: response.latitude,
+      longitude: response.longitude,
+      instanceName: response.instanceName,
+      instanceAddress: response.instanceAddress,
     );
   }
 }

@@ -13,10 +13,10 @@ class RelatedActivityResponseModel {
 
   factory RelatedActivityResponseModel.fromJson(Map<String, dynamic> json) {
     return RelatedActivityResponseModel(
-      id: json['id'],
-      name: json['name'],
-      averageRating: (json['averageRating'] as num).toDouble(),
-      ratingCount: json['ratingCount'],
+      id: json['id']?.toString() ?? "",
+      name: json['name'] ?? "",
+      averageRating: (json['nota'] as num?)?.toDouble() ?? 0.0,
+      ratingCount: json['ratingCount'] ?? 0,
     );
   }
 }
