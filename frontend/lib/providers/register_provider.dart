@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/auth_service.dart';
-import 'package:mapa_adoleser/domain/models/register_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/register_request_model.dart';
 
 class RegisterProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();

@@ -8,7 +8,6 @@ import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_password_fiel.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/drawer/custom_drawer.dart';
@@ -213,18 +212,18 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                   ),
                                 ],
                                 SizedBox(height: 30),
-                                CustomButton(
-                                  text: AppTexts
-                                      .recoveryPassword.sendCodeButtonText,
+                                FilledButton(
                                   onPressed: recoveryPasswordProvider.isLoading
                                       ? null
                                       : _submitEmail,
+                                  child: Text(AppTexts
+                                      .recoveryPassword.sendCodeButtonText),
                                 ),
                                 SizedBox(height: 8),
-                                CustomButton(
-                                  text: AppTexts
-                                      .recoveryPassword.cancelButtonText,
+                                FilledButton(
                                   onPressed: () => {context.go('/login')},
+                                  child: Text(AppTexts
+                                      .recoveryPassword.cancelButtonText),
                                 ),
                               ],
                             ),
@@ -314,7 +313,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                   ),
                                 ],
                                 SizedBox(height: 30),
-                                ElevatedButton(
+                                FilledButton(
                                   onPressed: (_resendTimer == 0 &&
                                           !recoveryPasswordProvider.isLoading)
                                       ? _resendCode
@@ -339,20 +338,23 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                   child: Text(_timerText),
                                 ),
                                 SizedBox(height: 8),
-                                CustomButton(
-                                    text: AppTexts.recoveryPassword
+                                FilledButton(
+                                  onPressed: _codeController.text.isNotEmpty &&
+                                          _codeController.text.length == 6 &&
+                                          !recoveryPasswordProvider.isLoading
+                                      ? _submitCode
+                                      : null,
+                                  child: Text(
+                                    AppTexts.recoveryPassword
                                         .validateCodeButtonText,
-                                    onPressed: _codeController
-                                                .text.isNotEmpty &&
-                                            _codeController.text.length == 6 &&
-                                            !recoveryPasswordProvider.isLoading
-                                        ? _submitCode
-                                        : null),
+                                  ),
+                                ),
                                 SizedBox(height: 8),
-                                CustomButton(
-                                  text: AppTexts
-                                      .recoveryPassword.cancelButtonText,
+                                FilledButton(
                                   onPressed: () => {context.go('/login')},
+                                  child: Text(
+                                    AppTexts.recoveryPassword.cancelButtonText,
+                                  ),
                                 ),
                               ],
                             ),
@@ -407,18 +409,18 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                   ),
                                 ],
                                 SizedBox(height: 30),
-                                CustomButton(
-                                  text: AppTexts
-                                      .recoveryPassword.sendCodeButtonText,
+                                FilledButton(
                                   onPressed: recoveryPasswordProvider.isLoading
                                       ? null
                                       : _submitNewPassword,
+                                  child: Text(AppTexts
+                                      .recoveryPassword.sendCodeButtonText),
                                 ),
                                 SizedBox(height: 12),
-                                CustomButton(
-                                  text: AppTexts
-                                      .recoveryPassword.cancelButtonText,
+                                FilledButton(
                                   onPressed: () => {context.go('/login')},
+                                  child: Text(AppTexts
+                                      .recoveryPassword.cancelButtonText),
                                 ),
                               ],
                             ),
@@ -437,10 +439,12 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 textAlign: TextAlign.justify,
                               ),
                               const SizedBox(height: 30),
-                              CustomButton(
-                                text: AppTexts
-                                    .recoveryPassword.backToLoginButtonText,
+                              FilledButton(
                                 onPressed: () => {context.go('/login')},
+                                child: Text(
+                                  AppTexts
+                                      .recoveryPassword.backToLoginButtonText,
+                                ),
                               ),
                             ],
                           ),

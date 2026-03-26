@@ -5,13 +5,15 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
+from rest_framework.decorators import action
+from django.db.models import Count
 
 
 
-from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, CategorySerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, CategorySerializer, InstanceSerializer, ActivitySerializer, InstanceReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
 
 
-from .models import User, Location,  LocationReview, Category, Activity, ActivityReview
+from .models import User, Instance,  InstanceReview, Category, Activity, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
 
 
@@ -65,22 +67,87 @@ class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
         return UserSerializer
 
 
-class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
-    queryset = Location.objects.all()  # Define o conjunto de dados base
-    serializer_class = LocationSerializer # Especifica o serializer que esta view usará
+class InstanceViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
+    queryset = Instance.objects.all()  # Define o conjunto de dados base
+    serializer_class = InstanceSerializer # Especifica o serializer que esta view usará
     permission_classes = [IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly] # Exemplo de permissão
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
+
+    # cria a rota: GET /instances/{id}/activities/
+    @action(detail=True, methods=['get'])
+    def activities(self, request, pk=None):
+        obj = self.get_object()
+
+        atividades_da_instancia = Activity.objects.filter(instance=obj)
+        serializer = ActivitySerializer(atividades_da_instancia, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def categories(self, request, pk=None):
+        obj = self.get_object()
+
+        categorias_da_instancia = Category.objects.filter(activities__instance=obj).distinct()
+        serializer = CategorySerializer(categorias_da_instancia, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def reviews(self, request, pk=None):
+        obj = self.get_object()
+
+        reviews_da_instancia = InstanceReview.objects.filter(instance=obj)
+        serializer = InstanceReviewSerializer(reviews_da_instancia, many=True)
+        return Response(serializer.data)
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     permission_classes = [IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly]
 
+    @action(detail=True, methods=['get'])
+    def instances(self, request, pk=None):
+        obj = self.get_object()
+
+        instancias_da_atividade = obj.instance
+        serializer = InstanceSerializer([instancias_da_atividade], many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def categories(self, request, pk=None):
+        obj = self.get_object()
+
+        categorias_da_atividade = obj.categories.all()
+        serializer = CategorySerializer(categorias_da_atividade, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def reviews(self, request, pk=None):
+        obj = self.get_object()
+
+        reviews_da_atividade = ActivityReview.objects.filter(activity=obj)
+        serializer = ActivityReviewSerializer(reviews_da_atividade, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def related(self, request, pk=None):
+        # recomendações se baseiam unicamente no n° de categorias em comum (desempate segundo nota da atividade)
+        target_activity = self.get_object()
+        target_categories = target_activity.categories.all()
+
+        related_qs = Activity.objects.exclude(id=target_activity.id) \
+            .filter(categories__in=target_categories).annotate(shared_count=Count('categories')) \
+            .order_by('-shared_count', '-nota')[:10]
+
+        serializer = self.get_serializer(related_qs, many=True)
+        return Response(serializer.data)
+
+
+
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)  # Define o usuário logado como autor da atividade
+
 
 
 
@@ -130,9 +197,9 @@ class PasswordResetConfirmView(GenericAPIView):
             status=status.HTTP_200_OK
         )
 
-class LocationReviewViewSet(viewsets.ModelViewSet):
-    queryset = LocationReview.objects.all()
-    serializer_class = LocationReviewSerializer
+class InstanceReviewViewSet(viewsets.ModelViewSet):
+    queryset = InstanceReview.objects.all()
+    serializer_class = InstanceReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrSuperOrReadOnly]
 
     #salva automaticamente o usuário logado como o autor na review

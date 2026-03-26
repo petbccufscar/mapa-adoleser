@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
 import 'package:mapa_adoleser/data/services/address_service.dart';
-import 'package:mapa_adoleser/domain/models/address_response_model.dart';
+import 'package:mapa_adoleser/domain/responses/address_response_model.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/custom_text_field.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 

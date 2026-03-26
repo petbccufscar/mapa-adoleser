@@ -4,7 +4,6 @@ import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/responsive_utils.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
-import 'package:mapa_adoleser/presentation/ui/widgets/custom_button.dart';
 import 'package:mapa_adoleser/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -103,9 +102,9 @@ class DesktopAppBar extends StatelessWidget {
                         const SizedBox(width: 10),
                         const Text('•'),
                         const SizedBox(width: 12),
-                        CustomButton(
-                            text: 'Entrar',
-                            onPressed: () => context.go('/login'))
+                        FilledButton(
+                            onPressed: () => context.go('/login'),
+                            child: Text('Entrar'))
                       ]
                     ],
                   ),
