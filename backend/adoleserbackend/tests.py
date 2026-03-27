@@ -1,5 +1,7 @@
+from unittest.mock import patch
 from django.test import TestCase
 from django.urls import reverse
+from .models import User
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import User, Activity, Instance, Address, Category
@@ -112,6 +114,92 @@ class UserAccountTest(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 401)
+    
+# REGISTRO DE LOCAL
+class LocalTestCase(TestCase):
+
+    def setUp(self):
+        self.url = reverse('instance')
+    
+    # ENDEREÇO VÁLIDO
+    @patch('app.services.geocode_address')
+    def test_create_location(self, mock_geocode):
+        mock_geocode.return_value = (-22, 48.9)
+
+        data = {
+            "id": "1",
+            "name": "Local Novo",
+            "description": "Muito bonito aqui",
+            "note": "5",
+            "adress": "Rua 1234",
+        }
+
+        response = self.client.post(self.url, data, format='json')
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['lat'], -22)
+        self.assertEqual(response.data['long'], 48.9)
+
+    # ENDEREÇO INVÁLIDO
+    @patch('app.services.geocode_adress')
+    def test_address_invalidation(self, mock_geocode):
+        mock_geocode.return_value = None
+
+        data = {
+            "id": "1",
+            "name": "Praça",
+            "description": "Muito bonito aqui",
+            "note": "5",
+            "adress": "??",
+        }
+
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+    # LATITUDE INVÁLIDA
+    def test_latitude_invalidation(self):
+        data = {
+            "id": "1",
+            "name": "APAE",
+            "description": "bonito",
+            "note": "1",
+            "latitude": 200,
+            "longitude": -47.8
+        }
+
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, 401)
+    
+    # LONGITUDE INVÁLIDA
+    def test_longitude_invalidation(self):
+        data = {
+            "id": "1",
+            "name": "Local Novo",
+            "description": "bonito",
+            "note": "1",
+            "latitude": 45,
+            "longitude": -200
+        }
+
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+    # FALHA NA CONEXÃO DA API DE GEOLOCALIZAÇÃO
+    @patch('app.services.geocode_adress')
+    def test_API_invalidation(self, mock_geocode):
+        mock_geocode.side_effect = Exception("Geocoding service down")
+
+        data = {
+            "id": "1",
+            "name": "Local Novo",
+            "description": "bonito",
+            "adress": "Rua X"
+        }
+
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, 500)
+
+
 
 class ActivityFilterTest(TestCase):
     def setUp(self):
