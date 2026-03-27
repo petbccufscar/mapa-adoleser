@@ -91,12 +91,10 @@ class AddressSerializer(serializers.ModelSerializer):
 
 
 class InstanceSerializer(serializers.ModelSerializer):
-    ## new composite address still need a validator
     address = AddressSerializer()
     # protegendo os campos de texto da Instância
     name = serializers.CharField(validators=[validate_no_html_tags])
     description = serializers.CharField(validators=[validate_no_html_tags])
-    address = serializers.CharField(validators=[validate_no_html_tags])
 
     class Meta:
         model = Instance
@@ -141,9 +139,12 @@ class InstanceSerializer(serializers.ModelSerializer):
         return value
 
     def validate_address(self, value):
-        # We now validate the nested AddressSerializer instead of a simple string
         if not value:
             raise serializers.ValidationError("Address details cannot be empty.")
+        for field in ['cep', 'street', 'number']:
+            field_value = value.get(field)
+            if field_value:
+                validate_no_html_tags(field_value)
         return value
 
 

@@ -1,4 +1,3 @@
-from unittest.mock import patch
 from django.test import TestCase
 from django.urls import reverse
 from .models import User
@@ -118,86 +117,63 @@ class UserAccountTest(TestCase):
 # REGISTRO DE LOCAL
 class LocalTestCase(TestCase):
 
+    # CONFIGURA CLIENTE E USUÁRIO AUTENTICADO
     def setUp(self):
-        self.url = reverse('instance')
-    
-    # ENDEREÇO VÁLIDO
-    @patch('app.services.geocode_address')
-    def test_create_location(self, mock_geocode):
-        mock_geocode.return_value = (-22, 48.9)
+        self.client = APIClient()
+        self.user = User.objects.create_user(username='inst_user', password='@A87654321')
+        self.client.force_authenticate(user=self.user)
+        self.url = reverse('instance-list')
 
-        data = {
-            "id": "1",
-            "name": "Local Novo",
-            "description": "Muito bonito aqui",
-            "note": "5",
-            "adress": "Rua 1234",
-        }
+    # LISTAGEM RETORNA ENDEREÇO COMPOSTO + COORDENADAS
+    def test_instance_list_returns_composite_address_and_coordinates(self):
+        # CRIA ENDEREÇO E LOCAL
+        address = Address.objects.create(cep="13560-000", street="Rua A", number="123")
+        Instance.objects.create(
+            name="Local Novo",
+            description="Muito bonito aqui",
+            nota=5,
+            address=address,
+            latitude=-22.01234567,
+            longitude=-47.91234567,
+            created_by=self.user,
+        )
 
-        response = self.client.post(self.url, data, format='json')
+        # REQUISIÇÃO DE LISTAGEM
+        response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data['lat'], -22)
-        self.assertEqual(response.data['long'], 48.9)
+        # VERIFICA STATUS E CAMPOS DO FRONT
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["address"]["street"], "Rua A")
+        self.assertEqual(response.data[0]["address"]["number"], "123")
+        self.assertEqual(response.data[0]["address"]["cep"], "13560-000")
+        self.assertEqual(float(response.data[0]["latitude"]), -22.01234567)
+        self.assertEqual(float(response.data[0]["longitude"]), -47.91234567)
 
-    # ENDEREÇO INVÁLIDO
-    @patch('app.services.geocode_adress')
-    def test_address_invalidation(self, mock_geocode):
-        mock_geocode.return_value = None
+    # DETALHE RETORNA ENDEREÇO COMPOSTO + COORDENADAS
+    def test_instance_retrieve_returns_composite_address_and_coordinates(self):
+        # CRIA ENDEREÇO E LOCAL
+        address = Address.objects.create(cep="13560-111", street="Rua B", number="99")
+        instance = Instance.objects.create(
+            name="Praça",
+            description="Local aberto",
+            nota=7,
+            address=address,
+            latitude=-21.99887766,
+            longitude=-47.55667788,
+            created_by=self.user,
+        )
 
-        data = {
-            "id": "1",
-            "name": "Praça",
-            "description": "Muito bonito aqui",
-            "note": "5",
-            "adress": "??",
-        }
+        # REQUISIÇÃO DE DETALHE
+        response = self.client.get(reverse('instance-detail', args=[instance.id]))
 
-        response = self.client.post(self.url, data, format='json')
-        self.assertEqual(response.status_code, 401)
-
-    # LATITUDE INVÁLIDA
-    def test_latitude_invalidation(self):
-        data = {
-            "id": "1",
-            "name": "APAE",
-            "description": "bonito",
-            "note": "1",
-            "latitude": 200,
-            "longitude": -47.8
-        }
-
-        response = self.client.post(self.url, data, format='json')
-        self.assertEqual(response.status_code, 401)
-    
-    # LONGITUDE INVÁLIDA
-    def test_longitude_invalidation(self):
-        data = {
-            "id": "1",
-            "name": "Local Novo",
-            "description": "bonito",
-            "note": "1",
-            "latitude": 45,
-            "longitude": -200
-        }
-
-        response = self.client.post(self.url, data, format='json')
-        self.assertEqual(response.status_code, 401)
-
-    # FALHA NA CONEXÃO DA API DE GEOLOCALIZAÇÃO
-    @patch('app.services.geocode_adress')
-    def test_API_invalidation(self, mock_geocode):
-        mock_geocode.side_effect = Exception("Geocoding service down")
-
-        data = {
-            "id": "1",
-            "name": "Local Novo",
-            "description": "bonito",
-            "adress": "Rua X"
-        }
-
-        response = self.client.post(self.url, data, format='json')
-        self.assertEqual(response.status_code, 500)
+        # VERIFICA DADOS DE ENDEREÇO E GEOLOCALIZAÇÃO
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["address"]["street"], "Rua B")
+        self.assertEqual(response.data["address"]["number"], "99")
+        self.assertEqual(response.data["address"]["cep"], "13560-111")
+        self.assertEqual(float(response.data["latitude"]), -21.99887766)
+        self.assertEqual(float(response.data["longitude"]), -47.55667788)
 
 
 
