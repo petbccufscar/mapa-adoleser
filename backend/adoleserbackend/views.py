@@ -5,13 +5,20 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
+from rest_framework.decorators import action
+from django.db.models import Count, Q
+from django.db.models.functions import ExtractHour
 
-from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, LocationSerializer, ActivitySerializer, LocationReviewSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
 
-from .models import User, Location,  LocationReview, Activity, ActivityReview
+
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileUpdateSerializer, CategorySerializer, InstanceSerializer, ActivitySerializer, InstanceReviewSerializer, ChangePasswordSerializer,PasswordResetRequestSerializer, PasswordResetSerializer, ActivityReviewSerializer
+
+
+from .models import User, Instance,  InstanceReview, Category, Activity, ActivityReview
 from .utils import set_password_reset_code, send_password_reset_email, is_reset_code_valid, clear_reset_code
-from .permissions import IsSuper, IsOwnerReviewOrReadOnly, IsOwnerLocationOrReadOnly
 
+
+from .permissions import IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
@@ -47,7 +54,7 @@ class LogoutView(views.APIView):
         except Exception as e:
             return Response({"error": "Logout failed.", "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-class UserProfileView(generics.RetrieveUpdateAPIView):
+class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
@@ -61,20 +68,144 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         return UserSerializer
 
 
-class LocationViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
-    queryset = Location.objects.all()  # Define o conjunto de dados base
-    serializer_class = LocationSerializer # Especifica o serializer que esta view usará
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerLocationOrReadOnly | IsSuper] # Exemplo de permissão
-    # IsAuthenticatedOrReadOnly: Qualquer um pode ler, mas apenas usuários autenticados podem escrever.
-    # Outras opções: permissions.AllowAny, permissions.IsAuthenticated, etc.
+class InstanceViewSet(viewsets.ModelViewSet): # viewset implementa o CRUD automaticamente
+    queryset = Instance.objects.all()  # Define o conjunto de dados base
+    serializer_class = InstanceSerializer # Especifica o serializer que esta view usará
+    permission_classes = [IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly] # Exemplo de permissão
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+
+    # cria a rota: GET /instances/{id}/activities/
+    @action(detail=True, methods=['get'])
+    def activities(self, request, pk=None):
+        obj = self.get_object()
+
+        atividades_da_instancia = Activity.objects.filter(instance=obj)
+        serializer = ActivitySerializer(atividades_da_instancia, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def categories(self, request, pk=None):
+        obj = self.get_object()
+
+        categorias_da_instancia = Category.objects.filter(activities__instance=obj).distinct()
+        serializer = CategorySerializer(categorias_da_instancia, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def reviews(self, request, pk=None):
+        obj = self.get_object()
+
+        reviews_da_instancia = InstanceReview.objects.filter(instance=obj)
+        serializer = InstanceReviewSerializer(reviews_da_instancia, many=True)
+        return Response(serializer.data)
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerReviewOrReadOnly | IsSuper]
+    permission_classes = [IsAdminOrSuperOrReadOnly, IsOwnerOrSuperOrReadOnly]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        search_query = self.request.query_params.get('search', None)
+        target_age = self.request.query_params.get('target_age', None)
+        cep = self.request.query_params.get('cep', None)
+        period = self.request.query_params.get('period', None)
+        category = self.request.query_params.get('category', None)
+
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) | Q(description__icontains=search_query)
+            )
+        
+        if target_age and target_age.isdigit():
+            # In a real scenario you might have min_age and max_age.
+            # Assuming an exact match or target check for now.
+            queryset = queryset.filter(target_age=int(target_age))
+            
+        if cep:
+            queryset = queryset.filter(instance__address__cep__icontains=cep)
+            
+        if category:
+            queryset = queryset.filter(categories__name__iexact=category)
+            
+        if period:
+            period = period.lower()
+            if period == 'manha':
+                queryset = queryset.filter(horario__hour__gte=6, horario__hour__lt=12)
+            elif period == 'tarde':
+                queryset = queryset.filter(horario__hour__gte=12, horario__hour__lt=18)
+            elif period == 'noite':
+                queryset = queryset.filter(horario__hour__gte=18, horario__hour__lt=24)
+
+        return queryset.distinct()
+
+    @action(detail=True, methods=['get'])
+    def instances(self, request, pk=None):
+        obj = self.get_object()
+
+        instancias_da_atividade = obj.instance
+        serializer = InstanceSerializer([instancias_da_atividade], many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def categories(self, request, pk=None):
+        obj = self.get_object()
+
+        categorias_da_atividade = obj.categories.all()
+        serializer = CategorySerializer(categorias_da_atividade, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def reviews(self, request, pk=None):
+        obj = self.get_object()
+
+        reviews_da_atividade = ActivityReview.objects.filter(activity=obj)
+        serializer = ActivityReviewSerializer(reviews_da_atividade, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def related(self, request, pk=None):
+        # recomendações se baseiam unicamente no n° de categorias em comum (desempate segundo nota da atividade)
+        target_activity = self.get_object()
+        target_categories = target_activity.categories.all()
+
+        related_qs = Activity.objects.exclude(id=target_activity.id) \
+            .filter(categories__in=target_categories).annotate(shared_count=Count('categories')) \
+            .order_by('-shared_count', '-nota')[:10]
+
+        serializer = self.get_serializer(related_qs, many=True)
+        return Response(serializer.data)
+
+
+
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)  # Define o usuário logado como autor da atividade
+        serializer.save(created_by=self.request.user)  # Define o usuário logado como autor da atividade
+
+
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    model = User
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer( instance=self.object, data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response({"detail": "Senha atualizada com sucesso."}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class PasswordResetRequestView(GenericAPIView):
     permission_classes = [AllowAny]
@@ -103,10 +234,10 @@ class PasswordResetConfirmView(GenericAPIView):
             status=status.HTTP_200_OK
         )
 
-class LocationReviewViewSet(viewsets.ModelViewSet):
-    queryset = LocationReview.objects.all()
-    serializer_class = LocationReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+class InstanceReviewViewSet(viewsets.ModelViewSet):
+    queryset = InstanceReview.objects.all()
+    serializer_class = InstanceReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrSuperOrReadOnly]
 
     #salva automaticamente o usuário logado como o autor na review
     def perform_create(self, serializer):
@@ -116,8 +247,14 @@ class LocationReviewViewSet(viewsets.ModelViewSet):
 class ActivityReviewViewSet(viewsets.ModelViewSet):
     queryset = ActivityReview.objects.all()
     serializer_class = ActivityReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrSuperOrReadOnly]
 
     # # salva automaticamente o usuário logado como o autor na review
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class CategoryListView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

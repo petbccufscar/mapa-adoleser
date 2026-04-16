@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/auth_service.dart';
-import 'package:mapa_adoleser/domain/models/login_request_model.dart';
+import 'package:mapa_adoleser/domain/requests/login_request_model.dart';
 import 'package:mapa_adoleser/domain/models/user_model.dart';
 
 class LoginProvider extends ChangeNotifier {

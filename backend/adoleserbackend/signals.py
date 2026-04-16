@@ -3,24 +3,25 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.db.models import Avg
 
-from .models import LocationReview, ActivityReview, Location, Activity
+from .models import InstanceReview, ActivityReview, Instance, Activity
 
 
-# função será chamada sempre que uma LocationReview for salva ou deletada
-@receiver([post_save, post_delete], sender=LocationReview)
-def update_location_rating(sender, instance, **kwargs):
+# função será chamada sempre que uma instanceReview for salva ou deletada
+@receiver([post_save, post_delete], sender=InstanceReview)
+def update_instance_rating(sender, instance, **kwargs):
 
-    # Pega a 'location' associada à avaliação que disparou o sinal
-    location = instance.location
+    # Pega a 'instance' associada à avaliação que disparou o sinal
+               #= review.instance
+    current_instance = instance.instance
 
-    # Calcula a média de todas as notas para essa location.
+    # Calcula a média de todas as notas para essa instance.
     # O .aggregate() retorna um dicionário, como: {'nota__avg': 8.5}
-    average = LocationReview.objects.filter(location=location).aggregate(Avg('nota'))
+    average = InstanceReview.objects.filter(instance=current_instance).aggregate(Avg('nota'))
 
     #Pega o valor da média do dicionário. Se não houver avaliações (retorna None),
     # usamos 0.0 como padrão.
-    location.nota = average['nota__avg'] if average['nota__avg'] is not None else 0.0
-    location.save()
+    current_instance.nota = average['nota__avg'] if average['nota__avg'] is not None else 0.0
+    current_instance.save()
 
 
 # Esta função será chamada sempre que uma ActivityReview for salva ou deletada

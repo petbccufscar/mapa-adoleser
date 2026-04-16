@@ -1,40 +1,49 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
-from .models import Role
+from rest_framework import permissions
 
-class IsSuper(BasePermission):
+class IsAdminOrSuperOrReadOnly(permissions.BasePermission):
+    """"
+    permissoes referentes a criação de activities e locatino
+    Permite leitura(GET) para todos
+     POST apenas para ADMIN ou SUPER
+    """
+
+    message = "Apenas administradores podem realizar esta ação."
+
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role == Role.SUPER
+        #  Permite se for leitura (GET, HEAD, OPTONS)
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        #caso não seja safe method (POST, PUT, DELETE), verifica role
+        return ( request.user.is_authenticated and
+                request.user.role in ['ADMIN', 'SUPER'] )
+
+
+class IsOwnerOrSuperOrReadOnly(permissions.BasePermission):
+    """"
+    permissoes referentes aa edicao de objs ja criados
+    Todos podem Ler
+    Apenas Dono do obj/SUPER editar ( PUT DELETE)
+    """
+
+    message = "Você não tem permissão para editar/apagar este item porque ele pertence a outro usuário."
 
     def has_object_permission(self, request, view, obj):
-        return self.has_permission(request, view)
-    
-class IsOwnerReviewOrReadOnly(BasePermission):
-    #USER/ADMIN podem alterar/excluir própria review
-    def has_object_permission(self, request, view, obj):
-        if not request.user.is_authenticated:
-            return False
-
-        if request.user.role == Role.SUPER:
+        #  leitura (GET)
+        if request.method in permissions.SAFE_METHODS:
             return True
 
-        if request.method in SAFE_METHODS:
+        # se for SUPER:
+        if request.user.is_authenticated and request.user.role == 'SUPER':
             return True
 
-        return obj.user == request.user 
-    
-class IsOwnerLocationOrReadOnly (BasePermission):
-    #ADMIN pode alterar/excluir sua própria location
-    def has_object_permission(self, request, view, obj):
-        if not request.user.is_authenticated:
-            return False
-        
-        if request.user.role == Role.SUPER:
-            return True
-        
-        if request.method in SAFE_METHODS:
-            return True
-        
-        if request.user.role == Role.ADMIN:
-            return obj.created_by == request.user
-        
-        return False
+        #verifica se o editor eh o criador do obj
+        owner = None
+
+        if hasattr(obj, 'created_by'):
+            owner = obj.created_by
+        elif hasattr(obj, 'user'):
+            owner = obj.user
+
+        return owner == request.user
+

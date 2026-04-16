@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import User, Location, Activity, LocationReview, ActivityReview
+from .models import User, Instance, Activity, InstanceReview, ActivityReview, Category
 # Register your models here.
 class CustomUserAdmin(UserAdmin):
     # Add your custom fields to fieldsets or list_display
@@ -17,10 +17,11 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Category)
 
 
-@admin.register(Location)
-class LocationAdmin(admin.ModelAdmin):
+@admin.register(Instance)
+class InstanceAdmin(admin.ModelAdmin):
 
     list_display = ('name', 'nota',)
     readonly_fields = ('nota', 'created_by')
@@ -36,10 +37,11 @@ class LocationAdmin(admin.ModelAdmin):
 
 class ActivityAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'location', 'nota')
+    list_display = ('name', 'instance', 'nota')
     readonly_fields = ('nota', 'created_by')
     search_fields = ('name', 'description')
-    list_filter = ('location',)
+    list_filter = ('instance', 'categories',)
+    filter_horizontal = ('categories', )
 
     #método que salva o usuário que criou a activity
     def save_model(self, request, obj, form, change):
@@ -50,11 +52,11 @@ class ActivityAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(LocationReview)
-class LocationReviewAdmin(admin.ModelAdmin):
+@admin.register(InstanceReview)
+class InstanceReviewAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'location', 'user', 'nota')
-    list_filter = ('nota', 'user', 'location')
+    list_display = ('name', 'instance', 'user', 'nota')
+    list_filter = ('nota', 'user', 'instance')
     search_fields = ('name', 'description')
 
 @admin.register(ActivityReview)
