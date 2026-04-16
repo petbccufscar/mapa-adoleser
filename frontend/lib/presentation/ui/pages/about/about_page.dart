@@ -30,6 +30,45 @@ class AboutPage extends StatelessWidget {
                   AppTexts.about.aboutAdoleserTitle,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 450),
+                  child: Column(
+                    spacing: 20,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        AppTexts.about.aboutPETBCCTitle,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      Text(
+                        AppTexts.about.aboutPETBCCParagraph,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textAlign: TextAlign.justify,
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Image.asset(
+                              'assets/images/logo_ufscar.png',
+                              height: 125,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Flexible(
+                            child: Image.asset(
+                              'assets/images/pet_logo_azul.png',
+                              height: 225,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                    ],
+                  ),
                 const SizedBox(height: 15),
                 SelectableText(
                   AppTexts.about.aboutAdoleserParagraph,
