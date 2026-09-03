@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:http/http.dart' as http;
 import 'package:mapa_adoleser/core/api_constants.dart';
@@ -22,21 +23,12 @@ class AuthService {
     'Accept': 'application/json',
   };
 
-  /// Extrai a primeira mensagem de erro legível de uma resposta Django.
-  String _parseError(Map<String, dynamic> body, String fallback) {
-    for (final value in body.values) {
-      if (value is String) return value;
-      if (value is List && value.isNotEmpty) return value.first.toString();
-    }
-    return fallback;
-  }
-
   Future<UserModel> login(LoginRequestModel data) async {
     final response = await http.post(
       Uri.parse(ApiConstants.login),
       headers: _jsonHeaders,
       body: jsonEncode({
-        'username': data.email, // O backend usa o campo 'username' para login
+        'email': data.email,
         'password': data.password,
       }),
     );
@@ -46,10 +38,10 @@ class AuthService {
     if (response.statusCode == 200) {
       return UserModel.fromLoginJson(body);
     } else if (response.statusCode == 401) {
-      throw AuthException('Usuário ou senha inválidos.');
+      throw AuthException.fromJson(body, 'Usuário ou senha inválidos.');
     } else {
-      throw FetchDataException(
-          _parseError(body, 'Erro ao fazer login. Tente novamente.'));
+      throw FetchDataException.fromJson(
+          body, 'Erro ao fazer login. Tente novamente.');
     }
   }
 
@@ -72,12 +64,12 @@ class AuthService {
     if (response.statusCode == 201) {
       // Após o registro, o backend não retorna tokens — fazemos login automaticamente.
       return await login(LoginRequestModel(
-        email: data.username,
+        email: data.email,
         password: data.password,
       ));
     } else {
-      throw AuthException(
-          _parseError(body, 'Erro ao criar conta. Verifique os dados e tente novamente.'));
+      throw AuthException.fromJson(
+          body, 'Erro ao criar conta. Verifique os dados e tente novamente.');
     }
   }
 
@@ -89,7 +81,8 @@ class AuthService {
   }
 
   Future<ChangePasswordResponseModel> changePasswordChangePassword(
-      ChangePasswordRequestModel data, [String accessToken = '']) async {
+      ChangePasswordRequestModel data,
+      [String accessToken = '']) async {
     final response = await http.put(
       Uri.parse(ApiConstants.changePassword),
       headers: {
@@ -107,8 +100,7 @@ class AuthService {
     if (response.statusCode == 200) {
       return ChangePasswordResponseModel.fromJson({'success': true});
     } else {
-      throw AuthException(
-          _parseError(body, 'Não foi possível alterar a senha.'));
+      throw AuthException.fromJson(body, 'Não foi possível alterar a senha.');
     }
   }
 
@@ -125,8 +117,8 @@ class AuthService {
     if (response.statusCode == 200) {
       return ForgotPasswordEmailResponseModel.fromJson({'success': true});
     } else {
-      throw AuthException(
-          _parseError(body, 'Erro ao solicitar código de recuperação.'));
+      throw AuthException.fromJson(
+          body, 'Erro ao solicitar código de recuperação.');
     }
   }
 
@@ -144,7 +136,8 @@ class AuthService {
       headers: _jsonHeaders,
       body: jsonEncode({
         'email': request.email,
-        'reset_code': request.password, // TODO: adicionar campo 'code' ao ResetPasswordRequestModel
+        'reset_code': request
+            .password, // TODO: adicionar campo 'code' ao ResetPasswordRequestModel
         'new_password': request.password,
         'confirm_password': request.password,
       }),
@@ -153,8 +146,7 @@ class AuthService {
     final body = jsonDecode(response.body) as Map<String, dynamic>;
 
     if (response.statusCode != 200) {
-      throw AuthException(
-          _parseError(body, 'Erro ao redefinir senha.'));
+      throw AuthException.fromJson(body, 'Erro ao redefinir senha.');
     }
   }
 }

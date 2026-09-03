@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
+  // TODO: Implementar funcionalidade de "Lembrar-me" no login
   late bool rememberMe;
 
   @override
@@ -164,15 +165,15 @@ class _LoginPageState extends State<LoginPage> {
                             alignment: WrapAlignment.spaceBetween,
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              CustomCheckbox(
-                                value: rememberMe,
-                                label: Text(AppTexts.login.rememberMeLabel),
-                                onChanged: (val) {
-                                  setState(() {
-                                    rememberMe = val;
-                                  });
-                                },
-                              ),
+                              // CustomCheckbox(
+                              //   value: rememberMe,
+                              //   label: Text(AppTexts.login.rememberMeLabel),
+                              //   onChanged: (val) {
+                              //     setState(() {
+                              //       rememberMe = val;
+                              //     });
+                              //   },
+                              // ),
                               ActionText(
                                 text: AppTexts.login.forgotPasswordText,
                                 onTap: () {

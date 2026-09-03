@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mapa_adoleser/core/constants.dart';
 import 'package:mapa_adoleser/core/theme/app_colors.dart';
 import 'package:mapa_adoleser/core/utils/validators.dart';
+import 'package:mapa_adoleser/domain/models/user_model.dart';
 import 'package:mapa_adoleser/presentation/ui/modal_wrapper.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/action_text.dart';
 import 'package:mapa_adoleser/presentation/ui/widgets/appbar/custom_app_bar.dart';
@@ -62,29 +63,36 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
       final registerProvider = context.read<RegisterProvider>();
+      final authProvider = context.read<AuthProvider>();
 
       String day = _birthDateController.text.split('/')[0];
       String month = _birthDateController.text.split('/')[1];
       String year = _birthDateController.text.split('/')[2];
 
-      await registerProvider.register(
-          _emailController.text,
-          _usernameController.text,
-          _nameController.text,
-          DateTime.parse('$year-$month-$day'),
-          _passwordController.text,
-          acceptTerms);
+      await registerProvider
+          .register(
+              _emailController.text,
+              _usernameController.text,
+              _nameController.text,
+              DateTime.parse('$year-$month-$day'),
+              _passwordController.text,
+              acceptTerms)
+          .then((UserModel? model) {
+        if (model != null) {
+          authProvider.setUser(model);
 
-      if (registerProvider.error == null && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppTexts.register.successMessage),
-            backgroundColor: Colors.green,
-          ),
-        );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(AppTexts.register.successMessage),
+                backgroundColor: Colors.green,
+              ),
+            );
 
-        context.go('/login');
-      }
+            context.go('/');
+          }
+        }
+      });
     }
   }
 

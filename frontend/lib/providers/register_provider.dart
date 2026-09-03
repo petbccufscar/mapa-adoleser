@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_adoleser/core/helpers/error_handler.dart';
 import 'package:mapa_adoleser/data/services/auth_service.dart';
+import 'package:mapa_adoleser/domain/models/user_model.dart';
 import 'package:mapa_adoleser/domain/requests/register_request_model.dart';
 
 class RegisterProvider extends ChangeNotifier {
@@ -13,7 +14,7 @@ class RegisterProvider extends ChangeNotifier {
   String? get error => _error;
   bool get isLoading => _loading;
 
-  Future<void> register(String email, String username, String name,
+  Future<UserModel?> register(String email, String username, String name,
       DateTime birthDate, String password, bool acceptTerms) async {
     _loading = true;
     _error = null;
@@ -27,8 +28,10 @@ class RegisterProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      return;
+      return null;
     }
+
+    UserModel? user;
 
     try {
       final request = RegisterRequestModel(
@@ -39,7 +42,7 @@ class RegisterProvider extends ChangeNotifier {
         password: password,
       );
 
-      await _authService.register(request);
+      user = await _authService.register(request);
     } catch (e) {
       _error = parseException(e);
     }
@@ -47,5 +50,7 @@ class RegisterProvider extends ChangeNotifier {
     _loading = false;
 
     notifyListeners();
+
+    return user;
   }
 }

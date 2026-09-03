@@ -8,7 +8,8 @@ class ContactService {
     await Future.delayed(const Duration(seconds: 2)); // Simula chamada à API
 
     if (data.email == 'vini.cotrim@hotmail.com') {
-      throw ContactException();
+      throw ContactException(
+          "Ocorreu um erro ao enviar a mensagem. Tente novamente mais tarde.");
     }
 
     // Simula sucesso

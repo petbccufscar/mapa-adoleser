@@ -13,7 +13,8 @@ class Role(models.TextChoices):
 
 
 class User(AbstractUser):
-    # username, id, password, email são herdados de AbstractUser
+    # username, id, password, são herdados de AbstractUser
+    email = models.EmailField("E-mail", unique=True) 
     name = models.CharField("Full Name", max_length=255, blank=True)
     birth_date = models.DateField("Birth date", null=True, blank=True)
     password_reset_code = models.CharField("Password Reset Code", max_length=6, blank=True, null=True)
@@ -25,6 +26,10 @@ class User(AbstractUser):
         choices=Role.choices,
         default=Role.USER
     )
+
+    USERNAME_FIELD = "email"          # <- login por e-mail
+    REQUIRED_FIELDS = ["username"]    # <- o createsuperuser ainda pede username
+
 
     def __str__(self):
         return self.username
