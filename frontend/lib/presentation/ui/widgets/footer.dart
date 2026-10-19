@@ -20,7 +20,7 @@ class Footer extends StatelessWidget {
             horizontal: utils.ResponsiveUtils.horizontalPadding(context),
             vertical: AppDimensions.footerVerticalPadding,
           ),
-          color: AppColors.backgroundSmoke,
+          color: AppColors.backgroundWhite,
           child: ResponsiveRowColumn(
             layout: responsive.smallerThan('LARGE_TABLET')
                 ? ResponsiveRowColumnType.COLUMN
@@ -29,7 +29,7 @@ class Footer extends StatelessWidget {
             rowCrossAxisAlignment: CrossAxisAlignment.start,
             columnCrossAxisAlignment: CrossAxisAlignment.start,
             rowSpacing: 50,
-            columnSpacing: 20,
+            columnSpacing: 40,
             children: [
               ResponsiveRowColumnItem(
                 child: Column(
@@ -38,10 +38,10 @@ class Footer extends StatelessWidget {
                   children: [
                     Text(
                       "Redes",
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Row(
-                      spacing: 5,
+                      spacing: 10,
                       children: [
                         IconButton(
                             style: ButtonStyle(
@@ -99,7 +99,7 @@ class Footer extends StatelessWidget {
                   children: [
                     Text(
                       "Links importantes",
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Row(
                       spacing: 10,
@@ -139,7 +139,7 @@ class Footer extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(
             horizontal: utils.ResponsiveUtils.horizontalPadding(context),
-            vertical: AppDimensions.footerVerticalPadding,
+            vertical: 15,
           ),
           color: AppColors.purple,
           child: ResponsiveRowColumn(

@@ -37,7 +37,7 @@ class AppDimensions {
   static const double loggedInEndDrawerHeaderHeight = 105;
 
   static const double footerHeight = 100;
-  static const double footerVerticalPadding = 15;
+  static const double footerVerticalPadding = 30;
 }
 
 class AppTexts {
@@ -293,16 +293,52 @@ class _RegisterTexts {
   final termsLabel = 'Termos de Uso e Política de Privacidade';
 }
 
+/// Substitui a classe _HomeTexts existente (dentro do seu constants.dart).
 class _HomeTexts {
   const _HomeTexts();
 
-  final aboutTitle = 'Mapa Adoleser';
+  // Sobre
+  final aboutTitle = 'Sobre o Mapa Adoleser';
   final aboutText =
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras egestas in sapien sit amet feugiat. Maecenas nec ullamcorper nisi. Nulla nunc  eros, porta nec semper ac, faucibus eu est. Aenean blandit ut mauris sit amet ullamcorper. Mauris non odio vel metus elementum lobortis.  Praesent nec eleifend metus. Donec vel lorem auctor eros sollicitudin  mattis. Nunc sed luctus ligula. In non leo nec sapien faucibus  condimentum. In et finibus ligula.  \n\nAenean sit amet urna finibus, aliquam nunc a, accumsan mi. Duis scelerisque, justo in sollicitudin ornare, dolor lacus viverra metus, sed consequat diam risus at leo. Suspendisse tincidunt eu ante nec fermentum. Ut lobortis eget risus consequat pulvinar. In mattis lorem laoreet lorem commodo accumsan eu ac arcu.';
+      'O Mapa Adoleser é uma plataforma criada para aproximar a comunidade de São Carlos dos espaços da cidade que podem fazer parte do seu dia a dia. A proposta é facilitar o acesso a informações sobre lugares onde é possível se divertir, aprender, conviver e cuidar de si, de um jeito simples e acessível para todo mundo. \n\n Aqui você encontra a localização de cada espaço, como chegar, os horários de funcionamento e as atividades disponíveis. Tudo reunido em um só lugar, com dados organizados e revisados com frequência, para que você descubra novas opções e escolha com mais facilidade o que combina com o seu momento e com o seu estilo.';
+  final aboutButton = 'Saiba mais sobre o projeto';
 
-  final mapTitle = 'Conheça um local que lhe fará bem';
+  // Números
+  final knowTitle = 'Conheça um local que lhe fará bem';
+  final knowText =
+      'Use o mapa e os filtros da página de pesquisa para achar um bom lugar para você, perto de casa ou da escola.';
+  final numbers = const [
+    ('120', 'locais cadastrados'),
+    ('35', 'bairros atendidos'),
+    ('8', 'tipos de atividade'),
+    ('60', 'com acesso gratuito'),
+  ];
+  final numbersUpdated = 'Dados atualizados em outubro de 2026';
+
+  // Como usar
+  final howToTitle = 'Como usar';
+  final howToSteps = const [
+    (
+      'Busque',
+      'Digite o nome do local, o bairro ou a atividade que você quer fazer.'
+    ),
+    (
+      'Filtre',
+      'Refine por tipo de atividade, horário de funcionamento e se o acesso é gratuito.'
+    ),
+    ('Vá até lá', 'Veja endereço, telefone e o caminho no mapa.'),
+  ];
+
+  // Um mapa para chamar de seu
+  final mapTitle = 'Um mapa para chamar de seu';
   final mapText =
-      'Use o mapa e os filtros abaixo para achar um bom lugar para você';
+      'A cidade tem mais opções do que parece. O Mapa Adoleser ajuda você a encontrá-las, no seu tempo e do seu jeito.';
+  final mapTopics = const [
+    'Opções para todos os gostos e estilos',
+    'Espaços para ir sozinho ou com os amigos',
+    'Informações claras, reunidas em um só lugar',
+    'Locais acessíveis e abertos à comunidade',
+  ];
 }
 
 class _AboutTexts {

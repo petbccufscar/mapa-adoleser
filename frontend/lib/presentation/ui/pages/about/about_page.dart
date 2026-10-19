@@ -20,47 +20,91 @@ class AboutPage extends StatelessWidget {
           : null,
       body: SingleChildScrollView(
         padding: ResponsiveUtils.pagePadding(context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Column(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  AppTexts.about.aboutAdoleserTitle,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                _buildSectionCard(
+                  context,
+                  title: AppTexts.about.aboutAdoleserTitle,
+                  paragraph: AppTexts.about.aboutAdoleserParagraph,
+                  imagePath: 'assets/images/megafonetexto.png',
                 ),
-                const SizedBox(height: 15),
-                SelectableText(
-                  AppTexts.about.aboutAdoleserParagraph,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.justify,
-                ),
-                const SizedBox(height: 10),
-                Image.asset(
-                  'assets/images/megafonetexto.png',
-                  height: 200,
+                const SizedBox(height: 24),
+                _buildSectionCard(
+                  context,
+                  title: AppTexts.about.aboutPETBCCTitle,
+                  paragraph: AppTexts.about.aboutPETBCCParagraph,
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionCard(
+    BuildContext context, {
+    required String title,
+    required String paragraph,
+    String? imagePath,
+  }) {
+    final theme = Theme.of(context);
+
+    return Card(
+      elevation: 0,
+      color: theme.colorScheme.surface,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 4,
+                height: 26,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SelectableText(
+            paragraph,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              height: 1.6,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          if (imagePath != null) ...[
             const SizedBox(height: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  AppTexts.about.aboutPETBCCTitle,
-                  style: Theme.of(context).textTheme.headlineMedium,
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  imagePath,
+                  height: 180,
+                  fit: BoxFit.contain,
                 ),
-                const SizedBox(height: 15),
-                SelectableText(
-                  AppTexts.about.aboutPETBCCParagraph,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.justify,
-                ),
-              ],
+              ),
             ),
           ],
-        ),
+        ],
       ),
     );
   }
